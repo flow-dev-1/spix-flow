@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "title": "SPIX – Flow Online Learning Courses"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/index.json",
+      "type": "application/opds+json"
+    }
+  ],
+  "navigation": [
+    {
+      "href": "https://spix.flowonline.app/opds/tot2.json",
+      "title": "Teaching Our Teachers 2 (TOT2)",
+      "type": "application/opds+json",
+      "alternate": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+          "rel": "icon",
+          "type": "image/png",
+          "title": "TOT2 Course Cover"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+@media (max-width: 1400px) {
+    .resilience-drag-instruction h1{
+        font-size: 2rem;
+    }
+    
+}
+@media (max-width: 480px) {
+    .bucket-text{
+        margin: 0 2.8rem;
+    }
+    .bucket-text p{
+        text-align: center;
+        margin-left: -1.2rem;
+    }
+    
+}

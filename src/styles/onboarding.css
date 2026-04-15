@@ -1,0 +1,333 @@
+/* src/components/auth/authStyles.css */
+
+/* Styles for the registration page */
+.registration-page {
+  /* width: 700px; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  margin: 20px auto 0 auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 15px;
+  overflow-y: scroll;
+}
+input:focus {
+  border: 1px solid #275dad !important;
+}
+
+.country-code.register {
+  top: 0.75rem !important;
+}
+
+/* .action-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.action-btns button {
+  display: block;
+  padding: 0.2rem 4rem;
+  border: none;
+  background-color: none;
+} */
+
+#root
+  > div.root-layout
+  > div
+  > div
+  > form
+  > div.form-section
+  > div:nth-child(3)
+  > div
+  > div
+  > div
+  > div.PhoneInputCountrySelectArrow {
+  position: relative;
+  left: 2.8rem;
+  top: -0.75px;
+}
+
+#border-red {
+  border: 1px solid #fd483d !important;
+}
+
+.individual-signup {
+  gap: 0.7rem !important;
+  padding-left: 0 !important;
+}
+
+.span-role {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 2px 6px;
+  background-color: #ffe7e5;
+}
+
+p.error-message {
+  text-align: right;
+}
+
+.registration-page.sign-in {
+  /* width: fit-content; */
+}
+
+.registration-page form {
+  margin: 15px 0;
+}
+
+.registration-page h2 {
+  font-size: 40px;
+}
+
+.registration-page span {
+  color: #fd483d;
+  font-size: 12px;
+}
+
+.registration-page hr {
+  width: 100%;
+  /* transform: ; */
+  border: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.registration-page .form-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
+  /* grid-column-gap: 15px; */
+  gap: 10px;
+}
+
+.registration-page .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.registration-page .form-group label,
+.registration-page .forgot-password,
+.registration-page.sign-in p {
+  margin-bottom: 5px;
+  font-size: 13px;
+  text-align: left;
+  color: #5b616a;
+}
+
+.registration-page .form-group input,
+.registration-page .form-group select {
+  width: calc(100% - 10px);
+  font-size: 14px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: #f8f8f8;
+  border: 1px solid #ecedf0;
+  border-radius: 5px;
+}
+
+.registration-page.sign-in .form-group input,
+.registration-page.sign-in .form-group .input-with-icon,
+.registration-page.sign-in .form-group select {
+  width: 300px;
+}
+
+.input-with-icon {
+  width: calc(100% - 10px);
+  font-size: 14px;
+  background-color: #f8f8f8;
+  border: 1px solid #ecedf0;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+.input-with-icon input[type="password"],
+.input-with-icon input[type="text"] {
+  flex: 1;
+  outline: none;
+  border: none;
+  background-color: #f8f8f8;
+  padding: 10px 0;
+}
+
+/* .input-with-icon input[type=text]:enabled,
+.input-with-icon input[type=text]:disabled,
+.input-with-icon input[type=password]:disabled,
+.input-with-icon input[type=password]:enabled {
+  background-color: #F8F8F8;
+} */
+
+input[type="password"]::-webkit-input-placeholder:-webkit-autofill,
+input[type="text"]::-webkit-input-placeholder:-webkit-autofill {
+  background-color: #f8f8f8;
+}
+
+.registration-page .form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("../assets/dropdown-arrow.png");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  /* background-size: 15px; */
+  background-size: 0.9em auto, 100%;
+  font-size: 14px;
+  color: #d6d6d6;
+}
+
+.registration-page .form-group input::placeholder,
+.registration-page .form-group select option:first-child {
+  font-size: 14px;
+  color: #d6d6d6;
+}
+
+.registration-page .top-section {
+  margin-top: 2rem;
+}
+
+.registration-page .form-group .password-toggle i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.registration-page .form-group .password-toggle i.fa-eye-slash {
+  display: none;
+}
+
+.registration-page .password-error,
+.registration-page p.password-match {
+  color: red;
+  width: auto;
+  margin: 0;
+  font-size: 8px;
+}
+
+.registration-page .bottom-section {
+  margin-top: 10px;
+  /* text-align: center; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: space-around; */
+}
+
+.error-message {
+  color: #fd483d !important;
+  font-size: 12px !important;
+}
+
+.bottom-section p,
+.rember-me {
+  font-size: 14px;
+  text-align: center;
+  line-height: normal;
+}
+
+p a,
+p span,
+.registration-page .forgot-password {
+  color: #275dad;
+}
+
+.submit-btn,
+.submit-btn:hover {
+  width: 200px;
+  padding: 8px 20px;
+  background-color: #275dad;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid #275dad;
+  font-size: 14px;
+}
+
+.registration-page.sign-in .submit-btn,
+.registration-page.sign-in .submit-btn:hover {
+  width: 300px;
+}
+
+.otp-input {
+  /* text-wrap: nowrap; */
+  display: flex;
+  width: 100%;
+}
+
+.modal-content h2 {
+  font-size: 40px;
+  text-align: center;
+}
+
+.otp-modal p {
+  font-size: 14px;
+  text-align: center;
+}
+
+.modal-content .submit-btn {
+  /* width: 300px; */
+}
+
+.otp-input input {
+  /* width: 60px; */
+  height: 45px;
+  border-radius: 4px;
+  font-size: 18px;
+  text-align: center;
+  line-height: normal;
+  margin: 0.5rem;
+  background-color: #f8f8f8;
+  border: 1px solid #d2d3d6;
+}
+
+.success-modal .icon-with-bg {
+  width: 75px;
+  height: 75px;
+  border-radius: 50px;
+  background-color: #50aa5042;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.success-modal .rounded-icon {
+  color: #50aa50;
+  font-size: 50px;
+}
+
+.flex-code-input .PhoneInputCountry {
+  width: auto;
+}
+
+select.PhoneInputCountrySelect {
+  padding-left: 0.5rem;
+}
+
+.flex-code-input .PhoneInput {
+  padding-left: 0.7rem !important;
+}
+
+.add-more-student {
+  display: flex;
+  justify-content: end;
+  margin-top: 2rem;
+  margin-right: 0.7rem;
+}
+.add-more-student button {
+  border: none;
+  display: block;
+  background-color: #5ce1e6;
+  color: #275dad;
+  border-radius: 8px;
+  padding: 0.3rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-more-student button span {
+  color: #275dad !important;
+}

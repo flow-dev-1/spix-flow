@@ -1,0 +1,95 @@
+.reusable-course-card {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.course-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 24px;
+}
+
+.reusable-course-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.course-details p {
+  font-size: 13px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  color: #555;
+}
+
+.course-card-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 12px 15px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: auto;
+}
+
+.card-btn {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.card-btn.start-resume {
+  background-color: #275DAD;
+  color: #fff;
+}
+
+.card-btn.start-resume:hover {
+  background-color: #1e4a9a;
+  color: #fff;
+}
+
+/* Page header */
+.browse-all-courses-text {
+  background-color: #275DAD;
+  padding: 20px 30px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.browse-all-courses-text p {
+  margin: 0;
+}
+
+/* Progress badge */
+.progress-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #275DAD;
+  background: #e8f0fb;
+  border-radius: 20px;
+  padding: 3px 10px;
+}

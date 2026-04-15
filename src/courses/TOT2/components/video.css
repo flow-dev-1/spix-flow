@@ -1,0 +1,14 @@
+.resilience-custom-video {
+  width: 100%;
+  height: 65vh;
+  border-radius: 8px 8px 0 0;
+  object-fit: fill;
+  /* aspect-ratio: 1; */
+}
+
+@media (max-width: 769px) {
+  .resilience-custom-video {
+    height: 40vh;
+    object-fit: contain;
+  }
+}

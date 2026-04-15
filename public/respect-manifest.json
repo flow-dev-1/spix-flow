@@ -1,0 +1,16 @@
+{
+  "name": {
+    "en-US": "SPIX – Flow Online Learning"
+  },
+  "description": {
+    "en-US": "Teacher training platform for inclusive education, empathy, and universal design for learning."
+  },
+  "license": "LicenseRef-proprietary",
+  "website": "https://spix.flowonline.app/",
+  "icon": "https://spix.flowonline.app/FLOW.png",
+  "learningUnits": "https://spix.flowonline.app/opds/index.json",
+  "defaultLaunchUri": "https://spix.flowonline.app/",
+  "web": {
+    "url": "https://spix.flowonline.app/"
+  }
+}

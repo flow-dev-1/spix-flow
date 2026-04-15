@@ -1,0 +1,130 @@
+.options {
+  padding: 20px 20px;
+  border-radius: 5px;
+  text-align: center;
+  /* grid-auto-rows: min-content; */
+  /* flex-basis: 30%; */
+  text-wrap: nowrap;
+  /* flex: 1 1 calc(33.33% - 20px); */
+}
+
+.drag-flex-basis {
+  /* flex-grow: 1; */
+  flex-basis: 50%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: max-content;
+}
+
+.inner-count,
+.outer-count,
+.both-count {
+  background-color: white;
+  text-align: center;
+  width: 45.65px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+.inner-count {
+  border: 4px solid #438643;
+  color: #50aa50;
+}
+
+.outer-count {
+  border: 4px solid #ed8641;
+  color: #faaa74;
+}
+
+.both-count {
+  border: 4px solid #ee2447;
+  color: #ee2447;
+}
+
+.inner-bowl,
+.outer-bowl {
+  aspect-ratio: 1;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.inner-bowl {
+  background-color: #50aa50;
+  border: 4px solid #438643;
+}
+.outer-bowl {
+  background-color: #faaa74;
+  border: 4px solid #ed8641;
+}
+
+.inner-bucket {
+  background: url("../../../../../assets/Buckets/green.png") no-repeat;
+}
+
+.outer-bucket {
+  background: url("../../../../../assets/Buckets/orange.png") no-repeat;
+}
+
+.both-bucket {
+  background: url("../../../../../assets/Buckets/red.png") no-repeat;
+}
+
+.green-cube {
+  background: url("../../../../../assets/cube/green.png") no-repeat;
+}
+
+.orange-cube {
+  background: url("../../../../../assets/cube/orange.png") no-repeat;
+}
+
+.red-cube {
+  background: url("../../../../../assets/cube/red.png") no-repeat;
+}
+
+.inner-box {
+  background: url("../../../../../assets/tot-images/yes.png") no-repeat;
+}
+
+.outer-box {
+  background: url("../../../../../assets/tot-images/no.png") no-repeat;
+}
+
+.inner-bucket,
+.outer-bucket,
+.both-bucket,
+.green-cube,
+.red-cube,
+.orange-cube,
+.inner-box,
+.outer-box {
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  padding: 1.5em;
+  background-size: contain;
+}
+
+.droppable-area {
+  min-height: 20px; /* Ensure a minimum height */
+  width: 100%; /* Ensure full width */
+  position: relative; /* Maintain position */
+}
+
+.bg-drag-blue {
+  background: #329bd6;
+}

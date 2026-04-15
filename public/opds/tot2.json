@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "title": "Teaching Our Teachers 2 (TOT2)"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot2.json",
+      "type": "application/opds+json"
+    }
+  ],
+  "publications": [
+    {
+      "metadata": {
+        "@type": "http://schema.org/Course",
+        "title": "Teaching Our Teachers 2 (TOT2)",
+        "author": "Flow Online Learning",
+        "identifier": "https://spix.flowonline.app/tot2",
+        "language": "en",
+        "modified": "2025-01-01T00:00:00Z",
+        "subject": [
+          {
+            "name": "Education",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot2",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+          "type": "image/png",
+          "height": 400,
+          "width": 300
+        }
+      ]
+    }
+  ]
+}

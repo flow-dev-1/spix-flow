@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ─── Navbar ─────────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0;
+  background: #ffffff;
+  box-shadow: 0px 4px 4px 0px #0000000d;
+  padding: 15px 50px;
+  width: 100%;
+  z-index: 999;
+}
+@media (max-width: 768px) {
+  .navbar { padding: 15px 20px; }
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar .navbar-logo img {
+  width: 60%;
+  cursor: pointer;
+}
+
+/* ─── Main layout ─────────────────────────────────────────── */
+.main-content {
+  display: flex;
+  margin-top: 59.6px;
+  margin-bottom: 50px;
+  padding-bottom: 20px;
+}
+
+aside,
+.aside-class {
+  flex-basis: 25vw;
+  padding: 40px 30px;
+  height: calc(100vh - 59.6px);
+  background-color: rgb(248, 245, 245);
+  box-shadow: 0 0 0.3px rgb(21, 4, 4);
+  margin: 0 3rem 0 0;
+  overflow-y: auto;
+}
+
+.week-content,
+.resilience-week-content {
+  flex-basis: 70vw;
+  border-radius: 10px;
+  margin: 40px 100px 0 40px;
+  flex-grow: 2;
+}
+
+aside .back,
+.aside-class .back {
+  margin-left: 30px;
+  font-size: 1.2em;
+  color: #5b616a;
+}
+
+/* ─── Course title box ────────────────────────────────────── */
+.tot-title {
+  background: #275dad;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin: 25px 0;
+}
+.tot-title h2 { color: white; }
+.tot-title .compassion { color: aquamarine; }
+
+/* ─── Week list ───────────────────────────────────────────── */
+.compassion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0 20px;
+}
+.compassion-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.compassion-list li .icon { flex-shrink: 0; }
+
+.accessible-week {
+  opacity: 1 !important;
+  cursor: pointer;
+}
+.accessible-week:hover {
+  background-color: rgba(0, 188, 195, 0.1);
+  transform: translateX(5px);
+}
+.locked-week {
+  opacity: 0.5 !important;
+  pointer-events: none;
+}
+.active-week {
+  font-weight: bold;
+  opacity: 1 !important;
+  border-left: 4px solid #00bcc3;
+  color: #275dad;
+}
+.compassion-list li.active-week { color: #275dad; }
+
+/* ─── Misc shared ─────────────────────────────────────────── */
+.course-list-icon { font-size: 1.25rem; }
+
+.tot-nav-text {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.feedback-content p { font-size: 1.1rem; line-height: 1.6; }
+.tracking-wider { letter-spacing: 0.1em; }
+.text-info { color: #5ce1e6 !important; }
+
+/* ─── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1399px) {
+  aside, .aside-class { padding: 20px 10px; margin: 0 1rem 0 0; }
+  .week-content, .resilience-week-content { margin: 20px 20px 0 20px; }
+}
+@media (max-width: 1199px) {
+  aside, .aside-class { padding: 20px 5px; margin: 0 0.5rem 0 0; }
+  .week-content, .resilience-week-content { margin: 20px 20px 0 10px; }
+}
+@media (max-width: 769px) {
+  .resilience-week-content {
+    padding: 0 !important;
+    margin: 1rem 5px 0 0 !important;
+  }
+  .assessment-header {
+    padding: 0 !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Lock bucket droppables so RBD placeholders can't cause reflow */
+.draggable-bucket {
+  position: relative;
+  width: 130px;
+  min-height: 160px;
+  flex: 0 0 auto !important;
+}
+
+/* Hide ALL RBD placeholders everywhere in drag-and-drop */
+[data-rbd-placeholder-context-id] {
+  display: none !important;
+}
+
+/* Fixed height for drag-and-drop row — prevents collapse during drag */
+.dnd-row-fixed {
+  height: 25rem;
+}
+
+@media (max-width: 956px) and (min-width: 768px) {
+  .dnd-row-fixed {
+    height: 28rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .dnd-row-fixed {
+    height: auto;
+    min-height: 32rem;
+  }
+}

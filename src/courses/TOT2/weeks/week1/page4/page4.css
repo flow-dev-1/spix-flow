@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+.tot-text h1 {
+  font-family: "Montserrat", system-ui, -apple-system, sans-serif !important;
+  font-weight: 700 !important;
+}
+.feeling-modal {
+  position: fixed; /* the only way i could think of*/
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 999999;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+
+  max-width: 620px;
+  width: 90%;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .feeling-modal {
+    width: 95%;
+    padding: 1rem;
+  }
+  .btn.sad img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .feeling-modal {
+    width: 95%;
+    padding: 0.8rem;
+  }
+  .review-buttons {
+    flex-wrap: wrap;
+    gap: 10px !important;
+  }
+  .btn.sad img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.btn.sad {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.btn.sad.selected {
+  border: 2px solid #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+  transform: translateY(-5px);
+  background-color: #f8f9fa;
+}
+
+.btn.sad:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn.sad img {
+  width: 60px;
+  height: 60px;
+}
+
+.btn.sad p {
+  margin-bottom: 0;
+  color: #333;
+  font-weight: 500;
+}
