@@ -21,7 +21,7 @@ jobs:
 
     - name: Sync frontend to S3
       run: |
-        aws s3 sync ./frontend s3://${{ secrets.S3_BUCKET }} --delete
+        aws s3 sync ./SPIX s3://${{ secrets.S3_BUCKET }} --delete
 
     - name: Invalidate CloudFront cache
       if: env.CLOUDFRONT_DIST_ID != ''
