@@ -14,6 +14,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -23,7 +34,7 @@ jobs:
 
     - name: Sync frontend to S3
       run: |
-        aws s3 sync ./SPIX s3://${{ secrets.S3_BUCKET }} --delete
+        aws s3 sync ./dist s3://${{ secrets.S3_BUCKET }} --delete
 
     - name: Invalidate CloudFront cache
       if: env.CLOUDFRONT_DIST_ID != ''
