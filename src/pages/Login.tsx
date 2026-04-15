@@ -45,7 +45,7 @@ export default function Login() {
 
           <div style={{ padding: "1.5rem" }}>
             <h2 className="text-center" style={{ color: "#275DAD", fontSize: "26px", fontWeight: 700, marginBottom: "0.4rem" }}>
-              Welcome to Flow
+              Welcome to Flow TEST
             </h2>
 
             <p className="text-center" style={{ color: "#5b616a", fontSize: "14px", marginBottom: "0.4rem" }}>
