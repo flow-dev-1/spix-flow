@@ -5,7 +5,7 @@
   "description": {
     "en-US": "Teacher training platform for inclusive education, empathy, and universal design for learning."
   },
-  "license": "LicenseRef-proprietary",
+  "license": "CC-BY-NC-ND-4.0",
   "website": "https://spix.flowonline.app/",
   "icon": "https://spix.flowonline.app/FLOW.png",
   "learningUnits": "https://spix.flowonline.app/opds/index.json",
