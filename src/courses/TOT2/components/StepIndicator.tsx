@@ -6,7 +6,7 @@ const StepIndicator = ({ totalSteps }) => {
   const currentStep = useSelector(selectCurrentStep);
 
   return (
-    <div className="d-flex justify-content-center flex-wrap mt-4" style={{ gap: "6px" }}>
+    <div className="d-flex justify-content-center mt-4" style={{ gap: "6px", flexWrap: "nowrap", overflowX: "auto" }}>
       {[...Array(totalSteps)].map((_, index) => (
         <div
           key={index}

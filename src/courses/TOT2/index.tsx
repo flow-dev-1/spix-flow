@@ -590,7 +590,7 @@ const CourseContent = () => {
           <button
             disabled={isAdmin}
             onClick={() => navigate("/dashboard/my-courses")}
-            className="back fs-6"
+            className="back fs-6 d-none d-lg-block"
             style={{ cursor: "pointer", border: "none", background: "#f8f5f5" }}
           >
             <Icon icon="fa6-solid:arrow-left-long" className="me-2" />

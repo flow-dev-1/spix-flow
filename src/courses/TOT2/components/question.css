@@ -6,6 +6,22 @@
   min-height: 50vh;
   /* height: 50vh; */
 }
+
+@media (max-width: 769px) {
+  .tot-question-box-container {
+    padding: 1rem 0.75rem !important;
+  }
+  .tot-question-text,
+  .tot-question-box-container h2 {
+    font-size: 1.25rem !important;
+  }
+  .w-200px {
+    width: 130px !important;
+  }
+  .btn.fs-5 {
+    font-size: 0.9rem !important;
+  }
+}
 .tot-assessment-header h2 {
   font-family: "Montserrat", system-ui, -apple-system, sans-serif !important;
   font-weight: 600;

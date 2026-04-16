@@ -24,8 +24,8 @@ import { adminData } from "@/store/adminReducer";
 const InternalStepIndicator = ({ totalSteps, currentStep }) => {
   return (
     <div
-      className="d-flex justify-content-center flex-wrap mt-2"
-      style={{ gap: "6px" }}
+      className="d-flex justify-content-center mt-2"
+      style={{ gap: "6px", flexWrap: "nowrap", overflowX: "auto" }}
     >
       {[...Array(totalSteps)].map((_, index) => (
         <div
@@ -202,7 +202,7 @@ function Page8() {
 
       <div className="d-flex justify-content-center align-items-center mt-4" style={{ position: "relative" }}>
         {/* Dots row centred */}
-        <div className="d-flex flex-wrap justify-content-center" style={{ gap: "6px" }}>
+        <div className="d-flex justify-content-center" style={{ gap: "6px", flexWrap: "nowrap", overflowX: "auto" }}>
           {[...Array(totalSteps)].map((_, i) =>
             i < currentStep ? (
               <div key={`step-${i}`} className="bg-step-active" style={{ width: "35px", height: "17px", borderRadius: "8px" }} />
