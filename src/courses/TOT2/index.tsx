@@ -4,16 +4,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   selectCurrentWeek,
-  selectShowReview,
   selectShowHurray,
   selectCurrentPage,
+  selectNavigationState,
   setCurrentWeek,
   setCurrentPage,
   setCurrentStep,
 } from "@/store/navigationSlice";
 import "./index.css";
 // Import components
-import PopUp from "./components/ReviewPopUp";
 import Hurray from "./components/Hurray";
 
 // Week 1
@@ -112,6 +111,7 @@ import { adminData } from "@/store/adminReducer";
 import { setCourse } from "@/store/navigationSlice";
 import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
+import { useRespectLaunch } from "@/hooks/useRespectLaunch";
 
 const WeekContent = () => {
   const dispatch = useDispatch();
@@ -123,7 +123,7 @@ const WeekContent = () => {
   const { isAdmin } = useSelector(adminData);
 
   // Access data from location.state
-  const enrolmentData = location.state?.enrollmentData; // Assuming enrollData is passed in state
+  const enrolmentData = location.state?.enrollmentData as any; // Assuming enrollData is passed in state
 
   useEffect(() => {
     setEnrollmentId(enrolmentData?._id);
@@ -151,8 +151,42 @@ const WeekContent = () => {
 
   const currentWeek = useSelector(selectCurrentWeek);
   const currentPage = useSelector(selectCurrentPage);
-  const showReview = useSelector(selectShowReview);
   const showHurray = useSelector(selectShowHurray);
+  const { isLastWeek } = useSelector(selectNavigationState);
+
+  const { sendCompleted, sendProgressed, restoreProgress, persistProgress } = useRespectLaunch();
+
+  // On mount: try to restore position from the LRS State API (RESPECT sessions).
+  // Falls back to sessionStorage which is already loaded in the effect above.
+  useEffect(() => {
+    restoreProgress().then((saved) => {
+      if (!saved) return;
+      dispatch(setCurrentWeek(saved.currentWeek));
+      dispatch(setCurrentPage(saved.currentPage));
+      dispatch(setCurrentStep(saved.currentStep));
+      sessionStorage.setItem("flow-currentWeek", String(saved.currentWeek));
+      sessionStorage.setItem("flow-currentPage", String(saved.currentPage));
+      sessionStorage.setItem("flow-currentStep", String(saved.currentStep));
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Fire xAPI progress/completion when the week-end screen appears
+  useEffect(() => {
+    if (!showHurray) return;
+    if (isLastWeek) {
+      sendCompleted(1.0);
+    } else {
+      sendProgressed(currentWeek / 5);
+    }
+  }, [showHurray]);
+
+  // Persist position to the LRS State API whenever the user advances
+  useEffect(() => {
+    if (!currentWeek || !currentPage) return;
+    const step = Number(sessionStorage.getItem("flow-currentStep") ?? 1);
+    persistProgress({ currentWeek, currentPage, currentStep: step });
+  }, [currentWeek, currentPage]);
 
   // toDo: Fetch User assessment and Activity Data
   const { data, isLoading, status, isError } = useQuery({
@@ -383,7 +417,6 @@ const WeekContent = () => {
   return (
     <>
       {getComponent()}
-      {/* {showReview && <PopUp />} */}
     </>
   );
 };
@@ -396,7 +429,9 @@ const CourseContent = () => {
   const dispatch = useDispatch();
   const [menuVisible, setMenuVisible] = useState(false);
   const [enrollmentProgress, setEnrollmentProgress] = useState(0);
-  const [maxAccessibleWeek, setMaxAccessibleWeek] = useState(1);
+  const [maxAccessibleWeek, setMaxAccessibleWeek] = useState(
+    () => Number(sessionStorage.getItem("flow-highestWeek") ?? 1)
+  );
   const [enrollmentId, setEnrollmentId] = useState(null);
 
   const weeksTopic = [
@@ -408,7 +443,7 @@ const CourseContent = () => {
   ];
 
   // Get enrollment data from location state
-  const enrolmentData = location.state?.enrollmentData;
+  const enrolmentData = location.state?.enrollmentData as any;
 
   // Capture enrollmentId from location state on mount
   useEffect(() => {
@@ -417,36 +452,19 @@ const CourseContent = () => {
     }
   }, []);
 
-  // Fetch live enrollment data so progress bar stays up-to-date after each week
-  const { data: liveEnrollment } = useQuery({
-    queryKey: ["tot2-enrollment-progress", enrollmentId, currentWeek],
-    queryFn: () => userService.getSingleEnrollment(enrollmentId),
-    enabled: !!enrollmentId,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
-  });
-
+  // Derive progress locally from currentWeek — each completed week = 20%.
+  // maxAccessibleWeek only ever increases — navigating back never locks future weeks.
   useEffect(() => {
-    // Prefer live server data; fall back to initial location.state snapshot
-    const progress =
-      liveEnrollment?.enrollment?.progress ??
-      liveEnrollment?.progress ??
-      enrolmentData?.progress ??
-      0;
-
-    setEnrollmentProgress(progress);
-
-    // Calculate max accessible week based on progress
     const progressPerWeek = 100 / weeksTopic.length;
-    const calculatedMaxWeek = Math.ceil(progress / progressPerWeek);
-
-    // Allow access to current incomplete week + next week
-    const accessibleWeek = Math.max(
-      1,
-      Math.min(calculatedMaxWeek + 1, weeksTopic.length),
-    );
-    setMaxAccessibleWeek(accessibleWeek);
-  }, [liveEnrollment, enrolmentData]);
+    const completedWeeks = currentWeek - 1;
+    const progress = Math.min(completedWeeks * progressPerWeek, 100);
+    setEnrollmentProgress(progress);
+    setMaxAccessibleWeek((prev) => {
+      const next = Math.max(prev, currentWeek);
+      sessionStorage.setItem("flow-highestWeek", String(next));
+      return next;
+    });
+  }, [currentWeek]);
 
   useEffect(() => {
     const segments = location.pathname.split("/").filter(Boolean);
@@ -646,8 +664,8 @@ const CourseContent = () => {
                   </div>
                   <span className="">{item}</span>
 
-                  {/* Save for offline button */}
-                  {isAccessible && (
+                  {/* Save for offline button — temporarily commented out for RESPECT testing */}
+                  {/* {isAccessible && (
                     <button
                       title={
                         isDownloading
@@ -702,7 +720,7 @@ const CourseContent = () => {
                         </span>
                       )}
                     </button>
-                  )}
+                  )} */}
                 </li>
               );
             })}

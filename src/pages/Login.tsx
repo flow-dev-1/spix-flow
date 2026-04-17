@@ -1,14 +1,28 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Navbar from "@/components/navbar/Navbar";
 import "@/styles/onboarding.css";
 import heroBg from "@/assets/course2.png";
+import { parseRespectLaunchParams } from "@/services/xapi";
 
 export default function Login() {
   const navigate = useNavigate();
 
+  // If launched by the RESPECT Launcher, params are in the URL — skip the
+  // login screen entirely and go straight to the course.
+  useEffect(() => {
+    const launch = parseRespectLaunchParams(window.location.search);
+    if (launch) {
+      sessionStorage.setItem("respect-launch-params", JSON.stringify(launch));
+      navigate("/tot2", { replace: true });
+    }
+  }, []);
+
   const handleRespectSignIn = () => {
-    // TODO (Phase 3): trigger libRESPECT SSO flow
+    // User is not inside a RESPECT session — navigate to course catalogue.
+    // In a full RESPECT deployment the launcher handles authentication;
+    // direct browser users are taken to the course list.
     navigate("/courses");
   };
 

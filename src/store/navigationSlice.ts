@@ -88,11 +88,7 @@ const navigationSlice = createSlice({
         const totalQuestions = assessmentData?.questions?.length || 0;
         const isLastQuestion = state.currentStep === totalQuestions;
         if (isLastQuestion) {
-          if (state.currentWeek === 5) {
-            state.showReview = true;
-          } else {
-            state.showHurray = true;
-          }
+          state.showHurray = true;
         } else {
           state.currentStep += 1;
           sessionStorage.setItem("flow-currentStep", String(state.currentStep));
