@@ -172,22 +172,22 @@ function Page16() {
         <div className="text-danger text-center mt-3">{errorMessage}</div>
       )}
 
-      <div className="d-flex justify-content-center align-items-center mt-4" style={{ position: "relative" }}>
-        <div className="d-flex justify-content-center" style={{ gap: "6px", flexWrap: "nowrap", overflowX: "auto" }}>
+      <div className="d-flex flex-column align-items-center mt-4" style={{ gap: "6px" }}>
+        <div className="d-flex justify-content-center step-dots-row" style={{ gap: "4px", flexWrap: "nowrap", overflowX: "auto" }}>
           {[...Array(totalSteps)].map((_, i) =>
             i < currentStep ? (
-              <div key={`step-${i}`} className="bg-step-active" style={{ width: "35px", height: "17px", borderRadius: "8px" }} />
+              <div key={`step-${i}`} className="bg-step-active step-dot" style={{ borderRadius: "8px" }} />
             ) : null
           )}
           {currentStep >= 2 && [...Array(dragDropImageLength)].map((_, i) => {
             const isActive = currentStep > 2 ? true : i <= currentImageIndex;
             return (
-              <div key={`img-${i}`} className={isActive ? "bg-step-active" : "bg-step"} style={{ width: "35px", height: "17px", borderRadius: "8px" }} />
+              <div key={`img-${i}`} className={`${isActive ? "bg-step-active" : "bg-step"} step-dot`} style={{ borderRadius: "8px" }} />
             );
           })}
           {[...Array(totalSteps)].map((_, i) =>
             i >= currentStep ? (
-              <div key={`step-future-${i}`} className="bg-step" style={{ width: "35px", height: "17px", borderRadius: "8px" }} />
+              <div key={`step-future-${i}`} className="bg-step step-dot" style={{ borderRadius: "8px" }} />
             ) : null
           )}
         </div>
@@ -197,8 +197,6 @@ function Page16() {
             onClick={handleReset}
             className="d-flex align-items-center gap-1"
             style={{
-              position: "absolute",
-              right: 0,
               cursor: "pointer",
               color: "#6c757d",
               userSelect: "none",

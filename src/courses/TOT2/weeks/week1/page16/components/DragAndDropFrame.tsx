@@ -193,8 +193,8 @@ const DragAndDropFrame = ({
           </div>
 
           {/* Right Buckets (50%) */}
-          <div className="col-12 col-md-6 bg-blue px-4 py-3">
-            <div className="d-flex align-items-start mb-2">
+          <div className="col-12 col-md-6 bg-blue dnd-buckets-col">
+            <div className="d-flex align-items-start mb-1">
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head" />
               <div className="text-center text-white pt-1 flex-grow-1 tot-drag-instruction">
                 <h1 className="fs-3">{instruction}</h1>
@@ -206,7 +206,7 @@ const DragAndDropFrame = ({
               />
             </div>
 
-            <div className="d-flex justify-content-around align-items-center flex-nowrap" style={{ minHeight: "160px", overflow: "hidden" }}>
+            <div className="d-flex justify-content-around align-items-center flex-nowrap" style={{ minHeight: "120px", overflow: "hidden" }}>
               {buckets &&
                 buckets.map((bucket) => (
                   <Droppable key={bucket.title} droppableId={bucket.id}>

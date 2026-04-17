@@ -25,7 +25,7 @@ export default function Courses() {
       <Navbar />
 
       {/* Content sits below the fixed navbar */}
-      <div style={{ paddingTop: "70px" }}>
+      <div className="courses-content-wrapper">
       {/* Header bar */}
       <div className="browse-all-courses-text container-fluid">
         <p>My Courses</p>

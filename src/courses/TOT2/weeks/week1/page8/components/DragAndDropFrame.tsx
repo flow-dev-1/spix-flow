@@ -196,7 +196,7 @@ const DragAndDropFrame = ({
           </div>
 
           {/* Right Buckets (50%) */}
-          <div className="col-12 col-md-6 bg-blue px-4 py-3">
+          <div className="col-12 col-md-6 bg-blue dnd-buckets-col">
             <div className="d-flex align-items-start mb-2">
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head" />
               <div className="text-center text-white pt-1 flex-grow-1 tot-drag-instruction">

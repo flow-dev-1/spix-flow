@@ -169,12 +169,32 @@ aside .back,
   .main-content {
     overflow: visible !important;
     min-height: 100vh;
+    margin-top: 50px !important;
   }
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* Step indicator dots */
+.step-dot {
+  width: 35px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 769px) {
+  .step-dot {
+    width: 22px !important;
+    height: 12px !important;
+  }
+
+  .step-dots-row {
+    gap: 3px !important;
+    max-width: 100%;
+  }
 }
 
 /* Lock bucket droppables so RBD placeholders can't cause reflow */
@@ -201,9 +221,14 @@ aside .back,
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 769px) {
   .dnd-row-fixed {
     height: auto;
     min-height: 32rem;
+  }
+
+  .draggable-bucket {
+    width: 95px !important;
+    min-height: 120px !important;
   }
 }

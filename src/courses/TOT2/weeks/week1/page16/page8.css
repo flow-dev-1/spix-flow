@@ -119,6 +119,10 @@
   background-size: contain;
 }
 
+.dnd-buckets-col {
+  padding: 16px 24px;
+}
+
 .droppable-area {
   min-height: 20px; /* Ensure a minimum height */
   width: 100%; /* Ensure full width */
@@ -127,4 +131,49 @@
 
 .bg-drag-blue {
   background: #329bd6;
+}
+
+@media (max-width: 769px) {
+  .inner-bucket,
+  .outer-bucket,
+  .both-bucket,
+  .green-cube,
+  .red-cube,
+  .orange-cube,
+  .inner-box,
+  .outer-box {
+    width: 95px !important;
+    height: 95px !important;
+    padding: 0.5em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .bucket-text p {
+    margin: 0;
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+  }
+
+  .inner-count,
+  .outer-count,
+  .both-count {
+    width: 28px !important;
+    font-size: 0.75rem !important;
+    margin-bottom: 6px !important;
+  }
+
+  .dnd-buckets-col .tot-drag-instruction h1 {
+    font-size: 0.9rem !important;
+  }
+
+  .dnd-buckets-col {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
 }

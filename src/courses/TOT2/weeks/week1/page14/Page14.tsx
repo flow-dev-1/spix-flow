@@ -166,7 +166,7 @@ function Page14() {
               </div>
 
               <div className="d-flex flex-column align-items-center gap-4 mb-5">
-                <div className="d-flex align-items-center gap-4">
+                <div className="d-flex flex-column flex-md-row align-items-center gap-3">
                   <button
                     onClick={handlePlaySequence}
                     disabled={hasPlayed}
@@ -179,20 +179,20 @@ function Page14() {
                   >
                     Play
                   </button>
-                  <div className="display-4 fw-bold text-white d-flex gap-3 align-items-center mb-0">
+                  <div className="fw-bold text-white d-flex gap-2 align-items-center mb-0" style={{ fontSize: "clamp(1.5rem, 8vw, 2.5rem)" }}>
                     {isRevealed ? (
                       <>
-                        7 <span className="fs-2">–</span> 3{" "}
-                        <span className="fs-2">–</span> 9{" "}
-                        <span className="fs-2">–</span> 2{" "}
-                        <span className="fs-2">–</span> 6
+                        7 <span>–</span> 3{" "}
+                        <span>–</span> 9{" "}
+                        <span>–</span> 2{" "}
+                        <span>–</span> 6
                       </>
                     ) : (
                       <>
-                        0 <span className="fs-2">–</span> 0{" "}
-                        <span className="fs-2">–</span> 0{" "}
-                        <span className="fs-2">–</span> 0{" "}
-                        <span className="fs-2">–</span> 0
+                        0 <span>–</span> 0{" "}
+                        <span>–</span> 0{" "}
+                        <span>–</span> 0{" "}
+                        <span>–</span> 0
                       </>
                     )}
                   </div>
