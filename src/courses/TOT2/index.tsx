@@ -126,8 +126,24 @@ const WeekContent = () => {
   const enrolmentData = location.state?.enrollmentData as any; // Assuming enrollData is passed in state
 
   useEffect(() => {
-    setEnrollmentId(enrolmentData?._id);
-    setCourse(enrolmentData?.course?._id);
+    if (enrolmentData?._id) {
+      setEnrollmentId(enrolmentData._id);
+      setCourse(enrolmentData?.course?._id ?? null);
+    }
+  }, []);
+
+  // Fallback for RESPECT Launcher sessions — the launcher navigates via URL params,
+  // not React Router state, so location.state?.enrollmentData is undefined.
+  // Without an enrollmentId the useQuery below stays disabled and week data is never fetched.
+  useEffect(() => {
+    if (!enrolmentData?._id) {
+      userService.getSingleEnrollment("").then((res: any) => {
+        if (res?.enrollment?._id) {
+          setEnrollmentId(res.enrollment._id);
+          setCourse(res.enrollment?.course?._id ?? null);
+        }
+      });
+    }
   }, []);
 
   useEffect(() => {
