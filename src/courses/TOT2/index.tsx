@@ -170,7 +170,7 @@ const WeekContent = () => {
   const showHurray = useSelector(selectShowHurray);
   const { isLastWeek } = useSelector(selectNavigationState);
 
-  const { sendCompleted, sendProgressed, restoreProgress, persistProgress } = useRespectLaunch();
+  const { sendCompleted, sendProgressed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
 
   // On mount: try to restore position from the LRS State API (RESPECT sessions).
   // Falls back to sessionStorage which is already loaded in the effect above.
@@ -247,6 +247,35 @@ const WeekContent = () => {
 
     return () => {};
   }, [data]);
+
+  // Restore responses from LRS when the week changes (covers switching back to a previous week)
+  useEffect(() => {
+    if (!currentWeek) return;
+    loadResponses(currentWeek).then((saved) => {
+      if (!saved) return;
+      dispatch(
+        updateData({
+          course: course,
+          courseEnrollmentId: enrollmentId ?? userAnswers.courseEnrollmentId,
+          week: currentWeek,
+          activities: saved.activities,
+          assessments: saved.assessments,
+        }),
+      );
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWeek]);
+
+  // Auto-save responses to LRS whenever the user answers a question
+  useEffect(() => {
+    if (!currentWeek) return;
+    if (!userAnswers.activities?.length && !userAnswers.assessments?.length) return;
+    saveResponses(currentWeek, {
+      activities: userAnswers.activities ?? [],
+      assessments: userAnswers.assessments ?? [],
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
   if (showHurray) {

@@ -5,9 +5,12 @@ import {
   sendXAPIStatement,
   getProgress,
   saveProgress,
+  saveWeekResponses,
+  getWeekResponses,
   XAPI_VERBS,
   type RespectLaunchParams,
   type LearnerProgress,
+  type WeekResponses,
 } from "@/services/xapi";
 
 /**
@@ -78,6 +81,18 @@ export function useRespectLaunch() {
     return saveProgress(paramsRef.current, progress);
   };
 
+  /** Save user responses for a given week to the LRS State API. No-op outside a RESPECT session. */
+  const saveResponses = (week: number, responses: WeekResponses): Promise<void> => {
+    if (!paramsRef.current) return Promise.resolve();
+    return saveWeekResponses(paramsRef.current, week, responses);
+  };
+
+  /** Load user responses for a given week from the LRS State API. Returns null outside a RESPECT session. */
+  const loadResponses = (week: number): Promise<WeekResponses | null> => {
+    if (!paramsRef.current) return Promise.resolve(null);
+    return getWeekResponses(paramsRef.current, week);
+  };
+
   return {
     launchParams: paramsRef.current,
     isRespectSession: !!paramsRef.current,
@@ -85,5 +100,7 @@ export function useRespectLaunch() {
     sendProgressed,
     restoreProgress,
     persistProgress,
+    saveResponses,
+    loadResponses,
   };
 }

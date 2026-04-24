@@ -148,3 +148,56 @@ export async function saveProgress(
     // non-fatal — local sessionStorage already tracks position
   }
 }
+
+export interface WeekResponses {
+  activities: any[];
+  assessments: any[];
+}
+
+function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
+  const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
+  const q = new URLSearchParams({
+    activityId: params.activityId || "https://spix.flowonline.app/tot2",
+    agent: params.actor,
+    stateId: `flowResponses-week${week}`,
+    ...(params.registration ? { registration: params.registration } : {}),
+  });
+  return `${base}activities/state?${q.toString()}`;
+}
+
+/** Save user responses (activities & assessments) for a given week to the LRS State API. */
+export async function saveWeekResponses(
+  params: RespectLaunchParams,
+  week: number,
+  responses: WeekResponses,
+): Promise<void> {
+  if (!params.endpoint || !params.auth) return;
+  try {
+    await fetch(weekResponsesUrl(params, week), {
+      method: "PUT",
+      headers: STATE_HEADERS(params.auth),
+      body: JSON.stringify(responses),
+    });
+  } catch {
+    // non-fatal
+  }
+}
+
+/** Retrieve saved user responses for a given week from the LRS State API. Returns null if none found. */
+export async function getWeekResponses(
+  params: RespectLaunchParams,
+  week: number,
+): Promise<WeekResponses | null> {
+  if (!params.endpoint || !params.auth) return null;
+  try {
+    const res = await fetch(weekResponsesUrl(params, week), {
+      method: "GET",
+      headers: STATE_HEADERS(params.auth),
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) return null;
+    return (await res.json()) as WeekResponses;
+  } catch {
+    return null;
+  }
+}
