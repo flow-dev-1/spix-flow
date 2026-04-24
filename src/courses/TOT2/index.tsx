@@ -248,11 +248,22 @@ const WeekContent = () => {
     return () => {};
   }, [data]);
 
-  // Restore responses from LRS when the week changes (covers switching back to a previous week)
+  // Restore responses from LRS (or localStorage fallback) when the week changes
   useEffect(() => {
     if (!currentWeek) return;
     loadResponses(currentWeek).then((saved) => {
+      // Fallback to localStorage if LRS failed or returned nothing
+      if (!saved) {
+        try {
+          const localSaved = localStorage.getItem(`flowResponses-week${currentWeek}`);
+          if (localSaved) saved = JSON.parse(localSaved);
+        } catch (e) {
+          // ignore parsing error
+        }
+      }
+
       if (!saved) return;
+      
       dispatch(
         updateData({
           course: course,
@@ -266,14 +277,25 @@ const WeekContent = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWeek]);
 
-  // Auto-save responses to LRS whenever the user answers a question
+  // Auto-save responses to LRS AND localStorage whenever the user answers a question
   useEffect(() => {
     if (!currentWeek) return;
     if (!userAnswers.activities?.length && !userAnswers.assessments?.length) return;
-    saveResponses(currentWeek, {
+    
+    const responses = {
       activities: userAnswers.activities ?? [],
       assessments: userAnswers.assessments ?? [],
-    });
+    };
+    
+    // Save to LRS
+    saveResponses(currentWeek, responses);
+    
+    // Also save to localStorage as a reliable fallback
+    try {
+      localStorage.setItem(`flowResponses-week${currentWeek}`, JSON.stringify(responses));
+    } catch (e) {
+      // ignore quota errors
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAnswers.activities, userAnswers.assessments]);
 
