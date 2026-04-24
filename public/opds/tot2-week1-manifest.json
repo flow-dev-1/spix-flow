@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "@type": "http://schema.org/Course",
+    "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom",
+    "author": "Flow Online Learning",
+    "identifier": "https://spix.flowonline.app/tot2/week1",
+    "language": "en",
+    "modified": "2025-01-01T00:00:00Z",
+    "description": "Week 1 of Leaving No Learner Behind."
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot2-week1-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2?startWeek=1",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png",
+      "height": 400,
+      "width": 300
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/tot2?startWeek=1",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_7.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Cognitive+Overload.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_8.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_9.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Cognitive+Overload.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}

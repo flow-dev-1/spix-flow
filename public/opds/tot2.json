@@ -13,9 +13,9 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Leaving No Learner Behind",
+        "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom",
         "author": "Flow Online Learning",
-        "identifier": "https://spix.flowonline.app/tot2",
+        "identifier": "https://spix.flowonline.app/tot2/week1",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
         "subject": [
@@ -29,12 +29,160 @@
       "links": [
         {
           "rel": "self",
-          "href": "https://spix.flowonline.app/opds/tot2-manifest.json",
+          "href": "https://spix.flowonline.app/opds/tot2-week1-manifest.json",
           "type": "application/opds-publication+json"
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2",
+          "href": "https://spix.flowonline.app/tot2?startWeek=1",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+          "type": "image/png",
+          "height": 400,
+          "width": 300
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "@type": "http://schema.org/Course",
+        "title": "Week 2: The Inclusive Mindset: Empathy and Compassion",
+        "author": "Flow Online Learning",
+        "identifier": "https://spix.flowonline.app/tot2/week2",
+        "language": "en",
+        "modified": "2025-01-01T00:00:00Z",
+        "subject": [
+          {
+            "name": "Education",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week2-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot2?startWeek=2",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+          "type": "image/png",
+          "height": 400,
+          "width": 300
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "@type": "http://schema.org/Course",
+        "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
+        "author": "Flow Online Learning",
+        "identifier": "https://spix.flowonline.app/tot2/week3",
+        "language": "en",
+        "modified": "2025-01-01T00:00:00Z",
+        "subject": [
+          {
+            "name": "Education",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week3-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot2?startWeek=3",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+          "type": "image/png",
+          "height": 400,
+          "width": 300
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "@type": "http://schema.org/Course",
+        "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs",
+        "author": "Flow Online Learning",
+        "identifier": "https://spix.flowonline.app/tot2/week4",
+        "language": "en",
+        "modified": "2025-01-01T00:00:00Z",
+        "subject": [
+          {
+            "name": "Education",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week4-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot2?startWeek=4",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+          "type": "image/png",
+          "height": 400,
+          "width": 300
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "@type": "http://schema.org/Course",
+        "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
+        "author": "Flow Online Learning",
+        "identifier": "https://spix.flowonline.app/tot2/week5",
+        "language": "en",
+        "modified": "2025-01-01T00:00:00Z",
+        "subject": [
+          {
+            "name": "Education",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week5-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot2?startWeek=5",
           "type": "text/html"
         }
       ],

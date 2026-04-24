@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "@type": "http://schema.org/Course",
+    "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
+    "author": "Flow Online Learning",
+    "identifier": "https://spix.flowonline.app/tot2/week5",
+    "language": "en",
+    "modified": "2025-01-01T00:00:00Z",
+    "description": "Week 5 of Leaving No Learner Behind."
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot2-week5-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2?startWeek=5",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png",
+      "height": 400,
+      "width": 300
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/tot2?startWeek=5",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_7.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}

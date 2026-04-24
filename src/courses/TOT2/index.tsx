@@ -515,11 +515,31 @@ const CourseContent = () => {
     const segments = location.pathname.split("/").filter(Boolean);
     const lastSegment = segments[segments.length - 1];
 
-    // This is an important section that affects course rendering!
     if (["tot_2"].includes(lastSegment?.toLowerCase())) {
       dispatch(setCourse(lastSegment.toLowerCase()));
     }
-  }, [location.pathname, dispatch]);
+
+    // Launch with a specific starting week via url param (from RESPECT OPDS downloads)
+    const params = new URLSearchParams(location.search);
+    const startWeekParam = params.get("startWeek");
+    if (startWeekParam) {
+      const startWeek = Number(startWeekParam);
+      if (startWeek >= 1 && startWeek <= weeksTopic.length) {
+        dispatch(setCurrentWeek(startWeek));
+        dispatch(setCurrentPage(1));
+        dispatch(setCurrentStep(1));
+        sessionStorage.setItem("flow-currentWeek", String(startWeek));
+        sessionStorage.setItem("flow-currentPage", "1");
+        sessionStorage.setItem("flow-currentStep", "1");
+        // Also ensure it is accessible
+        setMaxAccessibleWeek((prev) => {
+          const next = Math.max(prev, startWeek);
+          sessionStorage.setItem("flow-highestWeek", String(next));
+          return next;
+        });
+      }
+    }
+  }, [location.pathname, location.search, dispatch, weeksTopic.length]);
 
   const handleWeekClick = (weekNumber) => {
     // Only allow navigation to completed weeks or the current week in progress

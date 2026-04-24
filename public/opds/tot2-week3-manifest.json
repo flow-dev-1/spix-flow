@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "@type": "http://schema.org/Course",
+    "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
+    "author": "Flow Online Learning",
+    "identifier": "https://spix.flowonline.app/tot2/week3",
+    "language": "en",
+    "modified": "2025-01-01T00:00:00Z",
+    "description": "Week 3 of Leaving No Learner Behind."
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot2-week3-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2?startWeek=3",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png",
+      "height": 400,
+      "width": 300
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/tot2?startWeek=3",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_6.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}

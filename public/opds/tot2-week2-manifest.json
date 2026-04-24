@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "@type": "http://schema.org/Course",
+    "title": "Week 2: The Inclusive Mindset: Empathy and Compassion",
+    "author": "Flow Online Learning",
+    "identifier": "https://spix.flowonline.app/tot2/week2",
+    "language": "en",
+    "modified": "2025-01-01T00:00:00Z",
+    "description": "Week 2 of Leaving No Learner Behind."
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot2-week2-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2?startWeek=2",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png",
+      "height": 400,
+      "width": 300
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/tot2?startWeek=2",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_6.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}
