@@ -285,8 +285,8 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
             ? enrollmentId
             : userAnswers.courseEnrollmentId,
           week: currentWeek,
-          activities: userAnswers.activities,
-          assessments: userAnswers.assessments,
+          activities: [],
+          assessments: [],
         }),
       );
     }
