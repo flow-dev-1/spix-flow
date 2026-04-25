@@ -23,10 +23,11 @@ const Hurray = ({ currentWeek = 3 }) => {
   const { isLastWeek } = useSelector(selectNavigationState);
 
   const handleNext = () => {
-    sessionStorage.setItem("flow-currentPage", 1);
-    sessionStorage.setItem("flow-currentStep", 1);
+    sessionStorage.setItem("flow-currentPage", "1");
+    sessionStorage.setItem("flow-currentStep", "1");
     if (isLastWeek) {
-      navigate("/dashboard/my-courses");
+      // In SPIX the main fallback landing page is the course root, effectively refreshing the course wrapper.
+      navigate("/tot2");
     } else {
       dispatch(hideHurray());
     }
@@ -66,7 +67,7 @@ const Hurray = ({ currentWeek = 3 }) => {
       </div>
 
       <div className="d-flex justify-content-center w-1029px mt-4">
-        <Button text={getButtonText()} customOnClick={handleNext} />
+        <Button text={getButtonText()} customOnClick={handleNext} loading={false} />
       </div>
     </>
   );

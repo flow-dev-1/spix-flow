@@ -224,6 +224,13 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Fire xAPI progress/completion when the week-end screen appears
   useEffect(() => {
     if (!showHurray) return;
+    
+    setMaxAccessibleWeek((prev: number) => {
+      const next = Math.max(prev, currentWeek + 1);
+      sessionStorage.setItem("flow-highestWeek", String(next));
+      return next;
+    });
+
     if (isLastWeek) {
       sendCompleted(1.0);
     } else {
@@ -645,7 +652,7 @@ const CourseContent = () => {
             Logout
           </div>
 
-          <div className="d-block d-lg-none position-relative">
+          <div className="d-none">
             <Icon
               icon="mdi:menu"
               width={30}
