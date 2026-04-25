@@ -102,8 +102,14 @@ export interface LearnerProgress {
 
 function stateUrl(params: RespectLaunchParams): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
+  
+  // Use a shared activity id for global progress tracking across all weeks
+  const globalActivityId = params.activityId 
+    ? params.activityId.replace(/\/week\d+\/?$/, "") 
+    : "https://spix.flowonline.app/tot2";
+    
   const q = new URLSearchParams({
-    activityId: params.activityId || "https://spix.flowonline.app/tot2",
+    activityId: globalActivityId,
     agent: params.actor,
     stateId: "flowProgress",
     ...(params.registration ? { registration: params.registration } : {}),
@@ -175,8 +181,14 @@ export interface WeekResponses {
 
 function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
+  
+  // Use a shared activity id for global progress tracking across all weeks
+  const globalActivityId = params.activityId 
+    ? params.activityId.replace(/\/week\d+\/?$/, "") 
+    : "https://spix.flowonline.app/tot2";
+    
   const q = new URLSearchParams({
-    activityId: params.activityId || "https://spix.flowonline.app/tot2",
+    activityId: globalActivityId,
     agent: params.actor,
     stateId: `flowResponses-week${week}`,
     ...(params.registration ? { registration: params.registration } : {}),

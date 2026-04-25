@@ -25,7 +25,7 @@ class UserOBJ {
 
   submitCourseData = async (_formData: any) => {
     await delay();
-    return { success: true, message: "Submitted (mock)" };
+    return { success: true, message: "Submitted successfully" };
   };
 
   submitUserCourseReaction = async (_courseId: string, _reaction: string) => {

@@ -113,7 +113,15 @@ import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
 
-const WeekContent = () => {
+const weeksTopic = [
+  "Understanding Inclusion and Special Needs in the Classroom",
+  "The Inclusive Mindset: Empathy and Compassion",
+  "Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
+  "Practical Strategies for Supporting Students with Common Special Needs",
+  "Collaboration, Support Systems, and Inclusive Implementation",
+];
+
+const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userAnswers = useSelector(userAnswer);
@@ -532,14 +540,6 @@ const CourseContent = () => {
   );
   const [enrollmentId, setEnrollmentId] = useState(null);
 
-  const weeksTopic = [
-    "Understanding Inclusion and Special Needs in the Classroom",
-    "The Inclusive Mindset: Empathy and Compassion",
-    "Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
-    "Practical Strategies for Supporting Students with Common Special Needs",
-    "Collaboration, Support Systems, and Inclusive Implementation",
-  ];
-
   // Get enrollment data from location state
   const enrolmentData = location.state?.enrollmentData as any;
 
@@ -550,19 +550,21 @@ const CourseContent = () => {
     }
   }, []);
 
-  // Derive progress locally from currentWeek — each completed week = 20%.
-  // maxAccessibleWeek only ever increases — navigating back never locks future weeks.
+  // Derive progress locally from the highest week reached — each completed week = 20%.
+  // maxAccessibleWeek only ever increases — navigating back never locks future weeks or decreases progress.
   useEffect(() => {
-    const progressPerWeek = 100 / weeksTopic.length;
-    const completedWeeks = currentWeek - 1;
-    const progress = Math.min(completedWeeks * progressPerWeek, 100);
-    setEnrollmentProgress(progress);
     setMaxAccessibleWeek((prev) => {
       const next = Math.max(prev, currentWeek);
       sessionStorage.setItem("flow-highestWeek", String(next));
+      
+      const progressPerWeek = 100 / weeksTopic.length;
+      const completedWeeks = next - 1;
+      const progress = Math.min(completedWeeks * progressPerWeek, 100);
+      setEnrollmentProgress(progress);
+      
       return next;
     });
-  }, [currentWeek]);
+  }, [currentWeek, weeksTopic.length]);
 
   useEffect(() => {
     const segments = location.pathname.split("/").filter(Boolean);
@@ -868,7 +870,7 @@ const CourseContent = () => {
         </aside>
 
         <section className="week-content resilience-week-content position-relative">
-          <WeekContent />
+          <WeekContent maxAccessibleWeek={maxAccessibleWeek} setMaxAccessibleWeek={setMaxAccessibleWeek} />
         </section>
       </div>
     </>
