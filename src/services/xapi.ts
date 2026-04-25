@@ -97,6 +97,7 @@ export interface LearnerProgress {
   currentWeek: number;
   currentPage: number;
   currentStep: number;
+  highestWeek?: number;
 }
 
 function stateUrl(params: RespectLaunchParams): string {
@@ -117,18 +118,30 @@ const STATE_HEADERS = (auth: string) => ({
 });
 
 /** Retrieve saved learner progress from the LRS State API. Returns null if none found. */
-export async function getProgress(params: RespectLaunchParams): Promise<LearnerProgress | null> {
-  if (!params.endpoint || !params.auth) return null;
+export async function getProgress(
+  params: RespectLaunchParams,
+): Promise<LearnerProgress | null> {
+  const localGet = () => {
+    try {
+      const saved = localStorage.getItem("flowProgress");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  if (!params.endpoint || !params.auth) return localGet();
+
   try {
     const res = await fetch(stateUrl(params), {
       method: "GET",
       headers: STATE_HEADERS(params.auth),
     });
-    if (res.status === 404) return null;
-    if (!res.ok) return null;
+    if (res.status === 404) return localGet();
+    if (!res.ok) return localGet();
     return (await res.json()) as LearnerProgress;
   } catch {
-    return null;
+    return localGet();
   }
 }
 
@@ -137,6 +150,12 @@ export async function saveProgress(
   params: RespectLaunchParams,
   progress: LearnerProgress,
 ): Promise<void> {
+  try {
+    localStorage.setItem("flowProgress", JSON.stringify(progress));
+  } catch {
+    // ignore
+  }
+
   if (!params.endpoint || !params.auth) return;
   try {
     await fetch(stateUrl(params), {
@@ -145,7 +164,7 @@ export async function saveProgress(
       body: JSON.stringify(progress),
     });
   } catch {
-    // non-fatal — local sessionStorage already tracks position
+    // non-fatal
   }
 }
 

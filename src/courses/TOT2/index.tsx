@@ -172,17 +172,43 @@ const WeekContent = () => {
 
   const { sendCompleted, sendProgressed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
 
-  // On mount: try to restore position from the LRS State API (RESPECT sessions).
-  // Falls back to sessionStorage which is already loaded in the effect above.
+  // On mount: try to restore position from the LRS State API (RESPECT sessions) or local fallback.
   useEffect(() => {
     restoreProgress().then((saved) => {
-      if (!saved) return;
-      dispatch(setCurrentWeek(saved.currentWeek));
-      dispatch(setCurrentPage(saved.currentPage));
-      dispatch(setCurrentStep(saved.currentStep));
-      sessionStorage.setItem("flow-currentWeek", String(saved.currentWeek));
-      sessionStorage.setItem("flow-currentPage", String(saved.currentPage));
-      sessionStorage.setItem("flow-currentStep", String(saved.currentStep));
+      let targetWeek = saved?.currentWeek || 1;
+      let targetPage = saved?.currentPage || 1;
+      let targetStep = saved?.currentStep || 1;
+      
+      const highestAuthorizedWeek = Math.max(saved?.highestWeek || 1, targetWeek);
+
+      // Evaluate startWeek now that we have authorized progress
+      const params = new URLSearchParams(window.location.search);
+      const startWeekParam = params.get("startWeek");
+      if (startWeekParam) {
+        const reqWeek = Number(startWeekParam);
+        if (reqWeek >= 1 && reqWeek <= weeksTopic.length) {
+          if (reqWeek <= highestAuthorizedWeek) {
+            targetWeek = reqWeek;
+            targetPage = 1;
+            targetStep = 1;
+          } else {
+            alert(`You must complete the preceding weeks before accessing Week ${reqWeek}.`);
+          }
+        }
+      }
+
+      dispatch(setCurrentWeek(targetWeek));
+      dispatch(setCurrentPage(targetPage));
+      dispatch(setCurrentStep(targetStep));
+      sessionStorage.setItem("flow-currentWeek", String(targetWeek));
+      sessionStorage.setItem("flow-currentPage", String(targetPage));
+      sessionStorage.setItem("flow-currentStep", String(targetStep));
+      
+      setMaxAccessibleWeek((prev) => {
+        const next = Math.max(prev, highestAuthorizedWeek, targetWeek);
+        sessionStorage.setItem("flow-highestWeek", String(next));
+        return next;
+      });
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -201,8 +227,13 @@ const WeekContent = () => {
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
     const step = Number(sessionStorage.getItem("flow-currentStep") ?? 1);
-    persistProgress({ currentWeek, currentPage, currentStep: step });
-  }, [currentWeek, currentPage]);
+    persistProgress({ 
+      currentWeek, 
+      currentPage, 
+      currentStep: step,
+      highestWeek: Math.max(currentWeek, maxAccessibleWeek)
+    });
+  }, [currentWeek, currentPage, maxAccessibleWeek]);
 
   // toDo: Fetch User assessment and Activity Data
   const { data, isLoading, status, isError } = useQuery({
@@ -540,28 +571,7 @@ const CourseContent = () => {
     if (["tot_2"].includes(lastSegment?.toLowerCase())) {
       dispatch(setCourse(lastSegment.toLowerCase()));
     }
-
-    // Launch with a specific starting week via url param (from RESPECT OPDS downloads)
-    const params = new URLSearchParams(location.search);
-    const startWeekParam = params.get("startWeek");
-    if (startWeekParam) {
-      const startWeek = Number(startWeekParam);
-      if (startWeek >= 1 && startWeek <= weeksTopic.length) {
-        dispatch(setCurrentWeek(startWeek));
-        dispatch(setCurrentPage(1));
-        dispatch(setCurrentStep(1));
-        sessionStorage.setItem("flow-currentWeek", String(startWeek));
-        sessionStorage.setItem("flow-currentPage", "1");
-        sessionStorage.setItem("flow-currentStep", "1");
-        // Also ensure it is accessible
-        setMaxAccessibleWeek((prev) => {
-          const next = Math.max(prev, startWeek);
-          sessionStorage.setItem("flow-highestWeek", String(next));
-          return next;
-        });
-      }
-    }
-  }, [location.pathname, location.search, dispatch, weeksTopic.length]);
+  }, [location.pathname, dispatch, weeksTopic.length]);
 
   const handleWeekClick = (weekNumber) => {
     // Only allow navigation to completed weeks or the current week in progress
