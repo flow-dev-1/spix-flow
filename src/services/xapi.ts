@@ -127,9 +127,14 @@ const STATE_HEADERS = (auth: string) => ({
 export async function getProgress(
   params: RespectLaunchParams,
 ): Promise<LearnerProgress | null> {
+  const globalActivityId = params.activityId 
+    ? params.activityId.replace(/\/week\d+\/?$/, "") 
+    : "https://spix.flowonline.app/tot2";
+  const courseSlug = globalActivityId.split("/").pop() || "tot2";
+
   const localGet = () => {
     try {
-      const saved = localStorage.getItem("flowProgress");
+      const saved = localStorage.getItem(`${courseSlug}-flowProgress`);
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
@@ -157,7 +162,11 @@ export async function saveProgress(
   progress: LearnerProgress,
 ): Promise<void> {
   try {
-    localStorage.setItem("flowProgress", JSON.stringify(progress));
+    const globalActivityId = params.activityId 
+      ? params.activityId.replace(/\/week\d+\/?$/, "") 
+      : "https://spix.flowonline.app/tot2";
+    const courseSlug = globalActivityId.split("/").pop() || "tot2";
+    localStorage.setItem(`${courseSlug}-flowProgress`, JSON.stringify(progress));
   } catch {
     // ignore
   }
@@ -186,11 +195,12 @@ function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
   const globalActivityId = params.activityId 
     ? params.activityId.replace(/\/week\d+\/?$/, "") 
     : "https://spix.flowonline.app/tot2";
+  const courseSlug = globalActivityId.split("/").pop() || "tot2";
     
   const q = new URLSearchParams({
     activityId: globalActivityId,
     agent: params.actor,
-    stateId: `flowResponses-week${week}`,
+    stateId: `${courseSlug}-flowResponses-week${week}`,
     ...(params.registration ? { registration: params.registration } : {}),
   });
   return `${base}activities/state?${q.toString()}`;

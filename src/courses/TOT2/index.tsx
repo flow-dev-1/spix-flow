@@ -298,10 +298,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   useEffect(() => {
     if (!currentWeek) return;
     loadResponses(currentWeek).then((saved) => {
+      const courseSlug = "tot2";
       // Fallback to localStorage if LRS failed or returned nothing
       if (!saved) {
         try {
-          const localSaved = localStorage.getItem(`flowResponses-week${currentWeek}`);
+          const localSaved = localStorage.getItem(`${courseSlug}-flowResponses-week${currentWeek}`);
           if (localSaved) saved = JSON.parse(localSaved);
         } catch (e) {
           // ignore parsing error
@@ -326,6 +327,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Auto-save responses to LRS AND localStorage whenever the user answers a question
   useEffect(() => {
     if (!currentWeek) return;
+    
+    // WEEK-SYNC GUARD: Prevent saving if the Redux store hasn't synchronized to the current week yet.
+    // This prevents stale data from a previous week leaking into the current week's storage slot during navigation.
+    if (userAnswers.week !== currentWeek) return;
+
     if (!userAnswers.activities?.length && !userAnswers.assessments?.length) return;
     
     const responses = {
@@ -337,8 +343,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     saveResponses(currentWeek, responses);
     
     // Also save to localStorage as a reliable fallback
+    const courseSlug = "tot2";
     try {
-      localStorage.setItem(`flowResponses-week${currentWeek}`, JSON.stringify(responses));
+      localStorage.setItem(`${courseSlug}-flowResponses-week${currentWeek}`, JSON.stringify(responses));
     } catch (e) {
       // ignore quota errors
     }
