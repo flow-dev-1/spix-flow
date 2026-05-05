@@ -16,7 +16,7 @@
     },
     {
       "rel": "http://opds-spec.org/acquisition/open-access",
-      "href": "https://spix.flowonline.app/tot2?startWeek=1",
+      "href": "https://spix.flowonline.app/tot2/week1",
       "type": "text/html"
     }
   ],
@@ -30,11 +30,159 @@
   ],
   "resources": [
     {
-      "href": "https://spix.flowonline.app/tot2?startWeek=1",
+      "href": "https://spix.flowonline.app/tot2/week1",
       "type": "text/html"
     },
     {
       "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/ArrowTrail.svg",
+      "type": "image/svg+xml"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/mindset.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/Buckets/green.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/Buckets/orange.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/Buckets/red.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/cube/green.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/cube/orange.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/cube/red.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/yes.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/no.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/sel.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/not-sel.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-2-images/dyslexia.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image1.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image2.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image3.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image4.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image5.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image6.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image7.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image8.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image9.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image10.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image11.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page8/image12.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image1.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image2.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image3.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image4.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image5.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image6.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image7.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image8.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image9.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image10.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image11.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week1/page16/image12.png",
       "type": "image/png"
     },
     {
@@ -75,10 +223,6 @@
     },
     {
       "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_9.mp4",
-      "type": "video/mp4"
-    },
-    {
-      "href": "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Cognitive+Overload.mp4",
       "type": "video/mp4"
     }
   ]

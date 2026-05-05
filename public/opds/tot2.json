@@ -34,7 +34,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=1",
+          "href": "https://spix.flowonline.app/tot2/week1",
           "type": "text/html"
         }
       ],
@@ -71,7 +71,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=2",
+          "href": "https://spix.flowonline.app/tot2/week2",
           "type": "text/html"
         }
       ],
@@ -108,7 +108,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=3",
+          "href": "https://spix.flowonline.app/tot2/week3",
           "type": "text/html"
         }
       ],
@@ -145,7 +145,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=4",
+          "href": "https://spix.flowonline.app/tot2/week4",
           "type": "text/html"
         }
       ],
@@ -182,7 +182,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=5",
+          "href": "https://spix.flowonline.app/tot2/week5",
           "type": "text/html"
         }
       ],

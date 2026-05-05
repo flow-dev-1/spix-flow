@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import QuestionBox from "../../../components/QuestionBox";
-import Dyslexia from "@/assets/tot-2-images/dyslexia.png";
 import Frame from "./components/Frame";
 import Button from "../../../components/Button";
 import {
@@ -17,6 +16,8 @@ import {
 } from "@/store/userAnswersReducer";
 import { adminData } from "@/store/adminReducer";
 import VideoComponent from "../../../components/Video";
+
+const Dyslexia = "/assets/tot-2-images/dyslexia.png";
 
 function Page14() {
   const dispatch = useDispatch(); // Initialize dispatch

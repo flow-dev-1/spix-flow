@@ -16,7 +16,7 @@
     },
     {
       "rel": "http://opds-spec.org/acquisition/open-access",
-      "href": "https://spix.flowonline.app/tot2?startWeek=3",
+      "href": "https://spix.flowonline.app/tot2/week3",
       "type": "text/html"
     }
   ],
@@ -30,11 +30,87 @@
   ],
   "resources": [
     {
-      "href": "https://spix.flowonline.app/tot2?startWeek=3",
+      "href": "https://spix.flowonline.app/tot2/week3",
       "type": "text/html"
     },
     {
       "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week3/page3/image6.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week3/page3/image5.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week3/page3/image4.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week3/page3/image3.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week3/page3/image2.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/drag-images/tot-2-drag-images/week3/page3/image1.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/not-sel.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/sel.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/no.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/yes.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/cube/red.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/cube/orange.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/cube/green.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/Buckets/red.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/Buckets/orange.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/Buckets/green.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/ArrowTrail.svg",
+      "type": "image/svg+xml"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/uncheckedBox.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/checkedbox.png",
       "type": "image/png"
     },
     {

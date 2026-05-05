@@ -16,7 +16,7 @@
     },
     {
       "rel": "http://opds-spec.org/acquisition/open-access",
-      "href": "https://spix.flowonline.app/tot2?startWeek=4",
+      "href": "https://spix.flowonline.app/tot2/week4",
       "type": "text/html"
     }
   ],
@@ -30,11 +30,19 @@
   ],
   "resources": [
     {
-      "href": "https://spix.flowonline.app/tot2?startWeek=4",
+      "href": "https://spix.flowonline.app/tot2/week4",
       "type": "text/html"
     },
     {
       "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/not-sel.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/sel.png",
       "type": "image/png"
     },
     {

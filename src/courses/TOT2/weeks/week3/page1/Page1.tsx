@@ -12,8 +12,8 @@ import {
   userAnswer,
   saveActivity,
 } from "@/store/userAnswersReducer";
-import checkedImage from "@/assets/checkedbox.png";
-import uncheckedImage from "@/assets/uncheckedBox.png";
+const checkedImage = "/assets/checkedbox.png";
+const uncheckedImage = "/assets/uncheckedBox.png";
 
 function WeekThreePage1() {
   const dispatch = useDispatch();
