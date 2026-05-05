@@ -15,7 +15,7 @@
         "@type": "http://schema.org/Course",
         "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom",
         "author": "Flow Online Learning",
-        "identifier": "https://spix.flowonline.app/tot2?startWeek=1",
+        "identifier": "https://spix.flowonline.app/tot2/week1",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
         "subject": [
@@ -34,7 +34,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=1",
+          "href": "https://spix.flowonline.app/tot2/week1",
           "type": "text/html"
         }
       ],
@@ -52,7 +52,7 @@
         "@type": "http://schema.org/Course",
         "title": "Week 2: The Inclusive Mindset: Empathy and Compassion",
         "author": "Flow Online Learning",
-        "identifier": "https://spix.flowonline.app/tot2?startWeek=2",
+        "identifier": "https://spix.flowonline.app/tot2/week2",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
         "subject": [
@@ -71,7 +71,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=2",
+          "href": "https://spix.flowonline.app/tot2/week2",
           "type": "text/html"
         }
       ],
@@ -89,7 +89,7 @@
         "@type": "http://schema.org/Course",
         "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
         "author": "Flow Online Learning",
-        "identifier": "https://spix.flowonline.app/tot2?startWeek=3",
+        "identifier": "https://spix.flowonline.app/tot2/week3",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
         "subject": [
@@ -108,7 +108,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=3",
+          "href": "https://spix.flowonline.app/tot2/week3",
           "type": "text/html"
         }
       ],
@@ -126,7 +126,7 @@
         "@type": "http://schema.org/Course",
         "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs",
         "author": "Flow Online Learning",
-        "identifier": "https://spix.flowonline.app/tot2?startWeek=4",
+        "identifier": "https://spix.flowonline.app/tot2/week4",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
         "subject": [
@@ -145,7 +145,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=4",
+          "href": "https://spix.flowonline.app/tot2/week4",
           "type": "text/html"
         }
       ],
@@ -163,7 +163,7 @@
         "@type": "http://schema.org/Course",
         "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
         "author": "Flow Online Learning",
-        "identifier": "https://spix.flowonline.app/tot2?startWeek=5",
+        "identifier": "https://spix.flowonline.app/tot2/week5",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
         "subject": [
@@ -182,7 +182,7 @@
         },
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/tot2?startWeek=5",
+          "href": "https://spix.flowonline.app/tot2/week5",
           "type": "text/html"
         }
       ],

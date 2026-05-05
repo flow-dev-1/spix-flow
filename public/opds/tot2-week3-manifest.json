@@ -3,7 +3,7 @@
     "@type": "http://schema.org/Course",
     "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
     "author": "Flow Online Learning",
-    "identifier": "https://spix.flowonline.app/tot2?startWeek=3",
+    "identifier": "https://spix.flowonline.app/tot2/week3",
     "language": "en",
     "modified": "2025-01-01T00:00:00Z",
     "description": "Week 3 of Leaving No Learner Behind."
@@ -16,7 +16,7 @@
     },
     {
       "rel": "http://opds-spec.org/acquisition/open-access",
-      "href": "https://spix.flowonline.app/tot2?startWeek=3",
+      "href": "https://spix.flowonline.app/tot2/week3",
       "type": "text/html"
     }
   ],
@@ -29,6 +29,10 @@
     }
   ],
   "resources": [
+    {
+      "href": "https://spix.flowonline.app/tot2/week3",
+      "type": "text/html"
+    },
     {
       "href": "https://spix.flowonline.app/tot2?startWeek=3",
       "type": "text/html"

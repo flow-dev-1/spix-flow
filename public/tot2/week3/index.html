@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Launching Week 3</title>
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        params.set("startWeek", "3");
+        window.location.replace("/tot2?" + params.toString());
+      })();
+    </script>
+  </head>
+  <body>Launching Week 3...</body>
+</html>
