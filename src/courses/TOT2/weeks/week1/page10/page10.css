@@ -14,10 +14,10 @@
 }
 
 .inner-box-sel {
-  background: url("../../../../../assets/tot-images/sel.png") no-repeat;
+  background: url("/assets/tot-images/sel.png") no-repeat;
 }
 
 .outer-box-not-sel {
-  background: url("../../../../../assets/tot-images/not-sel.png")
+  background: url("/assets/tot-images/not-sel.png")
     no-repeat;
 }

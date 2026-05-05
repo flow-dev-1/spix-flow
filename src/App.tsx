@@ -29,6 +29,7 @@ const App = () => (
               <Route path="/" element={<Login />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/tot2" element={<TOT2Course />} />
+              <Route path="/tot2/week:weekNumber" element={<TOT2Course />} />
               <Route path="/tot2/feedback" element={<TOT2Feedback />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

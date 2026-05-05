@@ -3,7 +3,7 @@
     "@type": "http://schema.org/Course",
     "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
     "author": "Flow Online Learning",
-    "identifier": "https://spix.flowonline.app/tot2/week5",
+    "identifier": "https://spix.flowonline.app/tot2?startWeek=5",
     "language": "en",
     "modified": "2025-01-01T00:00:00Z",
     "description": "Week 5 of Leaving No Learner Behind."

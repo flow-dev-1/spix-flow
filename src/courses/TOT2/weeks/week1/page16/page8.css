@@ -68,35 +68,35 @@
 }
 
 .inner-bucket {
-  background: url("../../../../../assets/Buckets/green.png") no-repeat;
+  background: url("/assets/Buckets/green.png") no-repeat;
 }
 
 .outer-bucket {
-  background: url("../../../../../assets/Buckets/orange.png") no-repeat;
+  background: url("/assets/Buckets/orange.png") no-repeat;
 }
 
 .both-bucket {
-  background: url("../../../../../assets/Buckets/red.png") no-repeat;
+  background: url("/assets/Buckets/red.png") no-repeat;
 }
 
 .green-cube {
-  background: url("../../../../../assets/cube/green.png") no-repeat;
+  background: url("/assets/cube/green.png") no-repeat;
 }
 
 .orange-cube {
-  background: url("../../../../../assets/cube/orange.png") no-repeat;
+  background: url("/assets/cube/orange.png") no-repeat;
 }
 
 .red-cube {
-  background: url("../../../../../assets/cube/red.png") no-repeat;
+  background: url("/assets/cube/red.png") no-repeat;
 }
 
 .inner-box {
-  background: url("../../../../../assets/tot-images/yes.png") no-repeat;
+  background: url("/assets/tot-images/yes.png") no-repeat;
 }
 
 .outer-box {
-  background: url("../../../../../assets/tot-images/no.png") no-repeat;
+  background: url("/assets/tot-images/no.png") no-repeat;
 }
 
 .inner-bucket,

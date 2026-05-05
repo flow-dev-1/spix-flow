@@ -121,6 +121,15 @@ const weeksTopic = [
   "Collaboration, Support Systems, and Inclusive Implementation",
 ];
 
+const getLaunchWeekFromUrl = () => {
+  const pathMatch = window.location.pathname.match(/\/tot2\/week(\d+)\/?$/i);
+  if (pathMatch) return Number(pathMatch[1]);
+
+  const params = new URLSearchParams(window.location.search);
+  const startWeekParam = params.get("startWeek");
+  return startWeekParam ? Number(startWeekParam) : null;
+};
+
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -189,19 +198,15 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       
       const highestAuthorizedWeek = Math.max(saved?.highestWeek || 1, targetWeek);
 
-      // Evaluate startWeek now that we have authorized progress
-      const params = new URLSearchParams(window.location.search);
-      const startWeekParam = params.get("startWeek");
-      if (startWeekParam) {
-        const reqWeek = Number(startWeekParam);
+      // OPDS launches can request any listed week directly. Progress is still
+      // restored and saved, but access is not hard-gated by previous weeks.
+      const launchWeek = getLaunchWeekFromUrl();
+      if (launchWeek) {
+        const reqWeek = launchWeek;
         if (reqWeek >= 1 && reqWeek <= weeksTopic.length) {
-          if (reqWeek <= highestAuthorizedWeek) {
-            targetWeek = reqWeek;
-            targetPage = 1;
-            targetStep = 1;
-          } else {
-            alert(`You must complete the preceding weeks before accessing Week ${reqWeek}.`);
-          }
+          targetWeek = reqWeek;
+          targetPage = 1;
+          targetStep = 1;
         }
       }
 
@@ -590,24 +595,21 @@ const CourseContent = () => {
   }, [location.pathname, dispatch, weeksTopic.length]);
 
   const handleWeekClick = (weekNumber) => {
-    // Only allow navigation to completed weeks or the current week in progress
-    if (weekNumber <= maxAccessibleWeek) {
-      // Clear previous week data before switching
-      dispatch(clearData());
+    // Clear previous week data before switching
+    dispatch(clearData());
 
-      dispatch(setCurrentWeek(weekNumber));
-      dispatch(setCurrentPage(1));
-      dispatch(setCurrentStep(1));
+    dispatch(setCurrentWeek(weekNumber));
+    dispatch(setCurrentPage(1));
+    dispatch(setCurrentStep(1));
 
-      // Update session storage
-      sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
-      sessionStorage.setItem("flow-currentPage", "1");
-      sessionStorage.setItem("flow-currentStep", "1");
-    }
+    // Update session storage
+    sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
+    sessionStorage.setItem("flow-currentPage", "1");
+    sessionStorage.setItem("flow-currentStep", "1");
   };
 
   const isWeekAccessible = (weekNumber) => {
-    return weekNumber <= maxAccessibleWeek;
+    return weekNumber >= 1 && weekNumber <= weeksTopic.length;
   };
 
   const isWeekCompleted = (weekNumber) => {

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-const dragImages = import.meta.glob(
-  "/src/assets/drag-images/tot-2-drag-images/week1/page16/*.png",
-  { eager: true, import: "default" }
-);
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CardBoard from "./CardBoard";
-import ArrowTrail from "@/assets/ArrowTrail.svg";
+
+const ArrowTrail = "/assets/ArrowTrail.svg";
+const getDragImagePath = (index: number) =>
+  `/assets/drag-images/tot-2-drag-images/week1/page16/image${index}.png`;
 
 const DragAndDropFrame = ({
   info,
@@ -119,7 +118,7 @@ const DragAndDropFrame = ({
   const renderDragItem = () => {
     if (currentImageIndex >= images.length || allImagesDropped) return null;
 
-    const imagePath = dragImages[`/src/assets/drag-images/tot-2-drag-images/week1/page16/image${currentImageIndex + 1}.png`] as string;
+    const imagePath = getDragImagePath(currentImageIndex + 1);
 
     return (
       <Draggable

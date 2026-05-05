@@ -3,7 +3,7 @@
     "@type": "http://schema.org/Course",
     "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs",
     "author": "Flow Online Learning",
-    "identifier": "https://spix.flowonline.app/tot2/week4",
+    "identifier": "https://spix.flowonline.app/tot2?startWeek=4",
     "language": "en",
     "modified": "2025-01-01T00:00:00Z",
     "description": "Week 4 of Leaving No Learner Behind."
@@ -35,6 +35,14 @@
     },
     {
       "href": "https://spix.flowonline.app/assets/tot2-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/not-sel.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot-images/sel.png",
       "type": "image/png"
     },
     {
