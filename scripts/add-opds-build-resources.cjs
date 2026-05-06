@@ -9,10 +9,12 @@ const OPDS_DIR = path.join(DIST_DIR, "opds");
 const mimeTypes = new Map([
   [".css", "text/css"],
   [".gif", "image/gif"],
+  [".html", "text/html"],
   [".ico", "image/x-icon"],
   [".jpeg", "image/jpeg"],
   [".jpg", "image/jpeg"],
   [".js", "text/javascript"],
+  [".json", "application/json"],
   [".mjs", "text/javascript"],
   [".mp4", "video/mp4"],
   [".png", "image/png"],
@@ -68,7 +70,12 @@ function addResources(manifestPath, resources) {
 
 const builtFileResources = [
   resource("/index.html", "text/html"),
-].concat(listFiles(ASSETS_DIR).map(resourceForBuiltFile).filter(Boolean));
+].concat(
+  listFiles(DIST_DIR)
+    .filter((filePath) => !path.relative(DIST_DIR, filePath).split(path.sep).includes("opds"))
+    .map(resourceForBuiltFile)
+    .filter(Boolean),
+);
 
 const sharedResources = weekHtmlResources.concat(builtFileResources);
 

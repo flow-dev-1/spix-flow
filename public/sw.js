@@ -11,6 +11,31 @@ const CACHEABLE_ASSET_EXTENSIONS = [
   ".webp",
 ];
 
+async function buildRangeResponse(request, cachedResponse) {
+  const rangeHeader = request.headers.get("range");
+  if (!rangeHeader || !cachedResponse) return cachedResponse;
+
+  const blob = await cachedResponse.blob();
+  const size = blob.size;
+  const match = rangeHeader.match(/bytes=(\d*)-(\d*)/);
+  if (!match) return cachedResponse;
+
+  const start = match[1] ? Number(match[1]) : 0;
+  const end = match[2] ? Number(match[2]) : size - 1;
+  const chunk = blob.slice(start, end + 1);
+
+  return new Response(chunk, {
+    status: 206,
+    statusText: "Partial Content",
+    headers: {
+      "Content-Range": `bytes ${start}-${end}/${size}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": String(chunk.size),
+      "Content-Type": cachedResponse.headers.get("Content-Type") || "video/mp4",
+    },
+  });
+}
+
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
@@ -31,7 +56,11 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.open(isCloudfrontVideo ? VIDEO_CACHE : ASSET_CACHE).then(async (cache) => {
       const cached = await cache.match(event.request.url);
-      if (cached) return cached;
+      if (cached) {
+        return isCloudfrontVideo
+          ? buildRangeResponse(event.request, cached)
+          : cached;
+      }
 
       try {
         const response = await fetch(event.request);
