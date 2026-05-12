@@ -30,6 +30,14 @@
   ],
   "resources": [
     {
+      "href": "https://spix.flowonline.app/tot2/week1/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot2/week1/",
+      "type": "text/html"
+    },
+    {
       "href": "https://spix.flowonline.app/tot2/week1",
       "type": "text/html"
     },
