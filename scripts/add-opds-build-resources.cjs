@@ -32,6 +32,7 @@ function resource(hrefPath, type) {
 const weekHtmlResources = [];
 for (let week = 1; week <= 5; week += 1) {
   weekHtmlResources.push(resource("/tot2/week" + week, "text/html"));
+  weekHtmlResources.push(resource("/tot2/week" + week + "/", "text/html"));
   weekHtmlResources.push(resource("/tot2?startWeek=" + week, "text/html"));
 }
 

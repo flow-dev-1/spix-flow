@@ -1,15 +1,83 @@
+const APP_CACHE = "flow-app-v1";
 const VIDEO_CACHE = "flow-videos-v1";
 const ASSET_CACHE = "flow-assets-v1";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
+const APP_SHELL_URLS = [
+  "/",
+  "/index.html",
+  "/favicon.ico",
+  "/logo.png",
+  "/FLOW.png",
+  "/placeholder.svg",
+  "/respect-manifest.json",
+  "/opds/index.json",
+  "/opds/tot2.json",
+  "/opds/tot2-manifest.json",
+  "/opds/tot2-week1-manifest.json",
+  "/opds/tot2-week2-manifest.json",
+  "/opds/tot2-week3-manifest.json",
+  "/opds/tot2-week4-manifest.json",
+  "/opds/tot2-week5-manifest.json",
+  "/tot2/week1/index.html",
+  "/tot2/week2/index.html",
+  "/tot2/week3/index.html",
+  "/tot2/week4/index.html",
+  "/tot2/week5/index.html",
+];
 const CACHEABLE_ASSET_EXTENSIONS = [
   ".avif",
+  ".css",
   ".gif",
+  ".html",
+  ".ico",
   ".jpg",
   ".jpeg",
+  ".js",
+  ".json",
+  ".mjs",
   ".png",
   ".svg",
   ".webp",
 ];
+const NAVIGATION_ROUTE_PREFIXES = ["/courses", "/tot2"];
+
+async function staleWhileRevalidate(cacheName, request) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(request);
+  const network = fetch(request)
+    .then((response) => {
+      if (response.ok || response.type === "opaque") {
+        cache.put(request, response.clone());
+      }
+      return response;
+    })
+    .catch(() => null);
+
+  return cached || network || Response.error();
+}
+
+async function navigationResponse(request) {
+  const cache = await caches.open(APP_CACHE);
+
+  try {
+    const response = await fetch(request);
+    if (response.ok) {
+      cache.put(request, response.clone());
+      cache.put("/index.html", response.clone());
+    }
+    return response;
+  } catch {
+    return (
+      (await cache.match(request)) ||
+      (await cache.match("/index.html")) ||
+      new Response("SPIX is not available offline yet.", {
+        status: 503,
+        statusText: "Offline - app shell not cached",
+        headers: { "Content-Type": "text/plain" },
+      })
+    );
+  }
+}
 
 async function buildRangeResponse(request, cachedResponse) {
   const rangeHeader = request.headers.get("range");
@@ -36,13 +104,39 @@ async function buildRangeResponse(request, cachedResponse) {
   });
 }
 
-self.addEventListener("install", () => self.skipWaiting());
-self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches
+      .open(APP_CACHE)
+      .then((cache) =>
+        Promise.all(
+          APP_SHELL_URLS.map((url) =>
+            cache.add(new Request(url, { cache: "reload" })).catch(() => undefined)
+          )
+        )
+      )
+      .then(() => self.skipWaiting())
+  );
 });
 
-// Cache-first strategy: serve from cache if available, else fetch from network
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => ![APP_CACHE, VIDEO_CACHE, ASSET_CACHE].includes(key))
+            .map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
+  );
+});
+
 self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
   const url = new URL(event.request.url);
   const isCloudfrontVideo = url.hostname === CLOUDFRONT_HOST;
   const isSameOriginAsset =
@@ -50,30 +144,54 @@ self.addEventListener("fetch", (event) => {
     CACHEABLE_ASSET_EXTENSIONS.some((extension) =>
       url.pathname.toLowerCase().endsWith(extension)
     );
+  const isNavigation =
+    event.request.mode === "navigate" ||
+    (event.request.headers.get("accept") || "").includes("text/html");
+  const isAppNavigation =
+    url.origin === self.location.origin &&
+    isNavigation &&
+    NAVIGATION_ROUTE_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
 
-  if (!isCloudfrontVideo && !isSameOriginAsset) return;
+  if (isAppNavigation) {
+    event.respondWith(navigationResponse(event.request));
+    return;
+  }
+
+  if (isCloudfrontVideo) {
+    event.respondWith(
+      caches.open(VIDEO_CACHE).then(async (cache) => {
+        const cached = await cache.match(event.request.url);
+        if (cached) return buildRangeResponse(event.request, cached);
+
+        try {
+          const response = await fetch(event.request);
+          if (response.ok || response.type === "opaque") {
+            cache.put(event.request.url, response.clone());
+          }
+          return response;
+        } catch {
+          return new Response("Resource not available offline.", {
+            status: 503,
+            statusText: "Offline - resource not cached",
+          });
+        }
+      })
+    );
+    return;
+  }
+
+  if (!isSameOriginAsset) return;
 
   event.respondWith(
-    caches.open(isCloudfrontVideo ? VIDEO_CACHE : ASSET_CACHE).then(async (cache) => {
-      const cached = await cache.match(event.request.url);
-      if (cached) {
-        return isCloudfrontVideo
-          ? buildRangeResponse(event.request, cached)
-          : cached;
-      }
-
-      try {
-        const response = await fetch(event.request);
-        if (response.ok || response.type === "opaque") {
-          cache.put(event.request.url, response.clone());
-        }
-        return response;
-      } catch {
-        return new Response("Resource not available offline.", {
+    staleWhileRevalidate(
+      APP_SHELL_URLS.includes(url.pathname) ? APP_CACHE : ASSET_CACHE,
+      event.request
+    ).catch(
+      () =>
+        new Response("Resource not available offline.", {
           status: 503,
           statusText: "Offline - resource not cached",
-        });
-      }
-    })
+        })
+    )
   );
 });
