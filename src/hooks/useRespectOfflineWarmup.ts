@@ -88,7 +88,7 @@ async function warmupFromManifest() {
   const manifest = (await response.json()) as WebPublicationManifest;
   const resources = collectResources(manifest);
   let cached = 0;
-  let failed = 0;
+  const failed: string[] = [];
 
   debugAlert(
     "[SPIX offline warmup]\n" +
@@ -100,18 +100,30 @@ async function warmupFromManifest() {
     try {
       await cacheResource(item.href as string, item.type);
       cached += 1;
-    } catch {
+    } catch (error) {
       // Some resources may be blocked by CORS or unavailable. Keep warming the rest.
-      failed += 1;
+      const reason = error instanceof Error ? error.message : "Unknown error";
+      failed.push((item.href as string) + " -> " + reason);
     }
   }
+
+  try {
+    localStorage.setItem("spix-offline-warmup-failed", JSON.stringify(failed));
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+
+  const failedPreview = failed.slice(0, 8).join("\n");
+  const remainingFailed = Math.max(failed.length - 8, 0);
 
   debugAlert(
     "[SPIX offline warmup]\n" +
       "Finished caching manifest resources.\n" +
       "Cached/skipped: " + cached + "\n" +
-      "Failed: " + failed + "\n" +
-      "You can now test offline mode.",
+      "Failed: " + failed.length + "\n" +
+      (failedPreview ? "\nFailed URLs:\n" + failedPreview + "\n" : "\n") +
+      (remainingFailed ? "...and " + remainingFailed + " more.\n" : "") +
+      "Full list saved in localStorage: spix-offline-warmup-failed",
   );
 }
 
