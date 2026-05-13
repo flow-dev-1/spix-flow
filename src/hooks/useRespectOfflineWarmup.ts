@@ -7,6 +7,7 @@ const ASSET_TIMEOUT_MS = 12000;
 const VIDEO_TIMEOUT_MS = 25000;
 const ASSET_CONCURRENCY = 8;
 const VIDEO_CONCURRENCY = 3;
+const COMPLETED_KEY_PREFIX = "spix-offline-warmup-complete-week-";
 
 type ManifestLink = {
   href?: string;
@@ -87,8 +88,40 @@ function getCurrentWeekFromUrl() {
   return 1;
 }
 
+function currentWeek() {
+  const week = getCurrentWeekFromUrl();
+  return week >= 1 && week <= 5 ? week : 1;
+}
+
 function manifestUrlForCurrentWeek() {
-  return "/opds/tot2-week" + getCurrentWeekFromUrl() + "-manifest.json";
+  return "/opds/tot2-week" + currentWeek() + "-manifest.json";
+}
+
+function completedKeyForCurrentWeek() {
+  return COMPLETED_KEY_PREFIX + currentWeek();
+}
+
+function getCompletedWarmup() {
+  try {
+    const raw = localStorage.getItem(completedKeyForCurrentWeek());
+    return raw ? (JSON.parse(raw) as { total?: number; completedAt?: string }) : null;
+  } catch {
+    return null;
+  }
+}
+
+function setCompletedWarmup(total: number) {
+  try {
+    localStorage.setItem(
+      completedKeyForCurrentWeek(),
+      JSON.stringify({
+        total,
+        completedAt: new Date().toISOString(),
+      }),
+    );
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
 }
 
 function cacheNameFor(url: URL, type?: string) {
@@ -188,6 +221,20 @@ async function warmupFromManifest(
   setProgress: Dispatch<SetStateAction<WarmupProgress>>,
 ) {
   if (!("caches" in window) || !navigator.onLine) return;
+
+  const completedWarmup = getCompletedWarmup();
+  if (completedWarmup?.total) {
+    setProgress({
+      ...initialProgress,
+      visible: true,
+      phase: "done",
+      total: completedWarmup.total,
+      completed: completedWarmup.total,
+      cached: completedWarmup.total,
+      lastUrl: "Week " + currentWeek() + " already cached",
+    });
+    return;
+  }
 
   setProgress({
     ...initialProgress,
@@ -289,6 +336,16 @@ async function warmupFromManifest(
     localStorage.setItem("spix-offline-warmup-failed", JSON.stringify(failed));
   } catch {
     // Ignore storage quota/private mode failures.
+  }
+
+  if (failed.length === 0) {
+    setCompletedWarmup(total);
+  } else {
+    try {
+      localStorage.removeItem(completedKeyForCurrentWeek());
+    } catch {
+      // Ignore storage quota/private mode failures.
+    }
   }
 
   const failedPreview = failed.slice(0, 8).join("\n");

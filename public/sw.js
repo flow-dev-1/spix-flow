@@ -167,7 +167,9 @@ self.addEventListener("fetch", (event) => {
   if (isCloudfrontVideo) {
     event.respondWith(
       caches.open(VIDEO_CACHE).then(async (cache) => {
-        const cached = await cache.match(event.request.url);
+        const cached =
+          (await cache.match(event.request.url, { ignoreVary: true })) ||
+          (await cache.match(url.href, { ignoreVary: true }));
         if (cached) return buildRangeResponse(event.request, cached);
 
         try {
