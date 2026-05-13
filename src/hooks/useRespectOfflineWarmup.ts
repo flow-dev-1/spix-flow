@@ -47,15 +47,6 @@ const initialProgress: WarmupProgress = {
   lastUrl: "",
 };
 
-function debugAlert(message: string) {
-  const params = new URLSearchParams(window.location.search);
-  if (!isRespectSession() && params.get("spixDebug") !== "1") return;
-
-  window.setTimeout(() => {
-    window.alert(message);
-  }, 250);
-}
-
 function isRespectSession() {
   const params = new URLSearchParams(window.location.search);
   return (
@@ -271,15 +262,6 @@ async function warmupFromManifest(
     }));
   };
 
-  debugAlert(
-    "[SPIX offline warmup]\n" +
-      "Started caching current week resources.\n" +
-      "Manifest: " + manifestUrl + "\n" +
-      "Assets: " + assetResources.length + "\n" +
-      "Videos: " + videoResources.length + "\n" +
-      "Each video is limited to " + Math.round(VIDEO_TIMEOUT_MS / 1000) + "s.",
-  );
-
   setProgress({
     visible: true,
     phase: "caching-assets",
@@ -348,9 +330,6 @@ async function warmupFromManifest(
     }
   }
 
-  const failedPreview = failed.slice(0, 8).join("\n");
-  const remainingFailed = Math.max(failed.length - 8, 0);
-
   setProgress((prev) => ({
     ...prev,
     phase: "done",
@@ -358,16 +337,6 @@ async function warmupFromManifest(
     cached,
     failed: failed.length,
   }));
-
-  debugAlert(
-    "[SPIX offline warmup]\n" +
-      "Finished caching current week resources.\n" +
-      "Cached/skipped: " + cached + "\n" +
-      "Failed: " + failed.length + "\n" +
-      (failedPreview ? "\nFailed URLs:\n" + failedPreview + "\n" : "\n") +
-      (remainingFailed ? "...and " + remainingFailed + " more.\n" : "") +
-      "Full list saved in localStorage: spix-offline-warmup-failed",
-  );
 }
 
 export function useRespectOfflineWarmup() {

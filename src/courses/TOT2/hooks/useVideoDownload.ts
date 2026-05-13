@@ -48,7 +48,15 @@ export function useVideoDownload() {
 
   const downloadWeek = useCallback(async (weekNumber: number) => {
     if (!("caches" in window)) {
-      alert("Your browser does not support offline caching.");
+      setProgress((prev) => ({
+        ...prev,
+        [weekNumber]: {
+          state: "error",
+          current: 0,
+          total: 0,
+          error: "Your browser does not support offline caching.",
+        },
+      }));
       return;
     }
 

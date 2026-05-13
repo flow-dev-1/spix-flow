@@ -13,7 +13,6 @@ import Courses from "./pages/Courses";
 import NotFound from "./pages/NotFound";
 import TOT2Course from "./courses/TOT2/index";
 import TOT2Feedback from "./courses/TOT2/feedback/index";
-import OfflineDebugAlerts from "./components/OfflineDebugAlerts";
 import {
   useRespectOfflineWarmup,
   type WarmupProgress,
@@ -100,7 +99,6 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
-            <OfflineDebugAlerts />
             <OfflineWarmupPanel progress={warmupProgress} />
             <Toaster />
             <Sonner />
