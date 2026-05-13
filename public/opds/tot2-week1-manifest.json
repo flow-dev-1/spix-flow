@@ -3,7 +3,7 @@
     "@type": "http://schema.org/Course",
     "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom",
     "author": "Flow Online Learning",
-    "identifier": "https://spix.flowonline.app/tot2/week1",
+    "identifier": "https://spix.flowonline.app/tot2/week1/index.html",
     "language": "en",
     "modified": "2025-01-01T00:00:00Z",
     "description": "Week 1 of Leaving No Learner Behind."
@@ -16,7 +16,22 @@
     },
     {
       "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2/week1/index.html",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2/week1/",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
       "href": "https://spix.flowonline.app/tot2/week1",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2?startWeek=1",
       "type": "text/html"
     }
   ],

@@ -138,6 +138,52 @@ function copyAppShellToWeekLaunchers() {
 
 copyAppShellToWeekLaunchers();
 
+const OPEN_ACCESS_REL = "http://opds-spec.org/acquisition/open-access";
+
+function weekLaunchLinks(week) {
+  return [
+    resource("/tot2/week" + week + "/index.html", "text/html"),
+    resource("/tot2/week" + week + "/", "text/html"),
+    resource("/tot2/week" + week, "text/html"),
+    resource("/tot2?startWeek=" + week, "text/html"),
+  ].map((item) => ({
+    rel: OPEN_ACCESS_REL,
+    href: item.href,
+    type: item.type,
+  }));
+}
+
+function normalizeWeekManifestLaunch(manifestPath, week) {
+  if (!fs.existsSync(manifestPath)) return;
+
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  manifest.metadata = manifest.metadata || {};
+  manifest.metadata.identifier = APP_ORIGIN + "/tot2/week" + week + "/index.html";
+  manifest.links = (manifest.links || [])
+    .filter((link) => link.rel !== OPEN_ACCESS_REL)
+    .concat(weekLaunchLinks(week));
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+}
+
+function normalizeCatalogLaunches(catalogPath) {
+  if (!fs.existsSync(catalogPath)) return;
+
+  const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
+  for (const publication of catalog.publications || []) {
+    const currentIdentifier = publication.metadata && publication.metadata.identifier;
+    const match = currentIdentifier && currentIdentifier.match(/\/week(\d+)(?:\/index\.html)?\/?$/);
+    if (!match) continue;
+
+    const week = Number(match[1]);
+    publication.metadata.identifier = APP_ORIGIN + "/tot2/week" + week + "/index.html";
+    publication.links = (publication.links || [])
+      .filter((link) => link.rel !== OPEN_ACCESS_REL)
+      .concat(weekLaunchLinks(week));
+  }
+
+  fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + "\n");
+}
+
 [
   "tot2-manifest.json",
   "tot2-week1-manifest.json",
@@ -148,4 +194,11 @@ copyAppShellToWeekLaunchers();
 ].forEach((fileName) => {
   addResources(path.join(OPDS_DIR, fileName), sharedResources);
   addRelativeResourcesToWebpub(path.join(OPDS_DIR, fileName));
+
+  const weekMatch = fileName.match(/week(\d+)/);
+  if (weekMatch) {
+    normalizeWeekManifestLaunch(path.join(OPDS_DIR, fileName), Number(weekMatch[1]));
+  }
 });
+
+normalizeCatalogLaunches(path.join(OPDS_DIR, "tot2.json"));

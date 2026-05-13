@@ -3,7 +3,7 @@
     "@type": "http://schema.org/Course",
     "title": "Week 2: The Inclusive Mindset: Empathy and Compassion",
     "author": "Flow Online Learning",
-    "identifier": "https://spix.flowonline.app/tot2/week2",
+    "identifier": "https://spix.flowonline.app/tot2/week2/index.html",
     "language": "en",
     "modified": "2025-01-01T00:00:00Z",
     "description": "Week 2 of Leaving No Learner Behind."
@@ -16,7 +16,22 @@
     },
     {
       "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2/week2/index.html",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2/week2/",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
       "href": "https://spix.flowonline.app/tot2/week2",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot2?startWeek=2",
       "type": "text/html"
     }
   ],

@@ -14,33 +14,41 @@ import NotFound from "./pages/NotFound";
 import TOT2Course from "./courses/TOT2/index";
 import TOT2Feedback from "./courses/TOT2/feedback/index";
 import OfflineDebugAlerts from "./components/OfflineDebugAlerts";
+import { useRespectOfflineWarmup } from "./hooks/useRespectOfflineWarmup";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <OfflineDebugAlerts />
-          <Toaster />
-          <Sonner />
-          <ToastContainer position="top-right" autoClose={5000} />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/courses" element={<Courses />} />
-              <Route path="/tot2" element={<TOT2Course />} />
-              <Route path="/tot2/week:weekNumber" element={<TOT2Course />} />
-              <Route path="/tot2/feedback" element={<TOT2Feedback />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </PersistGate>
-  </Provider>
-);
+const App = () => {
+  useRespectOfflineWarmup();
+
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <OfflineDebugAlerts />
+            <Toaster />
+            <Sonner />
+            <ToastContainer position="top-right" autoClose={5000} />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/tot2" element={<TOT2Course />} />
+                <Route path="/tot2/" element={<TOT2Course />} />
+                <Route path="/tot2/week:weekNumber" element={<TOT2Course />} />
+                <Route path="/tot2/week:weekNumber/" element={<TOT2Course />} />
+                <Route path="/tot2/week:weekNumber/index.html" element={<TOT2Course />} />
+                <Route path="/tot2/feedback" element={<TOT2Feedback />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
+  );
+};
 
 export default App;

@@ -9,8 +9,8 @@
   "website": "https://spix.flowonline.app/",
   "icon": "https://spix.flowonline.app/FLOW.png",
   "learningUnits": "https://spix.flowonline.app/opds/index.json",
-  "defaultLaunchUri": "https://spix.flowonline.app/tot2",
+  "defaultLaunchUri": "https://spix.flowonline.app/tot2/week1/index.html",
   "web": {
-    "url": "https://spix.flowonline.app/tot2"
+    "url": "https://spix.flowonline.app/tot2/week1/index.html"
   }
 }
