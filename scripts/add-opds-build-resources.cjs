@@ -74,6 +74,27 @@ function addResources(manifestPath, resources) {
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
 }
 
+const serviceWorkerResource = resource("/sw.js", "text/javascript");
+const serviceWorkerLink = {
+  rel: "serviceworker",
+  href: serviceWorkerResource.href,
+  type: serviceWorkerResource.type,
+};
+
+function addServiceWorkerLink(manifestPath) {
+  if (!fs.existsSync(manifestPath)) return;
+
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const existing = new Set(
+    (manifest.links || []).map((item) => item.rel + "|" + item.href),
+  );
+
+  if (!existing.has(serviceWorkerLink.rel + "|" + serviceWorkerLink.href)) {
+    manifest.links = (manifest.links || []).concat(serviceWorkerLink);
+    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+  }
+}
+
 const builtFileResources = [
   resource("/index.html", "text/html"),
   resource("/tot2", "text/html"),
@@ -192,7 +213,8 @@ function normalizeCatalogLaunches(catalogPath) {
   "tot2-week4-manifest.json",
   "tot2-week5-manifest.json",
 ].forEach((fileName) => {
-  addResources(path.join(OPDS_DIR, fileName), sharedResources);
+  addResources(path.join(OPDS_DIR, fileName), [serviceWorkerResource].concat(sharedResources));
+  addServiceWorkerLink(path.join(OPDS_DIR, fileName));
   addRelativeResourcesToWebpub(path.join(OPDS_DIR, fileName));
 
   const weekMatch = fileName.match(/week(\d+)/);

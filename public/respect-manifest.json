@@ -10,6 +10,12 @@
   "icon": "https://spix.flowonline.app/FLOW.png",
   "learningUnits": "https://spix.flowonline.app/opds/index.json",
   "defaultLaunchUri": "https://spix.flowonline.app/tot2/week1/index.html",
+  "serviceworker": {
+    "src": "https://spix.flowonline.app/sw.js",
+    "scope": "https://spix.flowonline.app/",
+    "type": "classic",
+    "use_cache": true
+  },
   "web": {
     "url": "https://spix.flowonline.app/tot2/week1/index.html"
   }

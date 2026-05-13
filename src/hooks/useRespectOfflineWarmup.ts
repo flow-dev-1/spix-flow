@@ -8,6 +8,7 @@ const VIDEO_TIMEOUT_MS = 25000;
 const ASSET_CONCURRENCY = 8;
 const VIDEO_CONCURRENCY = 3;
 const COMPLETED_KEY_PREFIX = "spix-offline-warmup-complete-week-";
+const RESPECT_WARMUP_ENABLED = false;
 
 type ManifestLink = {
   href?: string;
@@ -343,6 +344,7 @@ export function useRespectOfflineWarmup() {
   const [progress, setProgress] = useState<WarmupProgress>(initialProgress);
 
   useEffect(() => {
+    if (!RESPECT_WARMUP_ENABLED) return;
     if (!isRespectSession()) return;
 
     const run = () => {

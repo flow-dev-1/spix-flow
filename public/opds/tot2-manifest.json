@@ -18,6 +18,11 @@
       "rel": "http://opds-spec.org/acquisition/open-access",
       "href": "https://spix.flowonline.app/tot2",
       "type": "text/html"
+    },
+    {
+      "rel": "serviceworker",
+      "href": "https://spix.flowonline.app/sw.js",
+      "type": "text/javascript"
     }
   ],
   "images": [
@@ -29,6 +34,10 @@
     }
   ],
   "resources": [
+    {
+      "href": "https://spix.flowonline.app/sw.js",
+      "type": "text/javascript"
+    },
     {
       "href": "https://spix.flowonline.app/tot2/week1/index.html",
       "type": "text/html"
