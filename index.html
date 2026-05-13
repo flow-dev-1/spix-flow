@@ -17,6 +17,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
+    <script>
+      (function () {
+        function hasRespectLaunch() {
+          return new URLSearchParams(window.location.search).has("respectLaunchVersion");
+        }
+
+        function shouldDebug() {
+          var params = new URLSearchParams(window.location.search);
+          return !navigator.onLine || hasRespectLaunch() || params.get("spixDebug") === "1";
+        }
+
+        function show(message) {
+          if (!shouldDebug()) return;
+          window.setTimeout(function () {
+            window.alert(message);
+          }, 250);
+        }
+
+        window.addEventListener("load", function () {
+          if (!navigator.onLine || hasRespectLaunch()) {
+            show(
+              "[SPIX boot debug]\n" +
+                "HTML loaded before React.\n" +
+                "Online: " + navigator.onLine + "\n" +
+                "URL: " + window.location.href
+            );
+          }
+        });
+
+        window.addEventListener(
+          "error",
+          function (event) {
+            if (!shouldDebug()) return;
+            var target = event.target;
+            if (target && target !== window) {
+              var resourceUrl = target.src || target.href || "";
+              if (resourceUrl) {
+                show(
+                  "[SPIX resource error]\n" +
+                    "Failed: " + resourceUrl + "\n" +
+                    "Online: " + navigator.onLine + "\n" +
+                    "Page: " + window.location.href
+                );
+                return;
+              }
+            }
+
+            show(
+              "[SPIX JS error]\n" +
+                (event.message || "Unknown error") + "\n" +
+                "Online: " + navigator.onLine + "\n" +
+                "Page: " + window.location.href
+            );
+          },
+          true
+        );
+
+        window.addEventListener("unhandledrejection", function (event) {
+          if (!shouldDebug()) return;
+          show(
+            "[SPIX promise error]\n" +
+              String(event.reason || "Unknown rejection") + "\n" +
+              "Online: " + navigator.onLine + "\n" +
+              "Page: " + window.location.href
+          );
+        });
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

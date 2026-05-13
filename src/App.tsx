@@ -13,6 +13,7 @@ import Courses from "./pages/Courses";
 import NotFound from "./pages/NotFound";
 import TOT2Course from "./courses/TOT2/index";
 import TOT2Feedback from "./courses/TOT2/feedback/index";
+import OfflineDebugAlerts from "./components/OfflineDebugAlerts";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
     <PersistGate loading={null} persistor={persistor}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          <OfflineDebugAlerts />
           <Toaster />
           <Sonner />
           <ToastContainer position="top-right" autoClose={5000} />

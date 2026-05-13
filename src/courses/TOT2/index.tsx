@@ -122,7 +122,9 @@ const weeksTopic = [
 ];
 
 const getLaunchWeekFromUrl = () => {
-  const pathMatch = window.location.pathname.match(/\/tot2\/week(\d+)\/?$/i);
+  const pathMatch = window.location.pathname.match(
+    /\/tot2\/week(\d+)(?:\/index\.html)?\/?$/i,
+  );
   if (pathMatch) return Number(pathMatch[1]);
 
   const params = new URLSearchParams(window.location.search);

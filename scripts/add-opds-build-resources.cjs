@@ -29,10 +29,15 @@ function resource(hrefPath, type) {
   };
 }
 
+function relativeResource(href, type) {
+  return { href, type };
+}
+
 const weekHtmlResources = [];
 for (let week = 1; week <= 5; week += 1) {
   weekHtmlResources.push(resource("/tot2/week" + week, "text/html"));
   weekHtmlResources.push(resource("/tot2/week" + week + "/", "text/html"));
+  weekHtmlResources.push(resource("/tot2/week" + week + "/index.html", "text/html"));
   weekHtmlResources.push(resource("/tot2?startWeek=" + week, "text/html"));
 }
 
@@ -71,6 +76,8 @@ function addResources(manifestPath, resources) {
 
 const builtFileResources = [
   resource("/index.html", "text/html"),
+  resource("/tot2", "text/html"),
+  resource("/tot2/", "text/html"),
 ].concat(
   listFiles(DIST_DIR)
     .filter((filePath) => !path.relative(DIST_DIR, filePath).split(path.sep).includes("opds"))
@@ -79,6 +86,57 @@ const builtFileResources = [
 );
 
 const sharedResources = weekHtmlResources.concat(builtFileResources);
+
+function relativeResourceForBuiltFile(filePath) {
+  const relativePath = path.relative(DIST_DIR, filePath).split(path.sep).join("/");
+  const ext = path.extname(filePath).toLowerCase();
+  const type = mimeTypes.get(ext);
+
+  if (!type) return null;
+  return relativeResource("../" + relativePath, type);
+}
+
+const relativeWeekResources = [];
+for (let week = 1; week <= 5; week += 1) {
+  relativeWeekResources.push(relativeResource("../tot2/week" + week, "text/html"));
+  relativeWeekResources.push(relativeResource("../tot2/week" + week + "/", "text/html"));
+  relativeWeekResources.push(relativeResource("../tot2/week" + week + "/index.html", "text/html"));
+  relativeWeekResources.push(relativeResource("../tot2?startWeek=" + week, "text/html"));
+}
+
+const relativeBuiltFileResources = [
+  relativeResource("../index.html", "text/html"),
+  relativeResource("../tot2", "text/html"),
+  relativeResource("../tot2/", "text/html"),
+].concat(
+  listFiles(DIST_DIR)
+    .filter((filePath) => !path.relative(DIST_DIR, filePath).split(path.sep).includes("opds"))
+    .map(relativeResourceForBuiltFile)
+    .filter(Boolean),
+);
+
+const relativeSharedResources = relativeWeekResources.concat(relativeBuiltFileResources);
+
+function addRelativeResourcesToWebpub(manifestPath) {
+  addResources(manifestPath, relativeSharedResources);
+}
+
+function copyAppShellToWeekLaunchers() {
+  const appShellPath = path.join(DIST_DIR, "index.html");
+  if (!fs.existsSync(appShellPath)) return;
+
+  const appShell = fs
+    .readFileSync(appShellPath, "utf8")
+    .replaceAll('href="/', 'href="../../')
+    .replaceAll('src="/', 'src="../../');
+  for (let week = 1; week <= 5; week += 1) {
+    const launcherPath = path.join(DIST_DIR, "tot2", "week" + week, "index.html");
+    fs.mkdirSync(path.dirname(launcherPath), { recursive: true });
+    fs.writeFileSync(launcherPath, appShell);
+  }
+}
+
+copyAppShellToWeekLaunchers();
 
 [
   "tot2-manifest.json",
@@ -89,4 +147,5 @@ const sharedResources = weekHtmlResources.concat(builtFileResources);
   "tot2-week5-manifest.json",
 ].forEach((fileName) => {
   addResources(path.join(OPDS_DIR, fileName), sharedResources);
+  addRelativeResourcesToWebpub(path.join(OPDS_DIR, fileName));
 });

@@ -5,6 +5,8 @@ const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const APP_SHELL_URLS = [
   "/",
   "/index.html",
+  "/tot2",
+  "/tot2/",
   "/favicon.ico",
   "/logo.png",
   "/FLOW.png",
@@ -19,10 +21,15 @@ const APP_SHELL_URLS = [
   "/opds/tot2-week4-manifest.json",
   "/opds/tot2-week5-manifest.json",
   "/tot2/week1/index.html",
+  "/tot2/week1/",
   "/tot2/week2/index.html",
+  "/tot2/week2/",
   "/tot2/week3/index.html",
+  "/tot2/week3/",
   "/tot2/week4/index.html",
+  "/tot2/week4/",
   "/tot2/week5/index.html",
+  "/tot2/week5/",
 ];
 const CACHEABLE_ASSET_EXTENSIONS = [
   ".avif",
