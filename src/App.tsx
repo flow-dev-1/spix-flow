@@ -14,12 +14,86 @@ import NotFound from "./pages/NotFound";
 import TOT2Course from "./courses/TOT2/index";
 import TOT2Feedback from "./courses/TOT2/feedback/index";
 import OfflineDebugAlerts from "./components/OfflineDebugAlerts";
-import { useRespectOfflineWarmup } from "./hooks/useRespectOfflineWarmup";
+import {
+  useRespectOfflineWarmup,
+  type WarmupProgress,
+} from "./hooks/useRespectOfflineWarmup";
 
 const queryClient = new QueryClient();
 
+function OfflineWarmupPanel({ progress }: { progress: WarmupProgress }) {
+  if (!progress.visible) return null;
+
+  const percent = progress.total
+    ? Math.round((progress.completed / progress.total) * 100)
+    : 0;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: 12,
+        right: 12,
+        bottom: 12,
+        zIndex: 99999,
+        background: "rgba(6, 21, 44, 0.94)",
+        color: "#fff",
+        borderRadius: 8,
+        padding: "10px 12px",
+        fontFamily: "Inter, system-ui, sans-serif",
+        fontSize: 12,
+        boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+        <strong>SPIX offline cache</strong>
+        <span>{progress.phase}</span>
+      </div>
+      <div
+        style={{
+          height: 6,
+          background: "rgba(255,255,255,0.25)",
+          borderRadius: 999,
+          overflow: "hidden",
+          margin: "8px 0",
+        }}
+      >
+        <div
+          style={{
+            height: "100%",
+            width: `${percent}%`,
+            background: "#00BCC3",
+            transition: "width 0.2s ease",
+          }}
+        />
+      </div>
+      <div>
+        {progress.completed}/{progress.total} ({percent}%) | cached {progress.cached} |
+        failed {progress.failed} | active {progress.active}
+      </div>
+      <div>
+        assets {progress.assets} | videos {progress.videos}
+      </div>
+      {progress.lastUrl && (
+        <div
+          style={{
+            marginTop: 4,
+            opacity: 0.85,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {progress.lastUrl}
+        </div>
+      )}
+      {progress.error && <div style={{ color: "#ffb4b4" }}>{progress.error}</div>}
+    </div>
+  );
+}
+
 const App = () => {
-  useRespectOfflineWarmup();
+  const warmupProgress = useRespectOfflineWarmup();
 
   return (
     <Provider store={store}>
@@ -27,6 +101,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <OfflineDebugAlerts />
+            <OfflineWarmupPanel progress={warmupProgress} />
             <Toaster />
             <Sonner />
             <ToastContainer position="top-right" autoClose={5000} />
