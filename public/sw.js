@@ -1,5 +1,5 @@
 const APP_CACHE = "flow-app-v1";
-const VIDEO_CACHE = "flow-videos-v1";
+const VIDEO_CACHE = "flow-videos-v2";
 const ASSET_CACHE = "flow-assets-v1";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const APP_SHELL_URLS = [
@@ -72,6 +72,10 @@ async function staleWhileRevalidate(cacheName, request) {
     .catch(() => null);
 
   return cached || network || Response.error();
+}
+
+function shouldCacheVideoResponse(response) {
+  return response.status === 200 || response.type === "opaque";
 }
 
 async function navigationResponse(request) {
@@ -185,8 +189,8 @@ self.addEventListener("fetch", (event) => {
 
         try {
           const response = await fetch(event.request);
-          if (response.ok || response.type === "opaque") {
-            cache.put(event.request.url, response.clone());
+          if (shouldCacheVideoResponse(response)) {
+            await cache.put(event.request.url, response.clone());
           }
           return response;
         } catch {
