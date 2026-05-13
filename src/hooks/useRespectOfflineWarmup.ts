@@ -71,6 +71,26 @@ function resolveManifestHref(href: string) {
   }
 }
 
+function getCurrentWeekFromUrl() {
+  const pathMatch = window.location.pathname.match(
+    /\/tot2\/week(\d+)(?:\/index\.html)?\/?$/i,
+  );
+  if (pathMatch) return Number(pathMatch[1]);
+
+  const params = new URLSearchParams(window.location.search);
+  const startWeek = Number(params.get("startWeek"));
+  if (startWeek >= 1 && startWeek <= 5) return startWeek;
+
+  const savedWeek = Number(sessionStorage.getItem("flow-currentWeek"));
+  if (savedWeek >= 1 && savedWeek <= 5) return savedWeek;
+
+  return 1;
+}
+
+function manifestUrlForCurrentWeek() {
+  return "/opds/tot2-week" + getCurrentWeekFromUrl() + "-manifest.json";
+}
+
 function cacheNameFor(url: URL, type?: string) {
   if (url.hostname === CLOUDFRONT_HOST || type?.startsWith("video/")) {
     return VIDEO_CACHE;
@@ -175,7 +195,8 @@ async function warmupFromManifest(
     phase: "loading-manifest",
   });
 
-  const response = await fetch("/opds/tot2-manifest.json", { cache: "no-cache" });
+  const manifestUrl = manifestUrlForCurrentWeek();
+  const response = await fetch(manifestUrl, { cache: "no-cache" });
   if (!response.ok) return;
 
   const manifest = (await response.json()) as WebPublicationManifest;
@@ -205,7 +226,8 @@ async function warmupFromManifest(
 
   debugAlert(
     "[SPIX offline warmup]\n" +
-      "Started caching manifest resources.\n" +
+      "Started caching current week resources.\n" +
+      "Manifest: " + manifestUrl + "\n" +
       "Assets: " + assetResources.length + "\n" +
       "Videos: " + videoResources.length + "\n" +
       "Each video is limited to " + Math.round(VIDEO_TIMEOUT_MS / 1000) + "s.",
@@ -282,7 +304,7 @@ async function warmupFromManifest(
 
   debugAlert(
     "[SPIX offline warmup]\n" +
-      "Finished caching manifest resources.\n" +
+      "Finished caching current week resources.\n" +
       "Cached/skipped: " + cached + "\n" +
       "Failed: " + failed.length + "\n" +
       (failedPreview ? "\nFailed URLs:\n" + failedPreview + "\n" : "\n") +
