@@ -7,6 +7,7 @@ import {
 type XapiDebugState = {
   visible: boolean;
   endpoint: string;
+  urlParams: Array<[string, string]>;
   hasAuth: boolean;
   hasActor: boolean;
   hasRegistration: boolean;
@@ -19,6 +20,7 @@ type XapiDebugState = {
 const initialState: XapiDebugState = {
   visible: false,
   endpoint: "",
+  urlParams: [],
   hasAuth: false,
   hasActor: false,
   hasRegistration: false,
@@ -36,6 +38,17 @@ function getStoredLaunchParams() {
 
 function getLaunchParams() {
   return parseRespectLaunchParams(window.location.search) || getStoredLaunchParams();
+}
+
+function getVisibleUrlParams(launchParams: RespectLaunchParams | null) {
+  const urlParams = Array.from(new URLSearchParams(window.location.search).entries());
+  if (urlParams.length) return urlParams;
+
+  if (!launchParams) return [];
+
+  return Object.entries(launchParams)
+    .filter(([, value]) => value !== undefined && value !== "")
+    .map(([key, value]) => [key, String(value)] as [string, string]);
 }
 
 function shouldShowPanel(params: RespectLaunchParams | null) {
@@ -69,6 +82,7 @@ export default function XapiDebugPanel() {
     ...initialState,
     visible: shouldShowPanel(launchParams),
     endpoint: launchParams?.endpoint || "",
+    urlParams: getVisibleUrlParams(launchParams),
     hasAuth: Boolean(launchParams?.auth),
     hasActor: Boolean(launchParams?.actor),
     hasRegistration: Boolean(launchParams?.registration),
@@ -175,7 +189,25 @@ export default function XapiDebugPanel() {
     >
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
         <strong>SPIX xAPI debug</strong>
-        <span style={{ color: statusColor }}>{state.roundTrip}</span>
+        <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ color: statusColor }}>{state.roundTrip}</span>
+          <button
+            type="button"
+            onClick={() => setState((prev) => ({ ...prev, visible: false }))}
+            style={{
+              border: 0,
+              background: "transparent",
+              color: "#fff",
+              cursor: "pointer",
+              fontSize: 16,
+              lineHeight: 1,
+              padding: 0,
+            }}
+            aria-label="Close xAPI debug"
+          >
+            x
+          </button>
+        </span>
       </div>
       <div
         style={{
@@ -194,6 +226,26 @@ export default function XapiDebugPanel() {
       </div>
       <div style={{ marginTop: 4 }}>
         PUT {state.putStatus || "pending"} | GET {state.getStatus || "pending"}
+      </div>
+      <div style={{ marginTop: 6, fontWeight: 700 }}>URL params</div>
+      <div
+        style={{
+          marginTop: 3,
+          maxHeight: 84,
+          overflow: "auto",
+          wordBreak: "break-word",
+          opacity: 0.9,
+        }}
+      >
+        {state.urlParams.length ? (
+          state.urlParams.map(([key, value]) => (
+            <div key={`${key}-${value}`}>
+              {key}: {value}
+            </div>
+          ))
+        ) : (
+          <div>none</div>
+        )}
       </div>
       {state.error && <div style={{ marginTop: 4, color: "#ffb4b4" }}>{state.error}</div>}
     </div>

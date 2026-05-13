@@ -253,7 +253,25 @@ export default function ServiceWorkerSignalPanel() {
     >
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
         <strong>SPIX service worker</strong>
-        <span style={{ color: statusColor }}>{state.status}</span>
+        <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ color: statusColor }}>{state.status}</span>
+          <button
+            type="button"
+            onClick={() => setState((prev) => ({ ...prev, visible: false }))}
+            style={{
+              border: 0,
+              background: "transparent",
+              color: "#fff",
+              cursor: "pointer",
+              fontSize: 16,
+              lineHeight: 1,
+              padding: 0,
+            }}
+            aria-label="Close service worker signal"
+          >
+            x
+          </button>
+        </span>
       </div>
       <div style={{ marginTop: 6 }}>
         week {state.week} | SW {state.supported ? "yes" : "no"} | active{" "}
