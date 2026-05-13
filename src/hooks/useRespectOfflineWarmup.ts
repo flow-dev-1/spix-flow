@@ -15,6 +15,15 @@ type WebPublicationManifest = {
   resources?: ManifestLink[];
 };
 
+function debugAlert(message: string) {
+  const params = new URLSearchParams(window.location.search);
+  if (!isRespectSession() && params.get("spixDebug") !== "1") return;
+
+  window.setTimeout(() => {
+    window.alert(message);
+  }, 250);
+}
+
 function isRespectSession() {
   const params = new URLSearchParams(window.location.search);
   return (
@@ -78,14 +87,32 @@ async function warmupFromManifest() {
 
   const manifest = (await response.json()) as WebPublicationManifest;
   const resources = collectResources(manifest);
+  let cached = 0;
+  let failed = 0;
+
+  debugAlert(
+    "[SPIX offline warmup]\n" +
+      "Started caching manifest resources.\n" +
+      "Total resources: " + resources.length,
+  );
 
   for (const item of resources) {
     try {
       await cacheResource(item.href as string, item.type);
+      cached += 1;
     } catch {
       // Some resources may be blocked by CORS or unavailable. Keep warming the rest.
+      failed += 1;
     }
   }
+
+  debugAlert(
+    "[SPIX offline warmup]\n" +
+      "Finished caching manifest resources.\n" +
+      "Cached/skipped: " + cached + "\n" +
+      "Failed: " + failed + "\n" +
+      "You can now test offline mode.",
+  );
 }
 
 export function useRespectOfflineWarmup() {
