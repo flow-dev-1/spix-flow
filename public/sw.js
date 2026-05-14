@@ -78,6 +78,23 @@ function shouldCacheVideoResponse(response) {
   return response.status === 200 || response.type === "opaque";
 }
 
+function createFullVideoRequest(request) {
+  const headers = new Headers(request.headers);
+  headers.delete("range");
+
+  return new Request(request.url, {
+    method: "GET",
+    headers,
+    mode: request.mode,
+    credentials: request.credentials,
+    cache: "reload",
+    redirect: request.redirect,
+    referrer: request.referrer,
+    referrerPolicy: request.referrerPolicy,
+    integrity: request.integrity,
+  });
+}
+
 async function navigationResponse(request) {
   const cache = await caches.open(APP_CACHE);
 
@@ -188,16 +205,20 @@ self.addEventListener("fetch", (event) => {
         if (cached) return buildRangeResponse(event.request, cached);
 
         try {
-          const response = await fetch(event.request);
+          const response = await fetch(createFullVideoRequest(event.request));
           if (shouldCacheVideoResponse(response)) {
             await cache.put(event.request.url, response.clone());
           }
-          return response;
+          return buildRangeResponse(event.request, response);
         } catch {
-          return new Response("Resource not available offline.", {
-            status: 503,
-            statusText: "Offline - resource not cached",
-          });
+          try {
+            return await fetch(event.request);
+          } catch {
+            return new Response("Resource not available offline.", {
+              status: 503,
+              statusText: "Offline - resource not cached",
+            });
+          }
         }
       })
     );
