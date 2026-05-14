@@ -1,6 +1,6 @@
-const APP_CACHE = "flow-app-v1";
-const VIDEO_CACHE = "flow-videos-v2";
-const ASSET_CACHE = "flow-assets-v1";
+const APP_CACHE = "flow-app-v2";
+const VIDEO_CACHE = "flow-videos-v3";
+const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const APP_SHELL_URLS = [
   "/",
@@ -11,7 +11,6 @@ const APP_SHELL_URLS = [
   "/logo.png",
   "/FLOW.png",
   "/placeholder.svg",
-  "/sw.js",
   "/respect-manifest.json",
   "/opds/index.json",
   "/opds/tot2.json",
@@ -74,27 +73,6 @@ async function staleWhileRevalidate(cacheName, request) {
   return cached || network || Response.error();
 }
 
-function shouldCacheVideoResponse(response) {
-  return response.status === 200 || response.type === "opaque";
-}
-
-function createFullVideoRequest(request) {
-  const headers = new Headers(request.headers);
-  headers.delete("range");
-
-  return new Request(request.url, {
-    method: "GET",
-    headers,
-    mode: request.mode,
-    credentials: request.credentials,
-    cache: "reload",
-    redirect: request.redirect,
-    referrer: request.referrer,
-    referrerPolicy: request.referrerPolicy,
-    integrity: request.integrity,
-  });
-}
-
 async function navigationResponse(request) {
   const cache = await caches.open(APP_CACHE);
 
@@ -118,6 +96,23 @@ async function navigationResponse(request) {
   }
 }
 
+function createFullVideoRequest(request) {
+  const headers = new Headers(request.headers);
+  headers.delete("range");
+
+  return new Request(request.url, {
+    method: "GET",
+    headers,
+    mode: request.mode,
+    credentials: request.credentials,
+    cache: "reload",
+    redirect: request.redirect,
+    referrer: request.referrer,
+    referrerPolicy: request.referrerPolicy,
+    integrity: request.integrity,
+  });
+}
+
 async function buildRangeResponse(request, cachedResponse) {
   const rangeHeader = request.headers.get("range");
   if (!rangeHeader || !cachedResponse) return cachedResponse;
@@ -125,10 +120,18 @@ async function buildRangeResponse(request, cachedResponse) {
   const blob = await cachedResponse.blob();
   const size = blob.size;
   const match = rangeHeader.match(/bytes=(\d*)-(\d*)/);
-  if (!match) return cachedResponse;
+  if (!match || !size) return cachedResponse;
 
   const start = match[1] ? Number(match[1]) : 0;
-  const end = match[2] ? Number(match[2]) : size - 1;
+  const end = match[2] ? Math.min(Number(match[2]), size - 1) : size - 1;
+  if (start >= size || end < start) {
+    return new Response(null, {
+      status: 416,
+      statusText: "Range Not Satisfiable",
+      headers: { "Content-Range": `bytes */${size}` },
+    });
+  }
+
   const chunk = blob.slice(start, end + 1);
 
   return new Response(chunk, {
@@ -143,6 +146,24 @@ async function buildRangeResponse(request, cachedResponse) {
   });
 }
 
+async function videoResponse(request) {
+  const cache = await caches.open(VIDEO_CACHE);
+  const cached = await cache.match(request.url, { ignoreVary: true });
+  if (cached) return buildRangeResponse(request, cached);
+
+  try {
+    const fullResponse = await fetch(createFullVideoRequest(request));
+    if (fullResponse.status === 200) {
+      await cache.put(request.url, fullResponse.clone());
+      return buildRangeResponse(request, fullResponse);
+    }
+
+    return fullResponse;
+  } catch {
+    return fetch(request);
+  }
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
@@ -150,11 +171,11 @@ self.addEventListener("install", (event) => {
       .then((cache) =>
         Promise.all(
           APP_SHELL_URLS.map((url) =>
-            cache.add(new Request(url, { cache: "reload" })).catch(() => undefined)
-          )
-        )
+            cache.add(new Request(url, { cache: "reload" })).catch(() => undefined),
+          ),
+        ),
       )
-      .then(() => self.skipWaiting())
+      .then(() => self.skipWaiting()),
   );
 });
 
@@ -166,10 +187,10 @@ self.addEventListener("activate", (event) => {
         Promise.all(
           keys
             .filter((key) => ![APP_CACHE, VIDEO_CACHE, ASSET_CACHE].includes(key))
-            .map((key) => caches.delete(key))
-        )
+            .map((key) => caches.delete(key)),
+        ),
       )
-      .then(() => self.clients.claim())
+      .then(() => self.clients.claim()),
   );
 });
 
@@ -181,7 +202,7 @@ self.addEventListener("fetch", (event) => {
   const isSameOriginAsset =
     url.origin === self.location.origin &&
     CACHEABLE_ASSET_EXTENSIONS.some((extension) =>
-      url.pathname.toLowerCase().endsWith(extension)
+      url.pathname.toLowerCase().endsWith(extension),
     );
   const isNavigation =
     event.request.mode === "navigate" ||
@@ -197,31 +218,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isCloudfrontVideo) {
-    event.respondWith(
-      caches.open(VIDEO_CACHE).then(async (cache) => {
-        const cached =
-          (await cache.match(event.request.url, { ignoreVary: true })) ||
-          (await cache.match(url.href, { ignoreVary: true }));
-        if (cached) return buildRangeResponse(event.request, cached);
-
-        try {
-          const response = await fetch(createFullVideoRequest(event.request));
-          if (shouldCacheVideoResponse(response)) {
-            await cache.put(event.request.url, response.clone());
-          }
-          return buildRangeResponse(event.request, response);
-        } catch {
-          try {
-            return await fetch(event.request);
-          } catch {
-            return new Response("Resource not available offline.", {
-              status: 503,
-              statusText: "Offline - resource not cached",
-            });
-          }
-        }
-      })
-    );
+    event.respondWith(videoResponse(event.request));
     return;
   }
 
@@ -230,13 +227,13 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     staleWhileRevalidate(
       APP_SHELL_URLS.includes(url.pathname) ? APP_CACHE : ASSET_CACHE,
-      event.request
+      event.request,
     ).catch(
       () =>
         new Response("Resource not available offline.", {
           status: 503,
           statusText: "Offline - resource not cached",
-        })
-    )
+        }),
+    ),
   );
 });
