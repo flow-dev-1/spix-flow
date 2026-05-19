@@ -2,25 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./video.css";
 
-const VIDEO_CACHE = "flow-videos-v3";
-
-async function hasCachedVideo(videoSrc: string) {
-  if (!("caches" in window)) return false;
-
-  try {
-    const cache = await caches.open(VIDEO_CACHE);
-    const cached = await cache.match(videoSrc, { ignoreVary: true });
-    return Boolean(cached);
-  } catch {
-    return false;
-  }
-}
-
 function VideoComponent({ videoSrc }) {
   const [percentageWatched, setPercentageWatched] = useState(3);
   const [isOnline, setIsOnline] = useState(() => navigator.onLine);
-  const [isVideoCached, setIsVideoCached] = useState(false);
-  const [cacheChecked, setCacheChecked] = useState(false);
+  const [hasOfflinePlaybackError, setHasOfflinePlaybackError] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -38,57 +23,31 @@ function VideoComponent({ videoSrc }) {
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function checkVideoCache() {
-      setCacheChecked(false);
-      const cached = await hasCachedVideo(videoSrc);
-      if (!isMounted) return;
-      setIsVideoCached(cached);
-      setCacheChecked(true);
-    }
-
     function handleOnline() {
       setIsOnline(true);
-      checkVideoCache();
+      setHasOfflinePlaybackError(false);
     }
 
     function handleOffline() {
       setIsOnline(false);
-      checkVideoCache();
     }
 
-    checkVideoCache();
+    setHasOfflinePlaybackError(false);
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
 
     return () => {
-      isMounted = false;
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
   }, [videoSrc]);
 
-  const shouldBlockOfflinePlayback = !isOnline && cacheChecked && !isVideoCached;
-  const isCheckingOfflineReadiness = !isOnline && !cacheChecked;
-
-  if (shouldBlockOfflinePlayback || isCheckingOfflineReadiness) {
+  if (!isOnline && hasOfflinePlaybackError) {
     return (
       <div className="resilience-video-offline-state">
         <div className="resilience-video-offline-state__content">
-          {isCheckingOfflineReadiness && (
-            <span className="resilience-video-offline-state__loader" />
-          )}
-          <strong>
-            {isCheckingOfflineReadiness
-              ? "Checking saved video"
-              : "Video not ready offline"}
-          </strong>
-          <span>
-            {isCheckingOfflineReadiness
-              ? "Please wait a moment."
-              : "Reconnect and open this video online to finish preparing it."}
-          </span>
+          <strong>Video unavailable offline</strong>
+          <span>Reconnect and open this video online to finish preparing it.</span>
         </div>
       </div>
     );
@@ -102,8 +61,11 @@ function VideoComponent({ videoSrc }) {
         controls
         controlsList="nodownload noremoteplayback"
         style={{ pointerEvents: "auto" }}
-        onCanPlay={() => null}
-        onError={(e) => console.log(e,"This is error")}
+        onCanPlay={() => setHasOfflinePlaybackError(false)}
+        onError={(e) => {
+          console.log(e, "This is error");
+          if (!navigator.onLine) setHasOfflinePlaybackError(true);
+        }}
       >
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
