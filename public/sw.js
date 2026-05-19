@@ -1,5 +1,5 @@
 const APP_CACHE = "flow-app-v2";
-const VIDEO_CACHE = "flow-videos-v3";
+const VIDEO_CACHE = "flow-videos-v4";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const PRECACHE_VIDEO_URLS = [
@@ -155,19 +155,19 @@ async function videoResponse(request) {
   const cached = await cache.match(request.url, { ignoreVary: true });
   if (cached) return buildRangeResponse(request, cached);
 
-  const hasRangeHeader = request.headers.has("range");
-
   try {
-    if (hasRangeHeader) {
-      return await fetch(request);
-    }
-
+    // Always fetch the full video (no Range header) so we can cache it completely.
+    // Browsers request videos with Range headers, but partial responses can't be
+    // reliably cached and replayed offline.
     const fullResponse = await fetch(createFullVideoRequest(request));
     if (fullResponse.status === 200) {
       await cache.put(request.url, fullResponse.clone());
+      return buildRangeResponse(request, fullResponse);
     }
 
-    return fullResponse;
+    // If the server didn't return 200 for the full request, fall back to the
+    // original request (may be a range request) so the video still plays online.
+    return await fetch(request);
   } catch {
     return new Response("Resource not available offline.", {
       status: 503,
