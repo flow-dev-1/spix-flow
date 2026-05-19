@@ -76,11 +76,18 @@ function VideoComponent({ videoSrc }) {
     return (
       <div className="resilience-video-offline-state">
         <div className="resilience-video-offline-state__content">
-          <strong>Preparing video for offline</strong>
+          {isCheckingOfflineReadiness && (
+            <span className="resilience-video-offline-state__loader" />
+          )}
+          <strong>
+            {isCheckingOfflineReadiness
+              ? "Checking saved video"
+              : "Video not ready offline"}
+          </strong>
           <span>
             {isCheckingOfflineReadiness
-              ? "Checking saved video..."
-              : "This video is not fully ready offline yet."}
+              ? "Please wait a moment."
+              : "Reconnect and open this video online to finish preparing it."}
           </span>
         </div>
       </div>
