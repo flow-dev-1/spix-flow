@@ -1,0 +1,52 @@
+{
+  "note": "Temporary backup of original SPIX TOT2 video URLs before compressed-video test. Restore these if the compressed single-video test is reverted.",
+  "testReplacementUrl": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
+  "totalOriginalUrls": 35,
+  "byWeek": {
+    "week1": [
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_1.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_2.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_3.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_4.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_5.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_6.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_7.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Cognitive+Overload.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_8.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_9.mp4"
+    ],
+    "week2": [
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_1.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_2.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_3.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_4.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_5.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_6.mp4"
+    ],
+    "week3": [
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_1.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_2.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_3.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_4.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_5.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+3/Week+3_6.mp4"
+    ],
+    "week4": [
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+4/Week+4_1.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+4/Week+4_2.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+4/Week+4_3.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+4/Week+4_4.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+4/Week+4_5.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+4/Week+4_6.mp4"
+    ],
+    "week5": [
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_1.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_2.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_3.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_4.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_5.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_6.mp4",
+      "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+5/Week+5_7.mp4"
+    ]
+  }
+}
