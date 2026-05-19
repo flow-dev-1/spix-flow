@@ -152,8 +152,19 @@ async function videoResponse(request) {
   const cached = await cache.match(request.url, { ignoreVary: true });
   if (cached) return buildRangeResponse(request, cached);
 
+  const hasRangeHeader = request.headers.has("range");
+
   try {
-    return await fetch(request);
+    if (hasRangeHeader) {
+      return await fetch(request);
+    }
+
+    const fullResponse = await fetch(createFullVideoRequest(request));
+    if (fullResponse.status === 200) {
+      await cache.put(request.url, fullResponse.clone());
+    }
+
+    return fullResponse;
   } catch {
     return new Response("Resource not available offline.", {
       status: 503,
