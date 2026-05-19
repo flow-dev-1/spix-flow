@@ -45,6 +45,18 @@
   opacity: 0.86;
 }
 
+.resilience-video-error-debug {
+  margin: 8px 0 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: #1b1b1b;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 @keyframes resilience-video-loader-spin {
   to {
     transform: rotate(360deg);

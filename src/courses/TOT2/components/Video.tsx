@@ -6,6 +6,8 @@ function VideoComponent({ videoSrc }) {
   const [percentageWatched, setPercentageWatched] = useState(3);
   const [isOnline, setIsOnline] = useState(() => navigator.onLine);
   const [hasOfflinePlaybackError, setHasOfflinePlaybackError] = useState(false);
+  const [hasStartedPlayback, setHasStartedPlayback] = useState(false);
+  const [videoErrorDetails, setVideoErrorDetails] = useState("");
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -26,6 +28,7 @@ function VideoComponent({ videoSrc }) {
     function handleOnline() {
       setIsOnline(true);
       setHasOfflinePlaybackError(false);
+      setVideoErrorDetails("");
     }
 
     function handleOffline() {
@@ -33,6 +36,8 @@ function VideoComponent({ videoSrc }) {
     }
 
     setHasOfflinePlaybackError(false);
+    setHasStartedPlayback(false);
+    setVideoErrorDetails("");
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
 
@@ -41,6 +46,36 @@ function VideoComponent({ videoSrc }) {
       window.removeEventListener("offline", handleOffline);
     };
   }, [videoSrc]);
+
+  function markPlaybackStarted() {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.currentTime > 0 || video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      setHasStartedPlayback(true);
+    }
+  }
+
+  function describeVideoError(video: HTMLVideoElement) {
+    const error = video.error;
+    const errorNames: Record<number, string> = {
+      1: "MEDIA_ERR_ABORTED",
+      2: "MEDIA_ERR_NETWORK",
+      3: "MEDIA_ERR_DECODE",
+      4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
+    };
+
+    return [
+      `code: ${error?.code ?? "none"} ${error?.code ? errorNames[error.code] || "" : ""}`,
+      `message: ${error?.message || "none"}`,
+      `online: ${navigator.onLine}`,
+      `networkState: ${video.networkState}`,
+      `readyState: ${video.readyState}`,
+      `currentTime: ${Math.round(video.currentTime * 10) / 10}`,
+      `duration: ${Number.isFinite(video.duration) ? Math.round(video.duration * 10) / 10 : "unknown"}`,
+      `src: ${video.currentSrc || videoSrc}`,
+    ].join("\n");
+  }
 
   if (!isOnline && hasOfflinePlaybackError) {
     return (
@@ -61,15 +96,32 @@ function VideoComponent({ videoSrc }) {
         controls
         controlsList="nodownload noremoteplayback"
         style={{ pointerEvents: "auto" }}
-        onCanPlay={() => setHasOfflinePlaybackError(false)}
+        onCanPlay={() => {
+          setHasOfflinePlaybackError(false);
+          markPlaybackStarted();
+        }}
+        onPlaying={markPlaybackStarted}
+        onTimeUpdate={markPlaybackStarted}
         onError={(e) => {
           console.log(e, "This is error");
-          if (!navigator.onLine) setHasOfflinePlaybackError(true);
+          const video = e.currentTarget;
+          setVideoErrorDetails(describeVideoError(video));
+          const alreadyStarted =
+            hasStartedPlayback ||
+            video.currentTime > 1 ||
+            video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA;
+
+          if (!navigator.onLine && !alreadyStarted) {
+            setHasOfflinePlaybackError(true);
+          }
         }}
       >
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+      {videoErrorDetails && (
+        <pre className="resilience-video-error-debug">{videoErrorDetails}</pre>
+      )}
       {/* <Icon
         // onClick={()=> videoRef.current.play()}
         icon="mdi:play-circle-outline"
