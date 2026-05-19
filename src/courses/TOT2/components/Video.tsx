@@ -9,6 +9,7 @@ function VideoComponent({ videoSrc }) {
   const [hasStartedPlayback, setHasStartedPlayback] = useState(false);
   const [videoErrorDetails, setVideoErrorDetails] = useState("");
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const lastVideoErrorAlertRef = useRef("");
 
   useEffect(() => {
     const video = videoRef.current;
@@ -38,6 +39,7 @@ function VideoComponent({ videoSrc }) {
     setHasOfflinePlaybackError(false);
     setHasStartedPlayback(false);
     setVideoErrorDetails("");
+    lastVideoErrorAlertRef.current = "";
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
 
@@ -105,7 +107,14 @@ function VideoComponent({ videoSrc }) {
         onError={(e) => {
           console.log(e, "This is error");
           const video = e.currentTarget;
-          setVideoErrorDetails(describeVideoError(video));
+          const details = describeVideoError(video);
+          setVideoErrorDetails(details);
+
+          if (lastVideoErrorAlertRef.current !== details) {
+            lastVideoErrorAlertRef.current = details;
+            window.alert(`[SPIX video error]\n${details}`);
+          }
+
           const alreadyStarted =
             hasStartedPlayback ||
             video.currentTime > 1 ||
