@@ -1,9 +1,10 @@
 const APP_CACHE = "flow-app-v2";
-const VIDEO_CACHE = "flow-videos-v4";
+const VIDEO_CACHE = "flow-videos-v5";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const PRECACHE_VIDEO_URLS = [
   "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
+  "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_1.mp4",
 ];
 const APP_SHELL_URLS = [
   "/",

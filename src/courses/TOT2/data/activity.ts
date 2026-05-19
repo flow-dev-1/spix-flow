@@ -627,7 +627,7 @@ export const courseContent = {
         id: 1,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_1.mp4",
         hasNextButton: true,
       },
       {
@@ -688,7 +688,7 @@ export const courseContent = {
         id: 3,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_2.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_2.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -732,7 +732,7 @@ export const courseContent = {
         id: 5,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_3.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_3.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -855,7 +855,7 @@ export const courseContent = {
         id: 7,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_4.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_4.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -946,7 +946,7 @@ export const courseContent = {
         id: 9,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_5.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_5.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -1068,7 +1068,7 @@ export const courseContent = {
         id: 11,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+2/Week+2_6.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_6.mp4",
         navigation: {
           prev: true,
           next: true,
