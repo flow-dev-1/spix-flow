@@ -57,6 +57,7 @@ const CACHEABLE_ASSET_EXTENSIONS = [
   ".webp",
 ];
 const NAVIGATION_ROUTE_PREFIXES = ["/courses", "/tot2"];
+const inFlightVideoCaches = new Map();
 
 async function staleWhileRevalidate(cacheName, request) {
   const cache = await caches.open(cacheName);
@@ -152,16 +153,36 @@ async function videoResponse(request) {
   if (cached) return buildRangeResponse(request, cached);
 
   try {
-    const fullResponse = await fetch(createFullVideoRequest(request));
-    if (fullResponse.status === 200) {
-      await cache.put(request.url, fullResponse.clone());
-      return buildRangeResponse(request, fullResponse);
-    }
-
-    return fullResponse;
+    return await fetch(request);
   } catch {
-    return fetch(request);
+    return new Response("Resource not available offline.", {
+      status: 503,
+      statusText: "Offline - resource not cached",
+    });
   }
+}
+
+async function cacheFullVideo(request) {
+  if (inFlightVideoCaches.has(request.url)) return inFlightVideoCaches.get(request.url);
+
+  const task = caches
+    .open(VIDEO_CACHE)
+    .then(async (cache) => {
+      const cached = await cache.match(request.url, { ignoreVary: true });
+      if (cached) return;
+
+      const fullResponse = await fetch(createFullVideoRequest(request));
+      if (fullResponse.status === 200) {
+        await cache.put(request.url, fullResponse);
+      }
+    })
+    .catch(() => undefined)
+    .finally(() => {
+      inFlightVideoCaches.delete(request.url);
+    });
+
+  inFlightVideoCaches.set(request.url, task);
+  return task;
 }
 
 self.addEventListener("install", (event) => {
@@ -219,6 +240,7 @@ self.addEventListener("fetch", (event) => {
 
   if (isCloudfrontVideo) {
     event.respondWith(videoResponse(event.request));
+    event.waitUntil(cacheFullVideo(event.request));
     return;
   }
 

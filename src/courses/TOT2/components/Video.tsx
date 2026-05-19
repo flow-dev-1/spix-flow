@@ -1,11 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import "./video.css";
-import { Icon } from "@iconify/react";
+
+const VIDEO_CACHE = "flow-videos-v3";
+
+async function hasCachedVideo(videoSrc: string) {
+  if (!("caches" in window)) return false;
+
+  try {
+    const cache = await caches.open(VIDEO_CACHE);
+    const cached = await cache.match(videoSrc, { ignoreVary: true });
+    return Boolean(cached);
+  } catch {
+    return false;
+  }
+}
 
 function VideoComponent({ videoSrc }) {
   const [percentageWatched, setPercentageWatched] = useState(3);
-  const videoRef = React.createRef();
+  const [isOnline, setIsOnline] = useState(() => navigator.onLine);
+  const [isVideoCached, setIsVideoCached] = useState(false);
+  const [cacheChecked, setCacheChecked] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -20,6 +36,56 @@ function VideoComponent({ videoSrc }) {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function checkVideoCache() {
+      setCacheChecked(false);
+      const cached = await hasCachedVideo(videoSrc);
+      if (!isMounted) return;
+      setIsVideoCached(cached);
+      setCacheChecked(true);
+    }
+
+    function handleOnline() {
+      setIsOnline(true);
+      checkVideoCache();
+    }
+
+    function handleOffline() {
+      setIsOnline(false);
+      checkVideoCache();
+    }
+
+    checkVideoCache();
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [videoSrc]);
+
+  const shouldBlockOfflinePlayback = !isOnline && cacheChecked && !isVideoCached;
+  const isCheckingOfflineReadiness = !isOnline && !cacheChecked;
+
+  if (shouldBlockOfflinePlayback || isCheckingOfflineReadiness) {
+    return (
+      <div className="resilience-video-offline-state">
+        <div className="resilience-video-offline-state__content">
+          <strong>Preparing video for offline</strong>
+          <span>
+            {isCheckingOfflineReadiness
+              ? "Checking saved video..."
+              : "This video is not fully ready offline yet."}
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ position: "relative",}}>
