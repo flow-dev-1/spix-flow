@@ -262,6 +262,12 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  // CRITICAL FIX: Android WebView's `shouldInterceptRequest` DOES NOT reliably intercept
+  // network requests made by a Service Worker. If we are running inside the RESPECT app (WebView),
+  // we MUST bypass the Service Worker completely and let the page make the request directly.
+  // This ensures `OkHttpWebViewClient` catches it and serves it from `UstadCache`.
+  if (isWebView) return;
+
   if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
