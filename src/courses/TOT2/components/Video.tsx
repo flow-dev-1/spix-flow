@@ -124,19 +124,19 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
   const reportRef = useRef<HTMLPreElement | null>(null);
 
   // Run a background cache check on mount / src change
-  useEffect(() => {
-    let cancelled = false;
-    probeCacheDiagnostics(videoSrc).then((diag) => {
-      if (cancelled) return;
-      if (!diag.videoInCache) {
-        const lines = buildDiagReport("⚠ VIDEO NOT IN CACHE (page load check)", videoSrc, null, diag);
-        setErrorReport(lines);
-      }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [videoSrc]);
+  // useEffect(() => {
+  //   let cancelled = false;
+  //   probeCacheDiagnostics(videoSrc).then((diag) => {
+  //     if (cancelled) return;
+  //     if (!diag.videoInCache) {
+  //       const lines = buildDiagReport("⚠ VIDEO NOT IN CACHE (page load check)", videoSrc, null, diag);
+  //       setErrorReport(lines);
+  //     }
+  //   });
+  //   return () => {
+  //     cancelled = true;
+  //   };
+  // }, [videoSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -301,6 +301,7 @@ function buildDiagReport(
 
   sections.push(`━━━ ${title} ━━━`);
   sections.push(`time: ${new Date().toISOString()}`);
+  sections.push(`version: v10 (hybrid ustad intercept)`);
   sections.push(`userAgent: ${navigator.userAgent}`);
 
   if (video) {
