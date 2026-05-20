@@ -1,5 +1,5 @@
 const APP_CACHE = "flow-app-v2";
-const VIDEO_CACHE = "flow-videos-v7";
+const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const PRECACHE_VIDEO_URLS = [
@@ -162,10 +162,17 @@ async function videoResponse(request) {
     // original request (may be a range request) so the video still plays online.
     return await fetch(request);
   } catch {
-    return new Response("Resource not available offline.", {
-      status: 503,
-      statusText: "Offline - resource not cached",
-    });
+    try {
+      // CRITICAL: If the network fetch fails, attempt to fetch the original request.
+      // This gives the browser's native HTTP Cache or the native WebView/Respect app container's
+      // custom offline interceptors a chance to serve the cached video instead of blocking it with a 503.
+      return await fetch(request);
+    } catch {
+      return new Response("Resource not available offline.", {
+        status: 503,
+        statusText: "Offline - resource not cached",
+      });
+    }
   }
 }
 

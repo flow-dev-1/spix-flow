@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import "./video.css";
 
-const VIDEO_CACHE = "flow-videos-v7";
+const VIDEO_CACHE = "flow-videos-v8";
 
 interface CacheDiagnostics {
   swStatus: string;
