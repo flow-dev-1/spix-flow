@@ -176,7 +176,7 @@ async function videoResponse(request) {
 
   // 2. Try the original new URL (offline WebView intercept path)
   let response = await fetchAndCheck(request);
-  if (response) return response;
+  if (response) return buildRangeResponse(request, response);
 
   // 3. Try the legacy URL path (offline WebView intercept path for old server-imported manifests)
   if (request.url.includes("/SPIX-TOT2/")) {
@@ -189,7 +189,7 @@ async function videoResponse(request) {
       redirect: request.redirect,
     });
     response = await fetchAndCheck(oldRequest);
-    if (response) return response;
+    if (response) return buildRangeResponse(oldRequest, response);
   }
 
   // 4. Ultimate fallback: if everything fails, return 503
