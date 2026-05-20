@@ -256,7 +256,7 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
         ref={videoRef}
         controls
         controlsList="nodownload noremoteplayback"
-        crossOrigin="anonymous"
+        crossOrigin={/wv|WebView/i.test(navigator.userAgent) ? undefined : "anonymous"}
         style={{ pointerEvents: "auto" }}
         onCanPlay={() => {
           setHasOfflinePlaybackError(false);
