@@ -2,6 +2,7 @@ const APP_CACHE = "flow-app-v4";
 const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
+const isWebView = /wv|WebView/i.test(self.navigator.userAgent);
 const PRECACHE_VIDEO_URLS = [
   "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
   "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_1.mp4",
@@ -283,7 +284,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (isCloudfrontVideo) {
+  if (isCloudfrontVideo && !isWebView) {
     event.respondWith(videoResponse(event.request));
     event.waitUntil(cacheFullVideo(event.request));
     return;
