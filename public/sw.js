@@ -266,7 +266,10 @@ self.addEventListener("fetch", (event) => {
   // network requests made by a Service Worker. If we are running inside the RESPECT app (WebView),
   // we MUST bypass the Service Worker completely and let the page make the request directly.
   // This ensures `OkHttpWebViewClient` catches it and serves it from `UstadCache`.
-  if (isWebView) return;
+  if (isWebView) {
+    console.log("[Service Worker] WebView detected! Deferring all intercepts to native OkHttpWebViewClient.");
+    return;
+  }
 
   if (event.request.method !== "GET") return;
 
