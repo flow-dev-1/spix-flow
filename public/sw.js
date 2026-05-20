@@ -3,10 +3,10 @@ const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const isWebView = /wv|WebView/i.test(self.navigator.userAgent);
-const PRECACHE_VIDEO_URLS = [
-  "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
-  "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_1.mp4",
-];
+// const PRECACHE_VIDEO_URLS = [
+//   "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
+//   "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+2/Week+2_1.mp4",
+// ];
 const APP_SHELL_URLS = [
   "/",
   "/index.html",
@@ -145,9 +145,9 @@ async function buildRangeResponse(request, cachedResponse) {
 }
 
 async function videoResponse(request) {
-  const cache = await caches.open(VIDEO_CACHE);
-  const cached = await cache.match(request.url, { ignoreVary: true });
-  if (cached) return buildRangeResponse(request, cached);
+  // const cache = await caches.open(VIDEO_CACHE);
+  // const cached = await cache.match(request.url, { ignoreVary: true });
+  // if (cached) return buildRangeResponse(request, cached);
 
   // Helper to fetch and verify the response is valid (not 503 / failed)
   const fetchAndCheck = async (req) => {
@@ -167,7 +167,7 @@ async function videoResponse(request) {
     const cleanReq = createFullVideoRequest(request);
     const fullResponse = await fetch(cleanReq);
     if (fullResponse && fullResponse.status === 200) {
-      await cache.put(request.url, fullResponse.clone());
+      // await cache.put(request.url, fullResponse.clone());
       return buildRangeResponse(request, fullResponse);
     }
   } catch (e) {
@@ -200,26 +200,26 @@ async function videoResponse(request) {
 }
 
 async function cacheFullVideo(request) {
-  if (inFlightVideoCaches.has(request.url)) return inFlightVideoCaches.get(request.url);
-
-  const task = caches
-    .open(VIDEO_CACHE)
-    .then(async (cache) => {
-      const cached = await cache.match(request.url, { ignoreVary: true });
-      if (cached) return;
-
-      const fullResponse = await fetch(createFullVideoRequest(request));
-      if (fullResponse.status === 200) {
-        await cache.put(request.url, fullResponse);
-      }
-    })
-    .catch(() => undefined)
-    .finally(() => {
-      inFlightVideoCaches.delete(request.url);
-    });
-
-  inFlightVideoCaches.set(request.url, task);
-  return task;
+//   if (inFlightVideoCaches.has(request.url)) return inFlightVideoCaches.get(request.url);
+// 
+//   const task = caches
+//     .open(VIDEO_CACHE)
+//     .then(async (cache) => {
+//       const cached = await cache.match(request.url, { ignoreVary: true });
+//       if (cached) return;
+// 
+//       const fullResponse = await fetch(createFullVideoRequest(request));
+//       if (fullResponse.status === 200) {
+//         await cache.put(request.url, fullResponse);
+//       }
+//     })
+//     .catch(() => undefined)
+//     .finally(() => {
+//       inFlightVideoCaches.delete(request.url);
+//     });
+// 
+//   inFlightVideoCaches.set(request.url, task);
+//   return task;
 }
 
 self.addEventListener("install", (event) => {
@@ -232,15 +232,15 @@ self.addEventListener("install", (event) => {
           ),
         ),
       ),
-      caches.open(VIDEO_CACHE).then((cache) =>
-        Promise.all(
-          PRECACHE_VIDEO_URLS.map((url) =>
-            cache
-              .add(new Request(url, { cache: "reload", mode: "cors" }))
-              .catch(() => undefined),
-          ),
-        ),
-      ),
+      // caches.open(VIDEO_CACHE).then((cache) =>
+      //   Promise.all(
+      //     PRECACHE_VIDEO_URLS.map((url) =>
+      //       cache
+      //         .add(new Request(url, { cache: "reload", mode: "cors" }))
+      //         .catch(() => undefined),
+      //     ),
+      //   ),
+      // ),
     ])
       .then(() => self.skipWaiting()),
   );
@@ -301,7 +301,7 @@ self.addEventListener("fetch", (event) => {
     }
 
     event.respondWith(videoResponse(videoRequest));
-    event.waitUntil(cacheFullVideo(videoRequest));
+    // event.waitUntil(cacheFullVideo(videoRequest));
     return;
   }
 
