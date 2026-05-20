@@ -120,6 +120,8 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
   const [hasStartedPlayback, setHasStartedPlayback] = useState(false);
   const [errorReport, setErrorReport] = useState("");
   const [copied, setCopied] = useState(false);
+  const [blobSrc, setBlobSrc] = useState<string | null>(null);
+  const isWebView = /wv|WebView/i.test(navigator.userAgent);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const reportRef = useRef<HTMLPreElement | null>(null);
 
@@ -137,6 +139,35 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
   //     cancelled = true;
   //   };
   // }, [videoSrc]);
+
+  useEffect(() => {
+    if (!isWebView) return;
+    let cancelled = false;
+    let localBlobUrl: string | null = null;
+
+    // Fetch the video manually to bypass Android WebView's lack of Range request support
+    // when serving directly from UstadCache without an active Service Worker.
+    fetch(videoSrc)
+      .then((res) => {
+        if (!res.ok && res.status !== 206) throw new Error("fetch failed");
+        return res.blob();
+      })
+      .then((blob) => {
+        if (cancelled) return;
+        localBlobUrl = URL.createObjectURL(blob);
+        setBlobSrc(localBlobUrl);
+      })
+      .catch((err) => {
+        // Fallback or ignore - the video tag will try to play it natively and fail/succeed on its own
+      });
+
+    return () => {
+      cancelled = true;
+      if (localBlobUrl) {
+        URL.revokeObjectURL(localBlobUrl);
+      }
+    };
+  }, [videoSrc, isWebView]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -254,9 +285,10 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
       <video
         className="resilience-custom-video"
         ref={videoRef}
+        src={isWebView && blobSrc ? blobSrc : (!isWebView ? videoSrc : undefined)}
         controls
         controlsList="nodownload noremoteplayback"
-        crossOrigin={/wv|WebView/i.test(navigator.userAgent) ? undefined : "anonymous"}
+        crossOrigin={isWebView ? undefined : "anonymous"}
         style={{ pointerEvents: "auto" }}
         onCanPlay={() => {
           setHasOfflinePlaybackError(false);
@@ -266,7 +298,6 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
         onTimeUpdate={markPlaybackStarted}
         onError={handleVideoError}
       >
-        <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
@@ -301,7 +332,7 @@ function buildDiagReport(
 
   sections.push(`━━━ ${title} ━━━`);
   sections.push(`time: ${new Date().toISOString()}`);
-  sections.push(`version: v10 (hybrid ustad intercept)`);
+  sections.push(`version: v11 (native blob fallback)`);
   sections.push(`userAgent: ${navigator.userAgent}`);
 
   if (video) {
