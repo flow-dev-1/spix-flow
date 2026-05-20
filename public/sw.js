@@ -1,4 +1,4 @@
-const APP_CACHE = "flow-app-v3";
+const APP_CACHE = "flow-app-v4";
 const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
@@ -148,32 +148,54 @@ async function videoResponse(request) {
   const cached = await cache.match(request.url, { ignoreVary: true });
   if (cached) return buildRangeResponse(request, cached);
 
+  // Helper to fetch and verify the response is valid (not 503 / failed)
+  const fetchAndCheck = async (req) => {
+    try {
+      const res = await fetch(req);
+      if (res && (res.status === 200 || res.status === 206)) {
+        return res;
+      }
+    } catch (e) {
+      // Ignore and let it fall back
+    }
+    return null;
+  };
+
   try {
-    // Always fetch the full video (no Range header) so we can cache it completely.
-    // Browsers request videos with Range headers, but partial responses can't be
-    // reliably cached and replayed offline.
-    const fullResponse = await fetch(createFullVideoRequest(request));
-    if (fullResponse.status === 200) {
+    // 1. Always fetch the full video (no Range header) online first so we can cache it completely.
+    const cleanReq = createFullVideoRequest(request);
+    const fullResponse = await fetch(cleanReq);
+    if (fullResponse && fullResponse.status === 200) {
       await cache.put(request.url, fullResponse.clone());
       return buildRangeResponse(request, fullResponse);
     }
-
-    // If the server didn't return 200 for the full request, fall back to the
-    // original request (may be a range request) so the video still plays online.
-    return await fetch(request);
-  } catch {
-    try {
-      // CRITICAL: If the network fetch fails, attempt to fetch the original request.
-      // This gives the browser's native HTTP Cache or the native WebView/Respect app container's
-      // custom offline interceptors a chance to serve the cached video instead of blocking it with a 503.
-      return await fetch(request);
-    } catch {
-      return new Response("Resource not available offline.", {
-        status: 503,
-        statusText: "Offline - resource not cached",
-      });
-    }
+  } catch (e) {
+    // Ignore and proceed to offline fallbacks
   }
+
+  // 2. Try the original new URL (offline WebView intercept path)
+  let response = await fetchAndCheck(request);
+  if (response) return response;
+
+  // 3. Try the legacy URL path (offline WebView intercept path for old server-imported manifests)
+  if (request.url.includes("/SPIX-TOT2/")) {
+    const oldUrlStr = request.url.replace("/SPIX-TOT2/", "/tot2_videos/");
+    const oldRequest = new Request(oldUrlStr, {
+      method: request.method,
+      headers: request.headers,
+      mode: request.mode,
+      credentials: request.credentials,
+      redirect: request.redirect,
+    });
+    response = await fetchAndCheck(oldRequest);
+    if (response) return response;
+  }
+
+  // 4. Ultimate fallback: if everything fails, return 503
+  return new Response("Resource not available offline.", {
+    status: 503,
+    statusText: "Offline - resource not cached",
+  });
 }
 
 async function cacheFullVideo(request) {
