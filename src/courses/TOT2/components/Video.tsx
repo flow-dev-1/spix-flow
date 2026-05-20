@@ -97,6 +97,7 @@ function VideoComponent({ videoSrc }) {
         ref={videoRef}
         controls
         controlsList="nodownload noremoteplayback"
+        crossOrigin="anonymous"
         style={{ pointerEvents: "auto" }}
         onCanPlay={() => {
           setHasOfflinePlaybackError(false);

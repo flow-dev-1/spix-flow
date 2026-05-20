@@ -108,13 +108,12 @@ function createFullVideoRequest(request) {
   return new Request(request.url, {
     method: "GET",
     headers,
-    mode: request.mode,
-    credentials: request.credentials,
+    mode: "cors",
+    credentials: "same-origin",
     cache: "reload",
     redirect: request.redirect,
     referrer: request.referrer,
     referrerPolicy: request.referrerPolicy,
-    integrity: request.integrity,
   });
 }
 
