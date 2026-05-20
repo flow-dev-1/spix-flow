@@ -45,16 +45,53 @@
   opacity: 0.86;
 }
 
-.resilience-video-error-debug {
+.resilience-video-error-panel {
   margin: 8px 0 0;
-  padding: 10px;
-  border-radius: 6px;
-  background: #1b1b1b;
-  color: #ffffff;
+  border-radius: 8px;
+  background: #1a1a2e;
+  border: 1px solid #e74c3c44;
+  overflow: hidden;
+}
+
+.resilience-video-error-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #e74c3c22;
+  border-bottom: 1px solid #e74c3c33;
+  color: #ff6b6b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.resilience-video-error-copy-btn {
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid #e74c3c66;
+  background: #e74c3c33;
+  color: #ff9999;
   font-size: 11px;
-  line-height: 1.4;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.resilience-video-error-copy-btn:active {
+  background: #e74c3c66;
+}
+
+.resilience-video-error-panel__body {
+  margin: 0;
+  padding: 10px 12px;
+  color: #d4d4d4;
+  font-size: 11px;
+  line-height: 1.5;
   white-space: pre-wrap;
-  word-break: break-word;
+  word-break: break-all;
+  max-height: 300px;
+  overflow-y: auto;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 @keyframes resilience-video-loader-spin {
