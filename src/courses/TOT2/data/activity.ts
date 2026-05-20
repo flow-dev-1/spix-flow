@@ -47,7 +47,7 @@ export const courseContent = {
         id: 2,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_1.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_1.mp4",
         hasNextButton: true,
       },
       {
@@ -68,7 +68,7 @@ export const courseContent = {
         id: 4,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_2.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_2.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -91,7 +91,7 @@ export const courseContent = {
         id: 6,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_3.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_3.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -124,7 +124,7 @@ export const courseContent = {
         id: 8,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_4.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_4.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -204,7 +204,7 @@ export const courseContent = {
         id: 10,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_5.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_5.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -244,7 +244,7 @@ export const courseContent = {
         id: 12,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_6.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_6.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -408,7 +408,7 @@ export const courseContent = {
         id: 14,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_7.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_7.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -556,7 +556,7 @@ export const courseContent = {
         id: 16,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_8.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_8.mp4",
         navigation: {
           prev: true,
           next: true,
@@ -612,7 +612,7 @@ export const courseContent = {
         id: 18,
         type: "video",
         videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/tot2_videos/Week+1/Week+1_9.mp4",
+          "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT2/Week+1/Week+1_9.mp4",
         navigation: {
           prev: true,
           next: true,

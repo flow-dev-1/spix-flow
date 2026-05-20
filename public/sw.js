@@ -1,5 +1,5 @@
 const APP_CACHE = "flow-app-v2";
-const VIDEO_CACHE = "flow-videos-v5";
+const VIDEO_CACHE = "flow-videos-v6";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const PRECACHE_VIDEO_URLS = [

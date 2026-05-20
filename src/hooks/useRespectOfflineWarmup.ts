@@ -1,7 +1,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 const ASSET_CACHE = "flow-assets-v1";
-const VIDEO_CACHE = "flow-videos-v5";
+const VIDEO_CACHE = "flow-videos-v6";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const ASSET_TIMEOUT_MS = 12000;
 const VIDEO_TIMEOUT_MS = 25000;
