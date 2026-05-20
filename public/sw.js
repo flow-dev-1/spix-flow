@@ -284,9 +284,24 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (isCloudfrontVideo && !isWebView) {
-    event.respondWith(videoResponse(event.request));
-    event.waitUntil(cacheFullVideo(event.request));
+  if (isCloudfrontVideo) {
+    let videoRequest = event.request;
+    if (isWebView) {
+      // Rewrite to same-origin to force Android WebView shouldInterceptRequest interception
+      const sameOriginUrl = event.request.url.replace(
+        "https://d3sc34m1n26ele.cloudfront.net",
+        self.location.origin,
+      );
+      videoRequest = new Request(sameOriginUrl, {
+        method: event.request.method,
+        headers: event.request.headers,
+        mode: "same-origin",
+        credentials: event.request.credentials,
+      });
+    }
+
+    event.respondWith(videoResponse(videoRequest));
+    event.waitUntil(cacheFullVideo(videoRequest));
     return;
   }
 
