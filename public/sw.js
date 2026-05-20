@@ -1,4 +1,4 @@
-const APP_CACHE = "flow-app-v2";
+const APP_CACHE = "flow-app-v3";
 const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
