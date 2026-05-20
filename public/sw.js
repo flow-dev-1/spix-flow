@@ -1,5 +1,5 @@
 const APP_CACHE = "flow-app-v2";
-const VIDEO_CACHE = "flow-videos-v6";
+const VIDEO_CACHE = "flow-videos-v7";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const PRECACHE_VIDEO_URLS = [
@@ -102,18 +102,11 @@ async function navigationResponse(request) {
 }
 
 function createFullVideoRequest(request) {
-  const headers = new Headers(request.headers);
-  headers.delete("range");
-
   return new Request(request.url, {
     method: "GET",
-    headers,
     mode: "cors",
-    credentials: "same-origin",
+    credentials: "omit",
     cache: "reload",
-    redirect: request.redirect,
-    referrer: request.referrer,
-    referrerPolicy: request.referrerPolicy,
   });
 }
 

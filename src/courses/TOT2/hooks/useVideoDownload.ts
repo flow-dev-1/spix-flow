@@ -10,7 +10,7 @@ export interface DownloadProgress {
   error?: string;
 }
 
-const VIDEO_CACHE = "flow-videos-v6";
+const VIDEO_CACHE = "flow-videos-v7";
 
 /** Open the shared video cache directly from the main thread */
 async function openCache() {
