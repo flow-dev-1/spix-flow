@@ -62,7 +62,6 @@ const CACHEABLE_ASSET_EXTENSIONS = [
   ".webp",
 ];
 const NAVIGATION_ROUTE_PREFIXES = ["/courses", "/tot2"];
-const inFlightVideoCaches = new Map();
 
 async function staleWhileRevalidate(cacheName, request) {
   const cache = await caches.open(cacheName);
@@ -102,15 +101,6 @@ async function navigationResponse(request) {
   }
 }
 
-function createFullVideoRequest(request) {
-  return new Request(request.url, {
-    method: "GET",
-    mode: "cors",
-    credentials: "omit",
-    cache: "reload",
-  });
-}
-
 async function buildRangeResponse(request, cachedResponse) {
   const rangeHeader = request.headers.get("range");
   if (!rangeHeader || !cachedResponse) return cachedResponse;
@@ -145,9 +135,9 @@ async function buildRangeResponse(request, cachedResponse) {
 }
 
 async function videoResponse(request) {
-  // const cache = await caches.open(VIDEO_CACHE);
-  // const cached = await cache.match(request.url, { ignoreVary: true });
-  // if (cached) return buildRangeResponse(request, cached);
+  const cache = await caches.open(VIDEO_CACHE);
+  const cached = await cache.match(request.url, { ignoreVary: true });
+  if (cached) return buildRangeResponse(request, cached);
 
   // Helper to fetch and verify the response is valid (not 503 / failed)
   const fetchAndCheck = async (req) => {
@@ -162,64 +152,13 @@ async function videoResponse(request) {
     return null;
   };
 
-  try {
-    // 1. Always fetch the full video (no Range header) online first so we can cache it completely.
-    const cleanReq = createFullVideoRequest(request);
-    const fullResponse = await fetch(cleanReq);
-    if (fullResponse && fullResponse.status === 200) {
-      // await cache.put(request.url, fullResponse.clone());
-      return buildRangeResponse(request, fullResponse);
-    }
-  } catch (e) {
-    // Ignore and proceed to offline fallbacks
-  }
-
-  // 2. Try the original new URL (offline WebView intercept path)
-  let response = await fetchAndCheck(request);
+  const response = await fetchAndCheck(request);
   if (response) return buildRangeResponse(request, response);
 
-  // 3. Try the legacy URL path (offline WebView intercept path for old server-imported manifests)
-  if (request.url.includes("/SPIX-TOT2/")) {
-    const oldUrlStr = request.url.replace("/SPIX-TOT2/", "/tot2_videos/");
-    const oldRequest = new Request(oldUrlStr, {
-      method: request.method,
-      headers: request.headers,
-      mode: request.mode,
-      credentials: request.credentials,
-      redirect: request.redirect,
-    });
-    response = await fetchAndCheck(oldRequest);
-    if (response) return buildRangeResponse(oldRequest, response);
-  }
-
-  // 4. Ultimate fallback: if everything fails, return 503
   return new Response("Resource not available offline.", {
     status: 503,
     statusText: "Offline - resource not cached",
   });
-}
-
-async function cacheFullVideo(request) {
-//   if (inFlightVideoCaches.has(request.url)) return inFlightVideoCaches.get(request.url);
-// 
-//   const task = caches
-//     .open(VIDEO_CACHE)
-//     .then(async (cache) => {
-//       const cached = await cache.match(request.url, { ignoreVary: true });
-//       if (cached) return;
-// 
-//       const fullResponse = await fetch(createFullVideoRequest(request));
-//       if (fullResponse.status === 200) {
-//         await cache.put(request.url, fullResponse);
-//       }
-//     })
-//     .catch(() => undefined)
-//     .finally(() => {
-//       inFlightVideoCaches.delete(request.url);
-//     });
-// 
-//   inFlightVideoCaches.set(request.url, task);
-//   return task;
 }
 
 self.addEventListener("install", (event) => {
@@ -294,23 +233,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isCloudfrontVideo) {
-    let videoRequest = event.request;
-    if (isWebView) {
-      // Rewrite to same-origin to force Android WebView shouldInterceptRequest interception
-      const sameOriginUrl = event.request.url.replace(
-        "https://d3sc34m1n26ele.cloudfront.net",
-        self.location.origin,
-      );
-      videoRequest = new Request(sameOriginUrl, {
-        method: event.request.method,
-        headers: event.request.headers,
-        mode: "same-origin",
-        credentials: event.request.credentials,
-      });
+    if (self.navigator.onLine) {
+      return;
     }
 
-    event.respondWith(videoResponse(videoRequest));
-    // event.waitUntil(cacheFullVideo(videoRequest));
+    event.respondWith(videoResponse(event.request));
     return;
   }
 
