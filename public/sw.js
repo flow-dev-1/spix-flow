@@ -102,6 +102,8 @@ async function navigationResponse(request) {
 }
 
 async function buildRangeResponse(request, cachedResponse) {
+  if (cachedResponse.type === "opaque") return cachedResponse;
+
   const rangeHeader = request.headers.get("range");
   if (!rangeHeader || !cachedResponse) return cachedResponse;
 
@@ -143,7 +145,7 @@ async function videoResponse(request) {
   const fetchAndCheck = async (req) => {
     try {
       const res = await fetch(req);
-      if (res && (res.status === 200 || res.status === 206)) {
+      if (res && (res.ok || res.status === 206 || res.type === "opaque")) {
         return res;
       }
     } catch (e) {
@@ -201,19 +203,18 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // CRITICAL FIX: Android WebView's `shouldInterceptRequest` DOES NOT reliably intercept
-  // network requests made by a Service Worker. If we are running inside the RESPECT app (WebView),
-  // we MUST bypass the Service Worker completely and let the page make the request directly.
-  // This ensures `OkHttpWebViewClient` catches it and serves it from `UstadCache`.
-  if (isWebView) {
-    console.log("[Service Worker] WebView detected! Deferring all intercepts to native OkHttpWebViewClient.");
-    return;
-  }
-
   if (event.request.method !== "GET") return;
 
   const url = new URL(event.request.url);
   const isCloudfrontVideo = url.hostname === CLOUDFRONT_HOST;
+
+  // Android WebView direct media requests can fail before the native cache layer
+  // serves them. Let CloudFront videos use this SW cache path, while non-video
+  // WebView requests still defer to native handling.
+  if (isWebView && !isCloudfrontVideo) {
+    return;
+  }
+
   const isSameOriginAsset =
     url.origin === self.location.origin &&
     CACHEABLE_ASSET_EXTENSIONS.some((extension) =>
@@ -233,7 +234,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (isCloudfrontVideo) {
-    if (self.navigator.onLine) {
+    if (self.navigator.onLine && !isWebView) {
       return;
     }
 

@@ -1,14 +1,14 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 
-const ASSET_CACHE = "flow-assets-v1";
+const ASSET_CACHE = "flow-assets-v2";
 const VIDEO_CACHE = "flow-videos-v8";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const ASSET_TIMEOUT_MS = 12000;
-const VIDEO_TIMEOUT_MS = 25000;
+const VIDEO_TIMEOUT_MS = 120000;
 const ASSET_CONCURRENCY = 8;
-const VIDEO_CONCURRENCY = 3;
+const VIDEO_CONCURRENCY = 1;
+const VIDEO_CACHE_DELAY_MS = 8000;
 const COMPLETED_KEY_PREFIX = "spix-offline-warmup-complete-week-";
-const RESPECT_WARMUP_ENABLED = false;
 
 type ManifestLink = {
   href?: string;
@@ -48,14 +48,6 @@ const initialProgress: WarmupProgress = {
   lastUrl: "",
 };
 
-function isRespectSession() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.has("respectLaunchVersion") ||
-    Boolean(sessionStorage.getItem("respect-launch-params"))
-  );
-}
-
 function resolveManifestHref(href: string) {
   try {
     return new URL(href, window.location.origin + "/opds/tot2-manifest.json").href;
@@ -80,32 +72,34 @@ function getCurrentWeekFromUrl() {
   return 1;
 }
 
-function currentWeek() {
-  const week = getCurrentWeekFromUrl();
-  return week >= 1 && week <= 5 ? week : 1;
+function normalizeWeek(week?: number | null) {
+  if (week && week >= 1 && week <= 5) return week;
+  return null;
 }
 
-function manifestUrlForCurrentWeek() {
-  return "/opds/tot2-week" + currentWeek() + "-manifest.json";
+function currentWeek(week?: number | null) {
+  const normalizedWeek = normalizeWeek(week);
+  if (normalizedWeek) return normalizedWeek;
+
+  const currentUrlWeek = getCurrentWeekFromUrl();
+  const weekFromUrl = normalizeWeek(currentUrlWeek);
+  if (weekFromUrl) return weekFromUrl;
+
+  return 1;
 }
 
-function completedKeyForCurrentWeek() {
-  return COMPLETED_KEY_PREFIX + currentWeek();
+function manifestUrlForWeek(week?: number | null) {
+  return "/opds/tot2-week" + currentWeek(week) + "-manifest.json";
 }
 
-function getCompletedWarmup() {
-  try {
-    const raw = localStorage.getItem(completedKeyForCurrentWeek());
-    return raw ? (JSON.parse(raw) as { total?: number; completedAt?: string }) : null;
-  } catch {
-    return null;
-  }
+function completedKeyForWeek(week?: number | null) {
+  return COMPLETED_KEY_PREFIX + currentWeek(week);
 }
 
-function setCompletedWarmup(total: number) {
+function setCompletedWarmup(week: number, total: number) {
   try {
     localStorage.setItem(
-      completedKeyForCurrentWeek(),
+      completedKeyForWeek(week),
       JSON.stringify({
         total,
         completedAt: new Date().toISOString(),
@@ -126,6 +120,43 @@ function cacheNameFor(url: URL, type?: string) {
 
 function isVideoResource(url: URL, type?: string) {
   return url.hostname === CLOUDFRONT_HOST || type?.startsWith("video/");
+}
+
+function cacheRequestFor(url: URL, type?: string) {
+  const isVideo = isVideoResource(url, type);
+
+  return new Request(url.href, {
+    cache: "force-cache",
+    credentials: "omit",
+    mode: url.origin === window.location.origin ? "same-origin" : isVideo ? "no-cors" : "cors",
+  });
+}
+
+function cacheMatchOptionsFor(url: URL, type?: string) {
+  return isVideoResource(url, type) ? { ignoreVary: true } : undefined;
+}
+
+async function isResourceCached(href: string, type?: string) {
+  const resolved = resolveManifestHref(href);
+  if (!resolved) return false;
+
+  const url = new URL(resolved);
+  const cache = await caches.open(cacheNameFor(url, type));
+  return Boolean(await cache.match(resolved, cacheMatchOptionsFor(url, type)));
+}
+
+async function persistStorageIfPossible() {
+  try {
+    if (!navigator.storage?.persist) return;
+    const isPersisted = await navigator.storage.persisted();
+    if (!isPersisted) await navigator.storage.persist();
+  } catch {
+    // Browsers can deny or omit persistent storage; caching can still continue.
+  }
+}
+
+function visibleWeekLabel(week: number) {
+  return week >= 1 && week <= 5 ? week : 1;
 }
 
 function uniqueResources(resources: ManifestLink[]) {
@@ -155,6 +186,10 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number, href: string) {
   });
 }
 
+function delay(ms: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
 async function cacheResource(href: string, type?: string) {
   const resolved = resolveManifestHref(href);
   if (!resolved) return;
@@ -166,14 +201,11 @@ async function cacheResource(href: string, type?: string) {
   }
 
   const cache = await caches.open(cacheNameFor(url, type));
-  if (await cache.match(resolved)) return;
+  if (await cache.match(resolved, cacheMatchOptionsFor(url, type))) return;
 
   const timeoutMs = isVideoResource(url, type) ? VIDEO_TIMEOUT_MS : ASSET_TIMEOUT_MS;
   const response = await withTimeout(
-    fetch(resolved, {
-      cache: "force-cache",
-      mode: url.origin === window.location.origin ? "same-origin" : "cors",
-    }),
+    fetch(cacheRequestFor(url, type)),
     timeoutMs,
     resolved,
   );
@@ -211,22 +243,12 @@ function collectResources(manifest: WebPublicationManifest) {
 
 async function warmupFromManifest(
   setProgress: Dispatch<SetStateAction<WarmupProgress>>,
+  week?: number | null,
 ) {
   if (!("caches" in window) || !navigator.onLine) return;
 
-  const completedWarmup = getCompletedWarmup();
-  if (completedWarmup?.total) {
-    setProgress({
-      ...initialProgress,
-      visible: true,
-      phase: "done",
-      total: completedWarmup.total,
-      completed: completedWarmup.total,
-      cached: completedWarmup.total,
-      lastUrl: "Week " + currentWeek() + " already cached",
-    });
-    return;
-  }
+  const weekNumber = currentWeek(week);
+  await persistStorageIfPossible();
 
   setProgress({
     ...initialProgress,
@@ -234,7 +256,7 @@ async function warmupFromManifest(
     phase: "loading-manifest",
   });
 
-  const manifestUrl = manifestUrlForCurrentWeek();
+  const manifestUrl = manifestUrlForWeek(weekNumber);
   const response = await fetch(manifestUrl, { cache: "no-cache" });
   if (!response.ok) return;
 
@@ -248,9 +270,26 @@ async function warmupFromManifest(
     const resolved = resolveManifestHref(item.href as string);
     return resolved ? isVideoResource(new URL(resolved), item.type) : false;
   });
+
+  const missingAssetResources: ManifestLink[] = [];
+  const missingVideoResources: ManifestLink[] = [];
+
+  await runPool(assetResources, ASSET_CONCURRENCY, async (item) => {
+    if (!(await isResourceCached(item.href as string, item.type))) {
+      missingAssetResources.push(item);
+    }
+  });
+  await runPool(videoResources, VIDEO_CONCURRENCY, async (item) => {
+    if (!(await isResourceCached(item.href as string, item.type))) {
+      missingVideoResources.push(item);
+    }
+  });
+
   let cached = 0;
   const failed: string[] = [];
   const total = assetResources.length + videoResources.length;
+  const alreadyCached = total - missingAssetResources.length - missingVideoResources.length;
+  cached = alreadyCached;
 
   const updateCounts = (
     patch: Partial<WarmupProgress>,
@@ -267,8 +306,8 @@ async function warmupFromManifest(
     visible: true,
     phase: "caching-assets",
     total,
-    completed: 0,
-    cached: 0,
+    completed: alreadyCached,
+    cached: alreadyCached,
     failed: 0,
     active: 0,
     assets: assetResources.length,
@@ -306,14 +345,18 @@ async function warmupFromManifest(
     }
   };
 
-  await runPool(assetResources, ASSET_CONCURRENCY, cacheItem);
+  await runPool(missingAssetResources, ASSET_CONCURRENCY, cacheItem);
 
   updateCounts({
     phase: "caching-videos",
     active: 0,
   });
 
-  await runPool(videoResources, VIDEO_CONCURRENCY, cacheItem);
+  if (missingVideoResources.length > 0) {
+    await delay(VIDEO_CACHE_DELAY_MS);
+  }
+
+  await runPool(missingVideoResources, VIDEO_CONCURRENCY, cacheItem);
 
   try {
     localStorage.setItem("spix-offline-warmup-failed", JSON.stringify(failed));
@@ -322,10 +365,10 @@ async function warmupFromManifest(
   }
 
   if (failed.length === 0) {
-    setCompletedWarmup(total);
+    setCompletedWarmup(weekNumber, total);
   } else {
     try {
-      localStorage.removeItem(completedKeyForCurrentWeek());
+      localStorage.removeItem(completedKeyForWeek(weekNumber));
     } catch {
       // Ignore storage quota/private mode failures.
     }
@@ -337,18 +380,25 @@ async function warmupFromManifest(
     active: 0,
     cached,
     failed: failed.length,
+    lastUrl: failed.length ? prev.lastUrl : "Week " + visibleWeekLabel(weekNumber) + " cached",
   }));
 }
 
-export function useRespectOfflineWarmup() {
+export function useSpixWeekCache(week?: number | null) {
   const [progress, setProgress] = useState<WarmupProgress>(initialProgress);
+  const runIdRef = useRef(0);
 
   useEffect(() => {
-    if (!RESPECT_WARMUP_ENABLED) return;
-    if (!isRespectSession()) return;
+    const weekNumber = currentWeek(week);
+    runIdRef.current += 1;
+    const runId = runIdRef.current;
 
     const run = () => {
-      warmupFromManifest(setProgress).catch((error) => {
+      warmupFromManifest((nextProgress) => {
+        if (runId !== runIdRef.current) return;
+        setProgress(nextProgress);
+      }, weekNumber).catch((error) => {
+        if (runId !== runIdRef.current) return;
         setProgress((prev) => ({
           ...prev,
           visible: true,
@@ -366,7 +416,9 @@ export function useRespectOfflineWarmup() {
       window.clearTimeout(timer);
       window.removeEventListener("online", run);
     };
-  }, []);
+  }, [week]);
 
   return progress;
 }
+
+export const useRespectOfflineWarmup = useSpixWeekCache;

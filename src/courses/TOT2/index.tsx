@@ -112,6 +112,7 @@ import { setCourse } from "@/store/navigationSlice";
 import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
+import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 
 const weeksTopic = [
   "Understanding Inclusion and Special Needs in the Classroom",
@@ -560,6 +561,7 @@ const CourseContent = () => {
     () => Number(sessionStorage.getItem("flow-highestWeek") ?? 1)
   );
   const [enrollmentId, setEnrollmentId] = useState(null);
+  useSpixWeekCache(currentWeek);
 
   // Get enrollment data from location state
   const enrolmentData = location.state?.enrollmentData as any;
