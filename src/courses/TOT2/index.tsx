@@ -135,6 +135,7 @@ const getLaunchWeekFromUrl = () => {
 };
 
 const weekProgressKey = (weekNumber: number) => `tot2-week-progress-${weekNumber}`;
+const courseProgressKey = "tot2-flowProgress";
 
 const getSavedWeekProgress = (weekNumber: number) => {
   try {
@@ -155,6 +156,32 @@ const getSavedWeekProgress = (weekNumber: number) => {
   }
 };
 
+const getSavedCourseProgress = () => {
+  try {
+    const raw =
+      localStorage.getItem(courseProgressKey) ||
+      sessionStorage.getItem(courseProgressKey);
+    if (!raw) return null;
+
+    const saved = JSON.parse(raw);
+    const currentWeek = Number(saved?.currentWeek);
+    const currentPage = Number(saved?.currentPage);
+    const currentStep = Number(saved?.currentStep);
+    const highestWeek = Number(saved?.highestWeek);
+
+    if (!currentWeek || !currentPage || !currentStep) return null;
+
+    return {
+      currentWeek,
+      currentPage,
+      currentStep,
+      highestWeek: highestWeek || currentWeek,
+    };
+  } catch {
+    return null;
+  }
+};
+
 const saveWeekProgress = (weekNumber: number, page: number, step: number) => {
   if (!weekNumber || !page || !step) return;
 
@@ -162,6 +189,29 @@ const saveWeekProgress = (weekNumber: number, page: number, step: number) => {
   try {
     localStorage.setItem(weekProgressKey(weekNumber), value);
     sessionStorage.setItem(weekProgressKey(weekNumber), value);
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+};
+
+const saveCourseProgressLocally = (
+  weekNumber: number,
+  page: number,
+  step: number,
+  highestWeek?: number,
+) => {
+  if (!weekNumber || !page || !step) return;
+
+  const value = JSON.stringify({
+    currentWeek: weekNumber,
+    currentPage: page,
+    currentStep: step,
+    highestWeek: Math.max(highestWeek || weekNumber, weekNumber),
+  });
+
+  try {
+    localStorage.setItem(courseProgressKey, value);
+    sessionStorage.setItem(courseProgressKey, value);
   } catch {
     // Ignore storage quota/private mode failures.
   }
@@ -249,11 +299,13 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // On mount: try to restore position from the LRS State API (RESPECT sessions) or local fallback.
   useEffect(() => {
     restoreProgress().then((saved) => {
-      let targetWeek = saved?.currentWeek || 1;
-      let targetPage = saved?.currentPage || 1;
-      let targetStep = saved?.currentStep || 1;
+      const localSaved = getSavedCourseProgress();
+      const restored = saved || localSaved;
+      let targetWeek = restored?.currentWeek || 1;
+      let targetPage = restored?.currentPage || 1;
+      let targetStep = restored?.currentStep || 1;
       
-      const highestAuthorizedWeek = Math.max(saved?.highestWeek || 1, targetWeek);
+      const highestAuthorizedWeek = Math.max(restored?.highestWeek || 1, targetWeek);
 
       // OPDS launches can request any listed week directly. Progress is still
       // restored and saved, but access is not hard-gated by previous weeks.
@@ -261,7 +313,16 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       if (launchWeek) {
         const reqWeek = launchWeek;
         if (reqWeek >= 1 && reqWeek <= weeksTopic.length) {
-          const savedLaunchProgress = getSavedWeekProgress(reqWeek);
+          const isCompletedLaunchWeek = highestAuthorizedWeek > reqWeek;
+          const savedLaunchProgress =
+            restored?.currentWeek === reqWeek && !isCompletedLaunchWeek
+              ? {
+                  page: restored.currentPage,
+                  step: restored.currentStep,
+                }
+              : isCompletedLaunchWeek
+                ? { page: 1, step: 1 }
+                : getSavedWeekProgress(reqWeek);
           targetWeek = reqWeek;
           targetPage = savedLaunchProgress.page;
           targetStep = savedLaunchProgress.step;
@@ -274,6 +335,8 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       sessionStorage.setItem("flow-currentWeek", String(targetWeek));
       sessionStorage.setItem("flow-currentPage", String(targetPage));
       sessionStorage.setItem("flow-currentStep", String(targetStep));
+      saveWeekProgress(targetWeek, targetPage, targetStep);
+      saveCourseProgressLocally(targetWeek, targetPage, targetStep, highestAuthorizedWeek);
       
       setMaxAccessibleWeek((prev) => {
         const next = Math.max(prev, highestAuthorizedWeek, targetWeek);
@@ -304,14 +367,16 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Persist position to the LRS State API whenever the user advances
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
-    const step = Number(sessionStorage.getItem("flow-currentStep") ?? 1);
+    const step = currentStep || Number(sessionStorage.getItem("flow-currentStep") ?? 1);
+    const highestWeek = Math.max(currentWeek, maxAccessibleWeek);
+    saveCourseProgressLocally(currentWeek, currentPage, step, highestWeek);
     persistProgress({ 
       currentWeek, 
       currentPage, 
       currentStep: step,
-      highestWeek: Math.max(currentWeek, maxAccessibleWeek)
+      highestWeek,
     });
-  }, [currentWeek, currentPage, maxAccessibleWeek]);
+  }, [currentWeek, currentPage, currentStep, maxAccessibleWeek]);
 
   // toDo: Fetch User assessment and Activity Data
   const { data, isLoading, status, isError } = useQuery({
@@ -635,6 +700,7 @@ const CourseContent = () => {
   // maxAccessibleWeek only ever increases — navigating back never locks future weeks or decreases progress.
   useEffect(() => {
     saveWeekProgress(currentWeek, currentPage, currentStep);
+    saveCourseProgressLocally(currentWeek, currentPage, currentStep, maxAccessibleWeek);
 
     setMaxAccessibleWeek((prev) => {
       const next = Math.max(prev, currentWeek);
