@@ -6,6 +6,7 @@ import {
   selectCurrentWeek,
   selectShowHurray,
   selectCurrentPage,
+  selectCurrentStep,
   selectNavigationState,
   setCurrentWeek,
   setCurrentPage,
@@ -133,6 +134,59 @@ const getLaunchWeekFromUrl = () => {
   return startWeekParam ? Number(startWeekParam) : null;
 };
 
+const weekProgressKey = (weekNumber: number) => `tot2-week-progress-${weekNumber}`;
+
+const getSavedWeekProgress = (weekNumber: number) => {
+  try {
+    const raw =
+      localStorage.getItem(weekProgressKey(weekNumber)) ||
+      sessionStorage.getItem(weekProgressKey(weekNumber));
+    if (!raw) return { page: 1, step: 1 };
+
+    const saved = JSON.parse(raw);
+    const page = Number(saved?.page);
+    const step = Number(saved?.step);
+    return {
+      page: page > 0 ? page : 1,
+      step: step > 0 ? step : 1,
+    };
+  } catch {
+    return { page: 1, step: 1 };
+  }
+};
+
+const saveWeekProgress = (weekNumber: number, page: number, step: number) => {
+  if (!weekNumber || !page || !step) return;
+
+  const value = JSON.stringify({ page, step });
+  try {
+    localStorage.setItem(weekProgressKey(weekNumber), value);
+    sessionStorage.setItem(weekProgressKey(weekNumber), value);
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+};
+
+const saveWeekResponsesLocally = (
+  weekNumber: number,
+  responses?: { activities?: unknown[]; assessments?: unknown[] },
+) => {
+  if (!weekNumber || !responses) return;
+  if (!responses.activities?.length && !responses.assessments?.length) return;
+
+  try {
+    localStorage.setItem(
+      `tot2-flowResponses-week${weekNumber}`,
+      JSON.stringify({
+        activities: responses.activities ?? [],
+        assessments: responses.assessments ?? [],
+      }),
+    );
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+};
+
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -207,9 +261,10 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       if (launchWeek) {
         const reqWeek = launchWeek;
         if (reqWeek >= 1 && reqWeek <= weeksTopic.length) {
+          const savedLaunchProgress = getSavedWeekProgress(reqWeek);
           targetWeek = reqWeek;
-          targetPage = 1;
-          targetStep = 1;
+          targetPage = savedLaunchProgress.page;
+          targetStep = savedLaunchProgress.step;
         }
       }
 
@@ -552,6 +607,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
 const CourseContent = () => {
   const { isAdmin } = useSelector(adminData);
   const currentWeek = useSelector(selectCurrentWeek);
+  const currentPage = useSelector(selectCurrentPage);
+  const currentStep = useSelector(selectCurrentStep);
+  const currentUserAnswers = useSelector(userAnswer);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -576,6 +634,8 @@ const CourseContent = () => {
   // Derive progress locally from the highest week reached — each completed week = 20%.
   // maxAccessibleWeek only ever increases — navigating back never locks future weeks or decreases progress.
   useEffect(() => {
+    saveWeekProgress(currentWeek, currentPage, currentStep);
+
     setMaxAccessibleWeek((prev) => {
       const next = Math.max(prev, currentWeek);
       sessionStorage.setItem("flow-highestWeek", String(next));
@@ -587,7 +647,7 @@ const CourseContent = () => {
       
       return next;
     });
-  }, [currentWeek, weeksTopic.length]);
+  }, [currentWeek, currentPage, currentStep, weeksTopic.length]);
 
   useEffect(() => {
     const segments = location.pathname.split("/").filter(Boolean);
@@ -599,17 +659,26 @@ const CourseContent = () => {
   }, [location.pathname, dispatch, weeksTopic.length]);
 
   const handleWeekClick = (weekNumber) => {
+    saveWeekProgress(currentWeek, currentPage, currentStep);
+    if (currentUserAnswers?.week === currentWeek) {
+      saveWeekResponsesLocally(currentWeek, currentUserAnswers);
+    }
+    const isCompletedWeek = maxAccessibleWeek > weekNumber;
+    const savedProgress = isCompletedWeek
+      ? { page: 1, step: 1 }
+      : getSavedWeekProgress(weekNumber);
+
     // Clear previous week data before switching
     dispatch(clearData());
 
     dispatch(setCurrentWeek(weekNumber));
-    dispatch(setCurrentPage(1));
-    dispatch(setCurrentStep(1));
+    dispatch(setCurrentPage(savedProgress.page));
+    dispatch(setCurrentStep(savedProgress.step));
 
     // Update session storage
     sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
-    sessionStorage.setItem("flow-currentPage", "1");
-    sessionStorage.setItem("flow-currentStep", "1");
+    sessionStorage.setItem("flow-currentPage", String(savedProgress.page));
+    sessionStorage.setItem("flow-currentStep", String(savedProgress.step));
   };
 
   const isWeekAccessible = (weekNumber) => {

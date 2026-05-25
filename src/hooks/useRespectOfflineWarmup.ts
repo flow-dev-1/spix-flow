@@ -6,7 +6,7 @@ const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
 const ASSET_TIMEOUT_MS = 12000;
 const VIDEO_TIMEOUT_MS = 120000;
 const ASSET_CONCURRENCY = 8;
-const VIDEO_CONCURRENCY = 1;
+const VIDEO_CONCURRENCY = 2;
 const VIDEO_CACHE_DELAY_MS = 8000;
 const COMPLETED_KEY_PREFIX = "spix-offline-warmup-complete-week-";
 
