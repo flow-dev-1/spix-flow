@@ -1,7 +1,6 @@
 name: Deploy Frontend to S3 + CloudFront
 
 on:
-  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -10,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
 
     steps:
     - name: Checkout code
@@ -40,6 +38,8 @@ jobs:
 
     - name: Invalidate CloudFront cache
       if: env.CLOUDFRONT_DIST_ID != ''
+      env:
+        CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
       run: |
         aws cloudfront create-invalidation \
           --distribution-id $CLOUDFRONT_DIST_ID \
