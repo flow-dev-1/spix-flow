@@ -28,6 +28,7 @@ function Frame({ data, answers, setAnswers, setErrorMessage }) {
       return updatedAnswers;
     });
   };
+  //
 
   return (
     <QuestionBox>
