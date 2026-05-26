@@ -205,14 +205,14 @@ const DragAndDropFrame = ({
               />
             </div>
 
-            <div className="d-flex justify-content-around align-items-centers gap-3 flex-wrap">
+            <div className="support-circle-grid">
               {buckets &&
                 buckets.map((bucket) => (
                   <Droppable key={bucket.title} droppableId={bucket.id}>
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
-                        className="pt-1 flex-fill draggable-bucket"
+                        className="support-circle-drop draggable-bucket"
                         {...provided.droppableProps}
                         style={{
                           backgroundColor: snapshot.isDraggingOver
@@ -234,10 +234,10 @@ const DragAndDropFrame = ({
                         <div
                           className={
                             bucket.id === "green"
-                              ? "inner-bowl bucket-text"
+                              ? "support-circle-bowl inner-bowl bucket-text"
                               : bucket.id === "orange"
-                                ? "outer-bowl bucket-text"
-                                : "both-bowl bucket-text"
+                                ? "support-circle-bowl outer-bowl bucket-text"
+                                : "support-circle-bowl both-bowl bucket-text"
                           }
                           style={
                             {

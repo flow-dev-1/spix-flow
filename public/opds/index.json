@@ -16,7 +16,7 @@
       "type": "application/opds+json",
       "alternate": [
         {
-          "href": "https://spix.flowonline.app/assets/tot2-cover.jpg",
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
           "rel": "icon",
           "type": "image/png",
           "title": "TOT Course Cover"

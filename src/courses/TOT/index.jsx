@@ -858,7 +858,7 @@ const CourseContent = () => {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar tot-course-navbar">
         <div className="container">
           <button
             disabled={isAdmin}
@@ -876,7 +876,7 @@ const CourseContent = () => {
             Logout
           </div>
 
-          <div className="d-block d-lg-none position-relative">
+          <div className="d-none">
             <Icon
               icon="mdi:menu"
               width={30}
@@ -933,12 +933,12 @@ const CourseContent = () => {
         </div>
       </nav>
 
-      <div className="main-content flex-column-reverse flex-md-row">
+      <div className="main-content tot-course-main flex-column-reverse flex-md-row">
         <aside className="d-md-none d-lg-block aside-class">
           <button
             disabled={isAdmin}
             onClick={() => navigate("/courses")}
-            className="back fs-6"
+            className="back fs-6 d-none d-lg-block"
             style={{ cursor: "pointer", border: "none", background: "#f8f5f5" }}
           >
             <Icon icon="fa6-solid:arrow-left-long" className="me-2" />

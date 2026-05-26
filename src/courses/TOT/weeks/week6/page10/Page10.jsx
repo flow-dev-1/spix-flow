@@ -10,37 +10,11 @@ import {
   selectCurrentStep,
 } from "@/store/navigationSlice";
 import TOTFeedbackModal from "../../../components/TOTFeedbackModal";
-import StepIndicator from "../../../components/StepIndicator";
 import {
   userAnswer,
   saveActivity,
 } from "@/store/userAnswersReducer";
 import { adminData } from "@/store/adminReducer";
-
-const InternalStepIndicator = ({ totalSteps, currentStep }) => {
-  return (
-    <div
-      className="d-flex justify-content-center mt-4 flex-wrap"
-      style={{ gap: "10px" }}
-    >
-      {[...Array(totalSteps)].map((_, index) => (
-        <div
-          key={index}
-          className={`${
-            index + 2 <= currentStep ? "bg-step-active" : "bg-step"
-          }`}
-          style={{
-            // flexBasis: "35px",
-            width: "35px",
-            height: "17px",
-            borderRadius: "8px",
-            cursor: index <= currentStep ? "pointer" : "default",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
 
 function Page8() {
   const dispatch = useDispatch(); // Initialize dispatch
@@ -170,12 +144,36 @@ function Page8() {
         <div className="text-danger">{errorMessage}</div>
       )}{" "}
       {/* Display error message */}
-      <div className="d-flex justify-content-center align-items-cente gap-2">
-        <StepIndicator totalSteps={totalSteps} />
-        <InternalStepIndicator
-          totalSteps={dragDropImageLength}
-          currentStep={currentImageIndex + 1}
-        />
+      <div className="d-flex justify-content-center mt-4 step-dots-row">
+        {[...Array(totalSteps)].map((_, index) =>
+          index < currentStep ? (
+            <div
+              key={`step-${index}`}
+              className="bg-step-active step-dot"
+              style={{ borderRadius: "8px" }}
+            />
+          ) : null,
+        )}
+        {currentStep >= 2 &&
+          [...Array(dragDropImageLength)].map((_, index) => {
+            const isActive = currentStep > 2 || index <= currentImageIndex;
+            return (
+              <div
+                key={`img-${index}`}
+                className={`${isActive ? "bg-step-active" : "bg-step"} step-dot`}
+                style={{ borderRadius: "8px" }}
+              />
+            );
+          })}
+        {[...Array(totalSteps)].map((_, index) =>
+          index >= currentStep ? (
+            <div
+              key={`step-future-${index}`}
+              className="bg-step step-dot"
+              style={{ borderRadius: "8px" }}
+            />
+          ) : null,
+        )}
       </div>
       <div className="d-flex justify-content-center gap-96px mt-3 gap-4">
         <Button text="Prev" />

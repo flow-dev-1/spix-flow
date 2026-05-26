@@ -1,5 +1,5 @@
 // src/components/Hurray.js
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ConfettiAnimation from "./FireWork"; // Import the new component
@@ -11,6 +11,15 @@ import {
 import "./question.css"
 import { getAssetUrl } from "../assetUrls";
 
+const isRespectWebViewSession = () => {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("respectLaunchVersion") === "1" ||
+    Boolean(sessionStorage.getItem("respect-launch-params"))
+  );
+};
+
 const Hurray = ({ currentWeek = 3 }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const dispatch = useDispatch();
@@ -21,7 +30,7 @@ const Hurray = ({ currentWeek = 3 }) => {
     sessionStorage.setItem("flow-currentPage", 1);
     sessionStorage.setItem("flow-currentStep", 1);
     if (isLastWeek) {
-      navigate("/dashboard/my-courses");
+      navigate(isRespectWebViewSession() ? "/tot" : "/dashboard/my-courses");
     } else {
       dispatch(hideHurray());
     }

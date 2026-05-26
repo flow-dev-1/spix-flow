@@ -5,27 +5,42 @@
   font-weight: 700 !important;
 }
 
+.tot-page4-video-stage {
+  position: relative;
+}
+
 .feeling-modal {
-  position: fixed;
-  /* the only way i could think of*/
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  z-index: 999999;
+  z-index: 5;
   background-color: white;
   border-radius: 1rem;
   padding: 1rem;
 
   max-width: 620px;
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
   width: 90%;
 }
 
 /* Tablet */
 @media (max-width: 768px) {
   .feeling-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    margin: 0;
     width: 95%;
     padding: 1rem;
+  }
+
+  .review-buttons {
+    flex-wrap: wrap;
   }
 
   .btn.sad img {

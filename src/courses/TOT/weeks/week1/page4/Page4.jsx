@@ -64,9 +64,11 @@ function Page4() {
 
   return (
     <>
-      <VideoComponent videoSrc={pageData.videoSrc} />
-      {/* pass answers and setAnswers so Feeling can read/update selection */}
-      {!showFeedback && <Feeling answers={answers} setAnswers={setAnswers} />}
+      <div className="tot-page4-video-stage">
+        <VideoComponent videoSrc={pageData.videoSrc} />
+        {/* pass answers and setAnswers so Feeling can read/update selection */}
+        {!showFeedback && <Feeling answers={answers} setAnswers={setAnswers} />}
+      </div>
       {errorMessage && <div className="text-danger">{errorMessage}</div>}{" "}
       {/* Display error message */}
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
