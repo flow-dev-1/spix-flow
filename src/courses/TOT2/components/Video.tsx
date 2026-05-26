@@ -25,6 +25,7 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
   }, []);
 
   useEffect(() => {
+    videoRef.current?.load();
     function handleOnline() {
       setIsOnline(true);
       setHasOfflinePlaybackError(false);
@@ -93,10 +94,12 @@ function VideoComponent({ videoSrc }: { videoSrc: string }) {
   return (
     <div style={{ position: "relative" }}>
       <video
+        key={videoSrc}
         className="resilience-custom-video"
         ref={videoRef}
         controls
         controlsList="nodownload noremoteplayback"
+        preload="metadata"
         style={{ pointerEvents: "auto" }}
         onCanPlay={() => {
           setHasOfflinePlaybackError(false);

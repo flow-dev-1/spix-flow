@@ -8,6 +8,7 @@ import {
   selectCurrentPage,
   selectCurrentStep,
   selectNavigationState,
+  selectCurrentCourse,
   setCurrentWeek,
   setCurrentPage,
   setCurrentStep,
@@ -693,6 +694,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
 
 const CourseContent = () => {
   const { isAdmin } = useSelector(adminData);
+  const currentCourse = useSelector(selectCurrentCourse);
   const currentWeek = useSelector(selectCurrentWeek);
   const currentPage = useSelector(selectCurrentPage);
   const currentStep = useSelector(selectCurrentStep);
@@ -739,12 +741,16 @@ const CourseContent = () => {
 
   useEffect(() => {
     const segments = location.pathname.split("/").filter(Boolean);
-    const lastSegment = segments[segments.length - 1];
+    const courseSegment = segments[0]?.toLowerCase();
 
-    if (["tot_2"].includes(lastSegment?.toLowerCase())) {
-      dispatch(setCourse(lastSegment.toLowerCase()));
+    if (courseSegment === "tot2" || courseSegment === "tot_2") {
+      dispatch(setCourse("tot_2"));
     }
   }, [location.pathname, dispatch, weeksTopic.length]);
+
+  if (currentCourse !== "tot_2") {
+    return null;
+  }
 
   const handleWeekClick = (weekNumber) => {
     saveWeekProgress(currentWeek, currentPage, currentStep);

@@ -189,7 +189,7 @@ async function videoResponse(request) {
   };
 
   const response = await fetchAndCheck(request);
-  if (response) return buildRangeResponse(request, response);
+  if (response) return response;
 
   return new Response("Resource not available offline.", {
     status: 503,
