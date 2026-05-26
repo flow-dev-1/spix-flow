@@ -62,10 +62,10 @@ function CareerLadderFrame({ boxes, answers, setAnswers, setErrorMessage }) {
                   }}
                   onClick={() => handleBoxClick(box)}
                 >
-                  <span className="fs-4 fs-md-1 fw-bold tot-question-text">
+                  <span className="fs-4 fs-md-1 fw-bold tot-question-text career-ladder-label">
                     {box.text}
                   </span>
-                  <span className="">
+                  <span className="career-ladder-icon">
                     <svg
                       width="24"
                       height="24"

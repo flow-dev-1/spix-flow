@@ -178,7 +178,7 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers,setCurren
             <div className="d-flex align-items-start mb-2">
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head" />
               <div className="text-center text-white pt-1 flex-grow-1 tot-drag-instruction">
-                <h1>{instruction}</h1>
+                <h1 className="fs-3">{instruction}</h1>
               </div>
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head arrow-tail" />
             </div>

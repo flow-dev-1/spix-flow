@@ -24,6 +24,63 @@
     font-size: 1.6rem !important;
 }
 
+.dnd-row-fixed {
+    overflow: hidden;
+}
+
+.dnd-buckets-col {
+    min-width: 0;
+}
+
+.tot-week2-buckets-row {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    flex-wrap: nowrap;
+    gap: 0;
+    min-height: 160px;
+    overflow: hidden;
+}
+
+.tot-week2-bucket-drop.draggable-bucket {
+    width: 33.333% !important;
+    min-width: 0 !important;
+    min-height: 158px !important;
+    flex: 1 1 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 10px;
+    padding-inline: 2px;
+    transition: background-color 0.15s ease, outline 0.15s ease;
+}
+
+.tot-week2-bucket-drop.is-dragging-over {
+    background-color: rgba(255, 255, 255, 0.14);
+    outline: 3px solid rgba(255, 255, 255, 0.92);
+    outline-offset: -3px;
+}
+
+.tot-week2-bucket-drop .bucket-text {
+    width: min(120px, 100%) !important;
+    height: auto;
+    aspect-ratio: 1;
+    margin: 0 auto !important;
+    padding: 1.1em;
+    background-size: contain;
+    background-position: center;
+}
+
+.tot-week2-bucket-drop .bucket-text p {
+    margin: 0;
+    line-height: 1.15;
+}
+
+[data-rbd-placeholder-context-id] {
+    display: none !important;
+}
+
 .step-dots-row {
     gap: 4px;
     flex-wrap: nowrap;
@@ -46,12 +103,49 @@
     
 }
 @media (max-width: 480px) {
+    .dnd-row-fixed {
+        height: auto;
+        min-height: 32rem;
+    }
+
+    .dnd-buckets-col {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    .dnd-buckets-col .tot-drag-instruction h1 {
+        font-size: 0.9rem !important;
+    }
+
+    .tot-week2-buckets-row {
+        gap: 0;
+        justify-content: stretch;
+        min-height: 120px;
+    }
+
+    .tot-week2-bucket-drop.draggable-bucket {
+        width: 33.333% !important;
+        flex-basis: 33.333% !important;
+        min-height: 116px !important;
+        padding-inline: 1px;
+    }
+
+    .tot-week2-bucket-drop .inner-count,
+    .tot-week2-bucket-drop .outer-count,
+    .tot-week2-bucket-drop .both-count {
+        width: 28px !important;
+        font-size: 0.75rem !important;
+        margin-bottom: 6px !important;
+    }
+
     .bucket-text{
-        margin: 0 2.8rem;
+        margin: 0 auto;
     }
     .bucket-text p{
         text-align: center;
-        margin-left: -1.2rem;
+        margin-left: 0;
+        font-size: 0.7rem !important;
+        line-height: 1.2 !important;
     }
     
 }

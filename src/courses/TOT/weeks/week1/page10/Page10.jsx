@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Icon } from "@iconify/react";
 import QuestionBox from "../../../components/QuestionBox";
 import DragAndDropFrame from "./components/DranAndDropFrame";
 import Button from "../../../components/Button";
@@ -50,6 +51,7 @@ function Page10() {
   const adminDatas = useSelector(adminData);
   const [dragDropImageLength, setDragDropImageLength] = useState(4);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [dndResetKey, setDndResetKey] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
   const handleCloseFeedback = () => {
     setShowFeedback(false);
@@ -101,6 +103,14 @@ function Page10() {
     // return true;
   };
 
+  const handleReset = () => {
+    if (step?.type !== "imageDragAndDrop") return;
+    setErrorMessage("");
+    setDndResetKey((key) => key + 1);
+    setCurrentImageIndex(0);
+    setAnswers((prev) => prev.filter((answer) => answer.stepId !== 2));
+  };
+
   const renderStep = () => {
     if (!step) return <div>Invalid Step</div>;
 
@@ -132,6 +142,7 @@ function Page10() {
       case "imageDragAndDrop":
         return (
           <DragAndDropFrame
+            key={dndResetKey}
             info={{
               imagePairs: step.imagePairs,
               buckets: step.buckets,
@@ -157,12 +168,24 @@ function Page10() {
           {errorMessage}
         </div>
       )}
-      <div className="d-flex justify-content-center align-items-center gap-2">
-        <StepIndicator totalSteps={totalSteps} />
-        <InternalStepIndicator
-          totalSteps={dragDropImageLength}
-          currentStep={currentImageIndex + 1}
-        />
+      <div className="d-flex flex-column align-items-center mt-2" style={{ gap: "6px" }}>
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          <StepIndicator totalSteps={totalSteps} />
+          <InternalStepIndicator
+            totalSteps={dragDropImageLength}
+            currentStep={currentImageIndex + 1}
+          />
+        </div>
+        {step?.type === "imageDragAndDrop" && (
+          <div
+            onClick={handleReset}
+            className="d-flex align-items-center gap-1"
+            style={{ cursor: "pointer", color: "#6c757d", userSelect: "none" }}
+          >
+            <Icon icon="teenyicons:refresh-solid" width={18} />
+            <span style={{ fontSize: "14px" }}>Reset</span>
+          </div>
+        )}
       </div>
 
       <div className="d-flex justify-content-center gap-96px mt-3 gap-4">

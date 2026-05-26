@@ -159,7 +159,7 @@ const DragAndDropFrame = ({
     <>
       {" "}
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <div className="row custom-border-20 w-100 m-0">
+        <div className="row custom-border-20 w-100 m-0 dnd-row-fixed">
           {/* Left Droppable (50%) */}
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-center p-4">
             <Droppable droppableId="image">
@@ -183,14 +183,16 @@ const DragAndDropFrame = ({
                     />
                   )}
                   {renderDragItem()}
-                  {provided.placeholder}
+                  <div style={{ height: 0, overflow: "hidden" }}>
+                    {provided.placeholder}
+                  </div>
                 </div>
               )}
             </Droppable>
           </div>
 
           {/* Right Buckets (50%) */}
-          <div className="col-12 col-md-6 bg-blue px-4 py-3">
+          <div className="col-12 col-md-6 bg-blue px-4 py-3 dnd-buckets-col">
             <div className="d-flex align-items-start mb-2">
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head" />
               <div className="text-center text-white pt-1 flex-grow-1 tot-drag-instruction">
@@ -203,20 +205,21 @@ const DragAndDropFrame = ({
               />
             </div>
 
-            <div className="d-flex justify-content-around align-items-center flex-wrap">
+            <div className="tot-week2-buckets-row">
               {buckets &&
                 buckets.map((bucket) => (
-                  <Droppable key={bucket.title} droppableId={bucket.id}>
+                  <Droppable
+                    key={bucket.title}
+                    droppableId={bucket.id}
+                    ignoreContainerClipping
+                  >
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
-                        className="pt-1 flex-fill draggable-bucket"
+                        className={`pt-1 draggable-bucket tot-week2-bucket-drop ${
+                          snapshot.isDraggingOver ? "is-dragging-over" : ""
+                        }`}
                         {...provided.droppableProps}
-                        style={{
-                          backgroundColor: snapshot.isDraggingOver
-                            ? "rgba(255, 255, 255, 0.1)"
-                            : "transparent",
-                        }}
                       >
                         <h2
                           className={
@@ -242,7 +245,9 @@ const DragAndDropFrame = ({
                           {bucket.title}
                           </p>
                         </div>
-                        {provided.placeholder}
+                        <div style={{ height: 0, overflow: "hidden" }}>
+                          {provided.placeholder}
+                        </div>
                       </div>
                     )}
                   </Droppable>

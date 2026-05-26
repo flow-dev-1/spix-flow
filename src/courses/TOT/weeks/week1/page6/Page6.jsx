@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Icon } from "@iconify/react";
 import QuestionBox from "../../../components/QuestionBox";
 import DragAndDropFrame from "./components/DranAndDropFrame";
 import Button from "../../../components/Button";
@@ -28,6 +29,7 @@ function Page6() {
   const adminDatas = useSelector(adminData);
   const [dragDropImageLength, setDragDropImageLength] = useState(4);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [dndResetKey, setDndResetKey] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
   const handleCloseFeedback = () => {
     setShowFeedback(false);
@@ -79,6 +81,14 @@ function Page6() {
     // return true;
   };
 
+  const handleReset = () => {
+    if (step?.type !== "imageDragAndDrop") return;
+    setErrorMessage("");
+    setDndResetKey((key) => key + 1);
+    setCurrentImageIndex(0);
+    setAnswers((prev) => prev.filter((answer) => answer.stepId !== 2));
+  };
+
   // console.log(answers, "Answers")
 
   const renderStep = () => {
@@ -114,6 +124,7 @@ function Page6() {
       case "imageDragAndDrop":
         return (
           <DragAndDropFrame
+            key={dndResetKey}
             info={{
               images: step.images,
               buckets: step.buckets,
@@ -138,35 +149,47 @@ function Page6() {
         <div className="text-danger">{errorMessage}</div>
       )}{" "}
       {/* Display error message */}
-      <div className="d-flex justify-content-center mt-4 step-dots-row">
-        {[...Array(totalSteps)].map((_, index) =>
-          index < currentStep ? (
-            <div
-              key={`step-${index}`}
-              className="bg-step-active step-dot"
-              style={{ borderRadius: "8px" }}
-            />
-          ) : null,
-        )}
-        {currentStep >= 2 &&
-          [...Array(dragDropImageLength)].map((_, index) => {
-            const isActive = currentStep > 2 || index <= currentImageIndex;
-            return (
+      <div className="d-flex flex-column align-items-center mt-4" style={{ gap: "6px" }}>
+        <div className="d-flex justify-content-center step-dots-row">
+          {[...Array(totalSteps)].map((_, index) =>
+            index < currentStep ? (
               <div
-                key={`img-${index}`}
-                className={`${isActive ? "bg-step-active" : "bg-step"} step-dot`}
+                key={`step-${index}`}
+                className="bg-step-active step-dot"
                 style={{ borderRadius: "8px" }}
               />
-            );
-          })}
-        {[...Array(totalSteps)].map((_, index) =>
-          index >= currentStep ? (
-            <div
-              key={`step-future-${index}`}
-              className="bg-step step-dot"
-              style={{ borderRadius: "8px" }}
-            />
-          ) : null,
+            ) : null,
+          )}
+          {currentStep >= 2 &&
+            [...Array(dragDropImageLength)].map((_, index) => {
+              const isActive = currentStep > 2 || index <= currentImageIndex;
+              return (
+                <div
+                  key={`img-${index}`}
+                  className={`${isActive ? "bg-step-active" : "bg-step"} step-dot`}
+                  style={{ borderRadius: "8px" }}
+                />
+              );
+            })}
+          {[...Array(totalSteps)].map((_, index) =>
+            index >= currentStep ? (
+              <div
+                key={`step-future-${index}`}
+                className="bg-step step-dot"
+                style={{ borderRadius: "8px" }}
+              />
+            ) : null,
+          )}
+        </div>
+        {step?.type === "imageDragAndDrop" && (
+          <div
+            onClick={handleReset}
+            className="d-flex align-items-center gap-1"
+            style={{ cursor: "pointer", color: "#6c757d", userSelect: "none" }}
+          >
+            <Icon icon="teenyicons:refresh-solid" width={18} />
+            <span style={{ fontSize: "14px" }}>Reset</span>
+          </div>
         )}
       </div>
       <div className="d-flex justify-content-center gap-96px mt-3 gap-4">
