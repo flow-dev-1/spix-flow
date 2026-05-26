@@ -291,6 +291,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
 
   const currentWeek = useSelector(selectCurrentWeek);
   const currentPage = useSelector(selectCurrentPage);
+  const currentStep = useSelector(selectCurrentStep);
   const showHurray = useSelector(selectShowHurray);
   const { isLastWeek } = useSelector(selectNavigationState);
 
