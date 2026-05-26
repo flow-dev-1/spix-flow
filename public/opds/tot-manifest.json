@@ -1,0 +1,365 @@
+{
+  "metadata": {
+    "title": "SEL & Positive Psychology for Educators",
+    "identifier": "https://spix.flowonline.app/tot",
+    "language": "en",
+    "modified": "2026-05-26T00:00:00.000Z"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/tot",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png",
+      "title": "TOT Course Cover"
+    }
+  ],
+  "readingOrder": [
+    {
+      "href": "https://spix.flowonline.app/tot/week1/index.html",
+      "type": "text/html",
+      "title": "Week 1"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week2/index.html",
+      "type": "text/html",
+      "title": "Week 2"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week3/index.html",
+      "type": "text/html",
+      "title": "Week 3"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week4/index.html",
+      "type": "text/html",
+      "title": "Week 4"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week5/index.html",
+      "type": "text/html",
+      "title": "Week 5"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week6/index.html",
+      "type": "text/html",
+      "title": "Week 6"
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/tot",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week1/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week1/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week1",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot?startWeek=1",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week2/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week2/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week2",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot?startWeek=2",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week3/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week3/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week3",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot?startWeek=3",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week4/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week4/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week4",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot?startWeek=4",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week5/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week5/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week5",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot?startWeek=5",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week6/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week6/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot/week6",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/tot?startWeek=6",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_7.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_8.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_9.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_10.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_11.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+1/ToT_1_12.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+2/ToT_2_7.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+3/Week+3_7.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+4/Week+4_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+4/Week+4_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+4/Week+4_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+4/Week+4_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+4/Week+4_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+4/Week+4_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+5/Week+5_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+5/Week+5_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+5/Week+5_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+5/Week+5_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+5/Week+5_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+5/Week+5_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+6/Week+6_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+6/Week+6_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+6/Week+6_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+6/Week+6_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+6/Week+6_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-TOT1/Week+6/Week+6_6.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}

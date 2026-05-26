@@ -1,0 +1,266 @@
+{
+  "metadata": {
+    "title": "SEL & Positive Psychology for Educators"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/tot.json",
+      "type": "application/opds+json"
+    }
+  ],
+  "publications": [
+    {
+      "metadata": {
+        "title": "TOT Course 1 - Week 1",
+        "identifier": "https://spix.flowonline.app/tot/week1/index.html",
+        "language": "en",
+        "modified": "2026-05-26T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot-week1-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week1/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week1/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week1",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot?startWeek=1",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "TOT Course 1 - Week 2",
+        "identifier": "https://spix.flowonline.app/tot/week2/index.html",
+        "language": "en",
+        "modified": "2026-05-26T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot-week2-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week2/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week2/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week2",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot?startWeek=2",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "TOT Course 1 - Week 3",
+        "identifier": "https://spix.flowonline.app/tot/week3/index.html",
+        "language": "en",
+        "modified": "2026-05-26T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot-week3-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week3/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week3/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week3",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot?startWeek=3",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "TOT Course 1 - Week 4",
+        "identifier": "https://spix.flowonline.app/tot/week4/index.html",
+        "language": "en",
+        "modified": "2026-05-26T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot-week4-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week4/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week4/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week4",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot?startWeek=4",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "TOT Course 1 - Week 5",
+        "identifier": "https://spix.flowonline.app/tot/week5/index.html",
+        "language": "en",
+        "modified": "2026-05-26T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot-week5-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week5/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week5/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week5",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot?startWeek=5",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "TOT Course 1 - Week 6",
+        "identifier": "https://spix.flowonline.app/tot/week6/index.html",
+        "language": "en",
+        "modified": "2026-05-26T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot-week6-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week6/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week6/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot/week6",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/tot?startWeek=6",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    }
+  ]
+}

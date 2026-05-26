@@ -1,0 +1,50 @@
+.input-container {
+    /* width: 924px; */
+    height: 325px;
+    background: url("@/assets/big-rect.png") no-repeat;
+    background-size: 100% 100%;
+    padding: 3rem;
+  }
+  
+  .input-label {
+    background-color: #ffeebb;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    padding: 3px 5px;
+  }
+  
+  input {
+    border: none;
+    border-bottom: 1px solid grey;
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+    font-weight: 600;
+  }
+  input::placeholder{
+    /* font-weight:  bolder !important; */
+    font-size: 14px;
+  }
+  
+  input:focus {
+    border: inherit!important;
+    border-bottom: 1px solid grey !important;
+  
+  }
+  
+  .label-input-container {
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media (max-width: 1400px) {
+    .input-container {
+      height: 255px;
+      padding: 1rem 2.5rem 0rem 2.5rem;
+    }
+    .resilience-input {
+      padding: 10px !important;
+    }
+  }
+  

@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.tot-text-instruction{
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 2.3rem !important;
+}
+.tot-week-2-question-text{
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+    font-size: 1.5rem;
+}
+.tot-drag-instruction h1{
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 2rem;
+}
+.tot-question-text{
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+}
+.tot-question-text h2{
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+    font-size: 1.6rem !important;
+}
+
+
+@media (max-width: 1400px) {
+    .tot-drag-instruction h1{
+        font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 2rem;
+    }
+    
+}
+@media (max-width: 480px) {
+    .bucket-text{
+        margin: 0 2.8rem;
+    }
+    .bucket-text p{
+        text-align: center;
+        margin-left: -1.2rem;
+    }
+    
+}

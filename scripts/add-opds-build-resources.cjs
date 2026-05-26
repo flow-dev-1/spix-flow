@@ -33,12 +33,19 @@ function relativeResource(href, type) {
   return { href, type };
 }
 
+const courses = [
+  { slug: "tot", weeks: 6 },
+  { slug: "tot2", weeks: 5 },
+];
+
 const weekHtmlResources = [];
-for (let week = 1; week <= 5; week += 1) {
-  weekHtmlResources.push(resource("/tot2/week" + week, "text/html"));
-  weekHtmlResources.push(resource("/tot2/week" + week + "/", "text/html"));
-  weekHtmlResources.push(resource("/tot2/week" + week + "/index.html", "text/html"));
-  weekHtmlResources.push(resource("/tot2?startWeek=" + week, "text/html"));
+for (const course of courses) {
+  for (let week = 1; week <= course.weeks; week += 1) {
+    weekHtmlResources.push(resource("/" + course.slug + "/week" + week, "text/html"));
+    weekHtmlResources.push(resource("/" + course.slug + "/week" + week + "/", "text/html"));
+    weekHtmlResources.push(resource("/" + course.slug + "/week" + week + "/index.html", "text/html"));
+    weekHtmlResources.push(resource("/" + course.slug + "?startWeek=" + week, "text/html"));
+  }
 }
 
 function listFiles(dir) {
@@ -97,6 +104,8 @@ function addServiceWorkerLink(manifestPath) {
 
 const builtFileResources = [
   resource("/index.html", "text/html"),
+  resource("/tot", "text/html"),
+  resource("/tot/", "text/html"),
   resource("/tot2", "text/html"),
   resource("/tot2/", "text/html"),
 ].concat(
@@ -118,15 +127,19 @@ function relativeResourceForBuiltFile(filePath) {
 }
 
 const relativeWeekResources = [];
-for (let week = 1; week <= 5; week += 1) {
-  relativeWeekResources.push(relativeResource("../tot2/week" + week, "text/html"));
-  relativeWeekResources.push(relativeResource("../tot2/week" + week + "/", "text/html"));
-  relativeWeekResources.push(relativeResource("../tot2/week" + week + "/index.html", "text/html"));
-  relativeWeekResources.push(relativeResource("../tot2?startWeek=" + week, "text/html"));
+for (const course of courses) {
+  for (let week = 1; week <= course.weeks; week += 1) {
+    relativeWeekResources.push(relativeResource("../" + course.slug + "/week" + week, "text/html"));
+    relativeWeekResources.push(relativeResource("../" + course.slug + "/week" + week + "/", "text/html"));
+    relativeWeekResources.push(relativeResource("../" + course.slug + "/week" + week + "/index.html", "text/html"));
+    relativeWeekResources.push(relativeResource("../" + course.slug + "?startWeek=" + week, "text/html"));
+  }
 }
 
 const relativeBuiltFileResources = [
   relativeResource("../index.html", "text/html"),
+  relativeResource("../tot", "text/html"),
+  relativeResource("../tot/", "text/html"),
   relativeResource("../tot2", "text/html"),
   relativeResource("../tot2/", "text/html"),
 ].concat(
@@ -150,10 +163,12 @@ function copyAppShellToWeekLaunchers() {
     .readFileSync(appShellPath, "utf8")
     .replaceAll('href="/', 'href="../../')
     .replaceAll('src="/', 'src="../../');
-  for (let week = 1; week <= 5; week += 1) {
-    const launcherPath = path.join(DIST_DIR, "tot2", "week" + week, "index.html");
-    fs.mkdirSync(path.dirname(launcherPath), { recursive: true });
-    fs.writeFileSync(launcherPath, appShell);
+  for (const course of courses) {
+    for (let week = 1; week <= course.weeks; week += 1) {
+      const launcherPath = path.join(DIST_DIR, course.slug, "week" + week, "index.html");
+      fs.mkdirSync(path.dirname(launcherPath), { recursive: true });
+      fs.writeFileSync(launcherPath, appShell);
+    }
   }
 }
 
@@ -161,12 +176,12 @@ copyAppShellToWeekLaunchers();
 
 const OPEN_ACCESS_REL = "http://opds-spec.org/acquisition/open-access";
 
-function weekLaunchLinks(week) {
+function weekLaunchLinks(slug, week) {
   return [
-    resource("/tot2/week" + week + "/index.html", "text/html"),
-    resource("/tot2/week" + week + "/", "text/html"),
-    resource("/tot2/week" + week, "text/html"),
-    resource("/tot2?startWeek=" + week, "text/html"),
+    resource("/" + slug + "/week" + week + "/index.html", "text/html"),
+    resource("/" + slug + "/week" + week + "/", "text/html"),
+    resource("/" + slug + "/week" + week, "text/html"),
+    resource("/" + slug + "?startWeek=" + week, "text/html"),
   ].map((item) => ({
     rel: OPEN_ACCESS_REL,
     href: item.href,
@@ -174,19 +189,19 @@ function weekLaunchLinks(week) {
   }));
 }
 
-function normalizeWeekManifestLaunch(manifestPath, week) {
+function normalizeWeekManifestLaunch(manifestPath, slug, week) {
   if (!fs.existsSync(manifestPath)) return;
 
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   manifest.metadata = manifest.metadata || {};
-  manifest.metadata.identifier = APP_ORIGIN + "/tot2/week" + week + "/index.html";
+  manifest.metadata.identifier = APP_ORIGIN + "/" + slug + "/week" + week + "/index.html";
   manifest.links = (manifest.links || [])
     .filter((link) => link.rel !== OPEN_ACCESS_REL)
-    .concat(weekLaunchLinks(week));
+    .concat(weekLaunchLinks(slug, week));
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
 }
 
-function normalizeCatalogLaunches(catalogPath) {
+function normalizeCatalogLaunches(catalogPath, slug) {
   if (!fs.existsSync(catalogPath)) return;
 
   const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
@@ -196,16 +211,23 @@ function normalizeCatalogLaunches(catalogPath) {
     if (!match) continue;
 
     const week = Number(match[1]);
-    publication.metadata.identifier = APP_ORIGIN + "/tot2/week" + week + "/index.html";
+    publication.metadata.identifier = APP_ORIGIN + "/" + slug + "/week" + week + "/index.html";
     publication.links = (publication.links || [])
       .filter((link) => link.rel !== OPEN_ACCESS_REL)
-      .concat(weekLaunchLinks(week));
+      .concat(weekLaunchLinks(slug, week));
   }
 
   fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + "\n");
 }
 
 [
+  "tot-manifest.json",
+  "tot-week1-manifest.json",
+  "tot-week2-manifest.json",
+  "tot-week3-manifest.json",
+  "tot-week4-manifest.json",
+  "tot-week5-manifest.json",
+  "tot-week6-manifest.json",
   "tot2-manifest.json",
   "tot2-week1-manifest.json",
   "tot2-week2-manifest.json",
@@ -219,8 +241,13 @@ function normalizeCatalogLaunches(catalogPath) {
 
   const weekMatch = fileName.match(/week(\d+)/);
   if (weekMatch) {
-    normalizeWeekManifestLaunch(path.join(OPDS_DIR, fileName), Number(weekMatch[1]));
+    normalizeWeekManifestLaunch(
+      path.join(OPDS_DIR, fileName),
+      fileName.startsWith("tot2") ? "tot2" : "tot",
+      Number(weekMatch[1]),
+    );
   }
 });
 
-normalizeCatalogLaunches(path.join(OPDS_DIR, "tot2.json"));
+normalizeCatalogLaunches(path.join(OPDS_DIR, "tot.json"), "tot");
+normalizeCatalogLaunches(path.join(OPDS_DIR, "tot2.json"), "tot2");

@@ -11,6 +11,8 @@ import { store, persistor } from "@/store/store";
 import Login from "./pages/Login";
 import Courses from "./pages/Courses";
 import NotFound from "./pages/NotFound";
+import TOTCourse from "./courses/TOT/index";
+import TOTFeedback from "./courses/TOT/feedback/index";
 import TOT2Course from "./courses/TOT2/index";
 import TOT2Feedback from "./courses/TOT2/feedback/index";
 
@@ -29,6 +31,10 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/courses" element={<Courses />} />
+                <Route path="/tot" element={<TOTCourse />} />
+                <Route path="/tot/" element={<TOTCourse />} />
+                <Route path="/tot/*" element={<TOTCourse />} />
+                <Route path="/tot/feedback" element={<TOTFeedback />} />
                 <Route path="/tot2" element={<TOT2Course />} />
                 <Route path="/tot2/" element={<TOT2Course />} />
                 <Route path="/tot2/*" element={<TOT2Course />} />

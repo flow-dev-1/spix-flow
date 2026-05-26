@@ -2,9 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Navbar from "@/components/navbar/Navbar";
 import "@/styles/courses.css";
+import totCover from "@/assets/tot1-cover.jpg";
 import tot2Cover from "@/assets/tot2-cover.png";
 
 const COURSES = [
+  {
+    id: "tot",
+    title: "SEL & Positive Psychology for Educators",
+    topic: "Feel It. Teach It. Transform Lives.",
+    description:
+      "This program helps teachers build resilience, emotional awareness, and sustainable SEL practices for the classroom.",
+    image: totCover,
+    route: "/tot",
+    weeks: 6,
+  },
   {
     id: "tot_2",
     title: "Leaving No Learner Behind",

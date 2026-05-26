@@ -9,6 +9,8 @@ const ASSET_CONCURRENCY = 8;
 const VIDEO_CONCURRENCY = 2;
 const VIDEO_CACHE_DELAY_MS = 8000;
 const COMPLETED_KEY_PREFIX = "spix-offline-warmup-complete-week-";
+const DEFAULT_COURSE_SLUG = "tot2";
+const DEFAULT_TOTAL_WEEKS = 5;
 
 type ManifestLink = {
   href?: string;
@@ -50,56 +52,56 @@ const initialProgress: WarmupProgress = {
 
 function resolveManifestHref(href: string) {
   try {
-    return new URL(href, window.location.origin + "/opds/tot2-manifest.json").href;
+    return new URL(href, window.location.origin + "/opds/index.json").href;
   } catch {
     return null;
   }
 }
 
-function getCurrentWeekFromUrl() {
+function getCurrentWeekFromUrl(courseSlug = DEFAULT_COURSE_SLUG, totalWeeks = DEFAULT_TOTAL_WEEKS) {
   const pathMatch = window.location.pathname.match(
-    /\/tot2\/week(\d+)(?:\/index\.html)?\/?$/i,
+    new RegExp("\\/" + courseSlug + "\\/week(\\d+)(?:\\/index\\.html)?\\/?$", "i"),
   );
   if (pathMatch) return Number(pathMatch[1]);
 
   const params = new URLSearchParams(window.location.search);
   const startWeek = Number(params.get("startWeek"));
-  if (startWeek >= 1 && startWeek <= 5) return startWeek;
+  if (startWeek >= 1 && startWeek <= totalWeeks) return startWeek;
 
   const savedWeek = Number(sessionStorage.getItem("flow-currentWeek"));
-  if (savedWeek >= 1 && savedWeek <= 5) return savedWeek;
+  if (savedWeek >= 1 && savedWeek <= totalWeeks) return savedWeek;
 
   return 1;
 }
 
-function normalizeWeek(week?: number | null) {
-  if (week && week >= 1 && week <= 5) return week;
+function normalizeWeek(week?: number | null, totalWeeks = DEFAULT_TOTAL_WEEKS) {
+  if (week && week >= 1 && week <= totalWeeks) return week;
   return null;
 }
 
-function currentWeek(week?: number | null) {
-  const normalizedWeek = normalizeWeek(week);
+function currentWeek(week?: number | null, courseSlug = DEFAULT_COURSE_SLUG, totalWeeks = DEFAULT_TOTAL_WEEKS) {
+  const normalizedWeek = normalizeWeek(week, totalWeeks);
   if (normalizedWeek) return normalizedWeek;
 
-  const currentUrlWeek = getCurrentWeekFromUrl();
-  const weekFromUrl = normalizeWeek(currentUrlWeek);
+  const currentUrlWeek = getCurrentWeekFromUrl(courseSlug, totalWeeks);
+  const weekFromUrl = normalizeWeek(currentUrlWeek, totalWeeks);
   if (weekFromUrl) return weekFromUrl;
 
   return 1;
 }
 
-function manifestUrlForWeek(week?: number | null) {
-  return "/opds/tot2-week" + currentWeek(week) + "-manifest.json";
+function manifestUrlForWeek(week?: number | null, courseSlug = DEFAULT_COURSE_SLUG, totalWeeks = DEFAULT_TOTAL_WEEKS) {
+  return "/opds/" + courseSlug + "-week" + currentWeek(week, courseSlug, totalWeeks) + "-manifest.json";
 }
 
-function completedKeyForWeek(week?: number | null) {
-  return COMPLETED_KEY_PREFIX + currentWeek(week);
+function completedKeyForWeek(week?: number | null, courseSlug = DEFAULT_COURSE_SLUG, totalWeeks = DEFAULT_TOTAL_WEEKS) {
+  return COMPLETED_KEY_PREFIX + courseSlug + "-week-" + currentWeek(week, courseSlug, totalWeeks);
 }
 
-function setCompletedWarmup(week: number, total: number) {
+function setCompletedWarmup(week: number, total: number, courseSlug = DEFAULT_COURSE_SLUG, totalWeeks = DEFAULT_TOTAL_WEEKS) {
   try {
     localStorage.setItem(
-      completedKeyForWeek(week),
+      completedKeyForWeek(week, courseSlug, totalWeeks),
       JSON.stringify({
         total,
         completedAt: new Date().toISOString(),
@@ -155,8 +157,8 @@ async function persistStorageIfPossible() {
   }
 }
 
-function visibleWeekLabel(week: number) {
-  return week >= 1 && week <= 5 ? week : 1;
+function visibleWeekLabel(week: number, totalWeeks = DEFAULT_TOTAL_WEEKS) {
+  return week >= 1 && week <= totalWeeks ? week : 1;
 }
 
 function uniqueResources(resources: ManifestLink[]) {
@@ -244,10 +246,12 @@ function collectResources(manifest: WebPublicationManifest) {
 async function warmupFromManifest(
   setProgress: Dispatch<SetStateAction<WarmupProgress>>,
   week?: number | null,
+  courseSlug = DEFAULT_COURSE_SLUG,
+  totalWeeks = DEFAULT_TOTAL_WEEKS,
 ) {
   if (!("caches" in window) || !navigator.onLine) return;
 
-  const weekNumber = currentWeek(week);
+  const weekNumber = currentWeek(week, courseSlug, totalWeeks);
   await persistStorageIfPossible();
 
   setProgress({
@@ -256,7 +260,7 @@ async function warmupFromManifest(
     phase: "loading-manifest",
   });
 
-  const manifestUrl = manifestUrlForWeek(weekNumber);
+  const manifestUrl = manifestUrlForWeek(weekNumber, courseSlug, totalWeeks);
   const response = await fetch(manifestUrl, { cache: "no-cache" });
   if (!response.ok) return;
 
@@ -365,10 +369,10 @@ async function warmupFromManifest(
   }
 
   if (failed.length === 0) {
-    setCompletedWarmup(weekNumber, total);
+    setCompletedWarmup(weekNumber, total, courseSlug, totalWeeks);
   } else {
     try {
-      localStorage.removeItem(completedKeyForWeek(weekNumber));
+      localStorage.removeItem(completedKeyForWeek(weekNumber, courseSlug, totalWeeks));
     } catch {
       // Ignore storage quota/private mode failures.
     }
@@ -380,16 +384,20 @@ async function warmupFromManifest(
     active: 0,
     cached,
     failed: failed.length,
-    lastUrl: failed.length ? prev.lastUrl : "Week " + visibleWeekLabel(weekNumber) + " cached",
+    lastUrl: failed.length ? prev.lastUrl : "Week " + visibleWeekLabel(weekNumber, totalWeeks) + " cached",
   }));
 }
 
-export function useSpixWeekCache(week?: number | null) {
+export function useSpixWeekCache(
+  week?: number | null,
+  courseSlug = DEFAULT_COURSE_SLUG,
+  totalWeeks = DEFAULT_TOTAL_WEEKS,
+) {
   const [progress, setProgress] = useState<WarmupProgress>(initialProgress);
   const runIdRef = useRef(0);
 
   useEffect(() => {
-    const weekNumber = currentWeek(week);
+    const weekNumber = currentWeek(week, courseSlug, totalWeeks);
     runIdRef.current += 1;
     const runId = runIdRef.current;
 
@@ -397,7 +405,7 @@ export function useSpixWeekCache(week?: number | null) {
       warmupFromManifest((nextProgress) => {
         if (runId !== runIdRef.current) return;
         setProgress(nextProgress);
-      }, weekNumber).catch((error) => {
+      }, weekNumber, courseSlug, totalWeeks).catch((error) => {
         if (runId !== runIdRef.current) return;
         setProgress((prev) => ({
           ...prev,
@@ -416,7 +424,7 @@ export function useSpixWeekCache(week?: number | null) {
       window.clearTimeout(timer);
       window.removeEventListener("online", run);
     };
-  }, [week]);
+  }, [week, courseSlug, totalWeeks]);
 
   return progress;
 }

@@ -11,6 +11,19 @@
   ],
   "navigation": [
     {
+      "href": "https://spix.flowonline.app/opds/tot.json",
+      "title": "SEL & Positive Psychology for Educators",
+      "type": "application/opds+json",
+      "alternate": [
+        {
+          "href": "https://spix.flowonline.app/assets/tot2-cover.jpg",
+          "rel": "icon",
+          "type": "image/png",
+          "title": "TOT Course Cover"
+        }
+      ]
+    },
+    {
       "href": "https://spix.flowonline.app/opds/tot2.json",
       "title": "Leaving No Learner Behind",
       "type": "application/opds+json",

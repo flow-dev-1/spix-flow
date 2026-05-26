@@ -1,0 +1,153 @@
+/* Response Cards (Left Side - Available) */
+.response-card {
+  background: #dd692f;
+  padding: 5px 25px;
+  border-radius: 4px;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease;
+  width: 100%;
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.response-card:hover {
+  /* transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); */
+}
+
+/* Response Cards in Ranking Slots (Smaller) */
+.response-card-small {
+  background: #dd692f;
+  padding: 12px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Ranking Grid */
+.ranking-grid {
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ranking-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Ranking Slots */
+.ranking-slot {
+  /* border: 3px dashed rgba(255, 255, 255, 0.5); */
+  border-radius: 8px;
+  padding: 15px;
+  /* min-height: 80px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  /* width: 100%; */
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ranking-slot:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Rank Number */
+.rank-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .response-card {
+    padding: 15px 20px;
+    min-height: 70px;
+  }
+
+  .response-card p {
+    font-size: 0.9rem !important;
+  }
+
+  .response-card-small {
+    padding: 10px 12px;
+    min-height: 50px;
+  }
+
+  .response-card-small p {
+    font-size: 0.75rem !important;
+  }
+
+  .ranking-grid {
+    gap: 15px;
+  }
+
+  .ranking-row {
+    gap: 15px;
+  }
+
+  .ranking-slot {
+    min-height: 120px;
+    padding: 10px;
+  }
+
+  .rank-number {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .ranking-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ranking-slot {
+    min-height: 100px;
+    /* width: 100%; */
+  }
+}
+
+/* Custom Border for Main Container */
+.custom-border-20 {
+  border-radius: 20px;
+  /* overflow: hidden; */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Drag Animation */
+@keyframes dragPulse {
+  0%,
+  100% {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.response-card:active,
+.response-card-small:active {
+  animation: dragPulse 0.5s ease-in-out;
+}
