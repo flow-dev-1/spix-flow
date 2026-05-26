@@ -237,6 +237,25 @@ const saveWeekResponsesLocally = (
   }
 };
 
+const getSavedWeekResponsesLocally = (weekNumber: number) => {
+  try {
+    const raw = localStorage.getItem(`tot2-flowResponses-week${weekNumber}`);
+    if (!raw) return null;
+
+    const saved = JSON.parse(raw);
+    return {
+      activities: Array.isArray(saved?.activities) ? saved.activities : [],
+      assessments: Array.isArray(saved?.assessments) ? saved.assessments : [],
+    };
+  } catch {
+    return null;
+  }
+};
+
+const hasSavedResponses = (responses?: { activities?: unknown[]; assessments?: unknown[] } | null) => {
+  return Boolean(responses?.activities?.length || responses?.assessments?.length);
+};
+
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -395,6 +414,14 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   useEffect(() => {
     if (!data) return;
     const d = data as any;
+    const localSaved = getSavedWeekResponsesLocally(currentWeek);
+    const serverResponses = {
+      activities: d.activity?.activities ?? [],
+      assessments: d.assessment?.assessments ?? [],
+    };
+    const responses = hasSavedResponses(serverResponses)
+      ? serverResponses
+      : localSaved || serverResponses;
 
     if (d.assessment && d.activity) {
       dispatch(
@@ -402,8 +429,8 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
           course: course,
           courseEnrollmentId: enrollmentId,
           week: currentWeek,
-          activities: d.activity?.activities,
-          assessments: d.assessment?.assessments,
+          activities: responses.activities,
+          assessments: responses.assessments,
         }),
       );
     } else {
@@ -414,8 +441,8 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
             ? enrollmentId
             : userAnswers.courseEnrollmentId,
           week: currentWeek,
-          activities: [],
-          assessments: [],
+          activities: responses.activities,
+          assessments: responses.assessments,
         }),
       );
     }
@@ -427,15 +454,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   useEffect(() => {
     if (!currentWeek) return;
     loadResponses(currentWeek).then((saved) => {
-      const courseSlug = "tot2";
       // Fallback to localStorage if LRS failed or returned nothing
       if (!saved) {
-        try {
-          const localSaved = localStorage.getItem(`${courseSlug}-flowResponses-week${currentWeek}`);
-          if (localSaved) saved = JSON.parse(localSaved);
-        } catch (e) {
-          // ignore parsing error
-        }
+        saved = getSavedWeekResponsesLocally(currentWeek);
       }
 
       if (!saved) return;
