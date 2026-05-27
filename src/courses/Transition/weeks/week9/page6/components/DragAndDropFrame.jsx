@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Icon } from "@iconify/react";
 import CardBoard from "./CardBoard";
 import ArrowTrail from "@/assets/ArrowTrail.svg";
 import { getAssetUrl } from "../../../../assetUrls";
@@ -7,17 +8,13 @@ import "../page6.css";
 
 const InternalStepIndicator = ({ totalSteps, currentStep }) => {
   return (
-    <div className="d-flex justify-content-center mt-4" style={{ gap: "10px" }}>
+    <div className="transition-week9-step-indicators">
       {[...Array(totalSteps)].map((_, index) => (
         <div
           key={index}
-          className={`${index + 1 <= currentStep ? "bg-green" : "bg-gray"}`}
-          style={{
-            flexBasis: "35px",
-            height: "17px",
-            borderRadius: "8px",
-            cursor: index <= currentStep ? "pointer" : "default",
-          }}
+          className={`transition-week9-step-dot ${
+            index + 1 <= currentStep ? "is-active" : ""
+          }`}
         />
       ))}
     </div>
@@ -28,6 +25,7 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers }) => {
   const { images, buckets, instruction } = info;
   const [bucketResults, setBucketResults] = useState({ green: [], red: [] });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [dndResetKey, setDndResetKey] = useState(0);
 
   useEffect(() => {
     if (!answers?.length) return;
@@ -111,6 +109,16 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers }) => {
     }
   };
 
+  const handleReset = () => {
+    setErrorMessage("");
+    setBucketResults({ green: [], red: [] });
+    setCurrentImageIndex(0);
+    setDndResetKey((key) => key + 1);
+    setAnswers((prevAnswers) =>
+      prevAnswers.filter((answer) => answer.stepId !== 6)
+    );
+  };
+
   const renderDragItem = () => {
     if (currentImageIndex >= images.length || allImagesDropped) return null;
 
@@ -157,7 +165,15 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers }) => {
         totalSteps={images.length}
         currentStep={currentImageIndex + 1}
       />
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <button
+        type="button"
+        onClick={handleReset}
+        className="transition-week9-reset-button"
+      >
+        <Icon icon="teenyicons:refresh-solid" width={18} />
+        <span>Reset</span>
+      </button>
+      <DragDropContext key={dndResetKey} onDragEnd={handleOnDragEnd}>
         <div className="d-flex flex-column align-items-center pt-2">
           {/* Step Indicator */}
 
@@ -195,7 +211,9 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers }) => {
                   className="arrow-head"
                 />
                 <div className="text-center text-white pt-2">
-                  <h1>{instruction}</h1>
+                  <h1 className="transition-week9-drag-instruction">
+                    {instruction}
+                  </h1>
                 </div>
                 <img
                   src={ArrowTrail}
@@ -203,26 +221,21 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers }) => {
                   className="arrow-head"
                 />
               </div>
-              <div className="d-flex justify-content-around align-items-center  px-0 py-0 px-md-4 py-md-2">
+              <div className="transition-week9-buckets-row px-0 py-0 px-md-4 py-md-2">
                 {buckets &&
                   buckets.map((bucket) => (
-                    <Droppable key={bucket.title} droppableId={bucket.id}>
+                    <Droppable
+                      key={bucket.title}
+                      droppableId={bucket.id}
+                      ignoreContainerClipping
+                    >
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
-                          className="p-0 p-md-2"
+                          className={`transition-week9-bucket-drop p-0 p-md-2 ${
+                            snapshot.isDraggingOver ? "is-dragging-over" : ""
+                          }`}
                           {...provided.droppableProps}
-                          style={{
-                            backgroundColor: snapshot.isDraggingOver
-                              ? "rgba(255, 255, 255, 0.1)"
-                              : "transparent",
-                            padding: "20px",
-                            borderRadius: "8px",
-                            minHeight: "100px",
-                            height: "300px",
-                            // width: "200px",
-                            width: snapshot.isDraggingOver ? "200px" : "",
-                          }}
                         >
                           <h2
                             className={
@@ -234,15 +247,17 @@ const DragAndDropFrame = ({ info, setErrorMessage, answers, setAnswers }) => {
                             {bucketResults[bucket.id]?.length || 0}
                           </h2>
                           <div
-                            className={
+                            className={`${
                               bucket.id === "green"
                                 ? "inner-bucket"
                                 : "both-bucket"
-                            }
+                            } bucket-text`}
                           >
-                            {bucket.title}
+                            <span>{bucket.title}</span>
                           </div>
-                          {provided.placeholder}
+                          <div className="transition-week9-hidden-placeholder">
+                            {provided.placeholder}
+                          </div>
                         </div>
                       )}
                     </Droppable>

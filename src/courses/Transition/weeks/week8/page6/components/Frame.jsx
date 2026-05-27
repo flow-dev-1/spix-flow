@@ -38,13 +38,13 @@ function Frame({ data, answers, setAnswers, setErrorMessage }) {
 
   return (
     <>
-      <QuestionBox>
+      <QuestionBox className="transition-week8-page6-heart-box">
         <div className="d-flex gap-2 flex-column flex-md-row">
           <h2 className="text-blue fs-1">Question: </h2>
           <h2 className="text-gray fs-1">{question}</h2>
         </div>
         <div className="mb-2">
-          <div className="d-flex gap-2 flex-column flex-md-row">
+          <div className="d-flex gap-2 flex-column flex-md-row transition-week8-page6-heart-list">
             {config.map((textBoxConfig, index) => (
               <ColoredHeartTextBox
                 key={index}

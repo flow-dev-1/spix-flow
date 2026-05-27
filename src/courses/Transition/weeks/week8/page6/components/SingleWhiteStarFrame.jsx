@@ -32,13 +32,13 @@ function SingleWhiteStarFrame({ data, answers, setAnswers, setErrorMessage }) {
   };
 
   return (
-    <QuestionBox>
+    <QuestionBox className="transition-week8-page6-single-star-box">
       <div className="mb-2">
         <div className="d-flex gap-2 justify-content-center flex-column flex-md-row">
           <h2 className="text-blue fs-1">Question:</h2>
           <h2 className="text-gray fs-1">{question}</h2>
         </div>
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center transition-week8-page6-single-star-wrap">
           <WhiteStarSmallTextBox
             value={
               answers.find((answer) => answer.stepId === step)?.value || ""

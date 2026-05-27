@@ -38,12 +38,16 @@ function Frame({ data, answers, setAnswers, setErrorMessage }) {
     <QuestionBox>
       <div className="d-flex gap-2  flex-column flex-md-row">
         <h2 className="text-blue fs-1">Question: </h2>
-        <h2 className="text-gray fs-1">
+        <h2 className="text-gray fs-1 transition-question-text">
           {info.question}
-          {info.hasImage && (
-            <img src={Coping} alt="Coping Skill" className="question-image" />
+          {info.hasImage ? (
+            <span className="transition-question-term">
+              <img src={Coping} alt="Coping Skill" className="question-image" />
+              <span className="transition-question-mark">?</span>
+            </span>
+          ) : (
+            "?"
           )}
-          ?
         </h2>
       </div>
       <div className="d-flex flex-column gap-3 justify-content-center">

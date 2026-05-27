@@ -37,13 +37,13 @@ function MultiStarFrame({ data, answers, setAnswers, setErrorMessage }) {
 
   return (
     <>
-      <QuestionBox>
+      <QuestionBox className="transition-week8-page6-star-box">
         <div className="d-flex gap-2 flex-column flex-md-row">
           <h2 className="text-blue fs-1">Question: </h2>
           <h2 className="text-gray fs-1">{question}</h2>
         </div>
         <div className="mb-2">
-          <div className="d-flex gap-2 flex-column flex-md-row align-content-center">
+          <div className="d-flex gap-2 flex-column flex-md-row align-content-center transition-week8-page6-star-list">
             {config.map((textBoxConfig, index) => (
               <ColoredStarTextBox
                 key={index}

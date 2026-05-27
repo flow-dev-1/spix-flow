@@ -372,10 +372,12 @@
   font-size: 4rem;
 }
 
+.transition-question-text,
 .transition-week4-page2-question-text {
   overflow-wrap: normal;
 }
 
+.transition-question-term,
 .transition-week4-page2-question-term {
   display: inline-flex;
   align-items: center;
@@ -384,9 +386,23 @@
   vertical-align: middle;
 }
 
+.transition-question-mark,
 .transition-week4-page2-question-mark {
   display: inline-block;
   line-height: 1;
+}
+
+.transition-week6-page11-question-box .dropdown-input-label {
+  background-position: center;
+  background-size: 100% 100%;
+  display: block;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.transition-week6-page11-question-box .dropdown-small-input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .grab {
@@ -437,10 +453,165 @@
     font-size: 0.95rem;
   }
 
+  .transition-question-box .input-container {
+    height: auto;
+    min-height: 0;
+    padding: 0.95rem 0.8rem !important;
+  }
+
+  .transition-question-box .label-input-container {
+    gap: 0.55rem !important;
+    align-items: center;
+  }
+
+  .transition-question-box .input-container > .label-input-container:not(:last-child),
+  .transition-question-box .input-container > div:not(:last-child) .label-input-container {
+    margin-bottom: 0.7rem;
+  }
+
+  .transition-question-box .input-label {
+    flex: 0 0 24px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .transition-question-box .input-container input {
+    min-width: 0;
+    padding: 0.45rem 0.35rem;
+    font-size: 0.9rem;
+  }
+
+  .transition-question-box .input-container input::placeholder {
+    font-size: 0.88rem;
+  }
+
+  .transition-question-box .transition-question-term .question-image,
   .transition-week4-page2-question-box .question-image {
     width: 120px;
     max-width: 42vw;
     height: auto;
+  }
+
+  .transition-week8-page2-question-box {
+    height: auto !important;
+    min-height: 0;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-form {
+    margin: 0.6rem !important;
+  }
+
+  .transition-week8-page2-question-box h2,
+  .transition-week8-page2-question-box h3 {
+    font-size: 1.05rem !important;
+    line-height: 1.25;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-option {
+    margin: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-option img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-option label {
+    margin-bottom: 0;
+    font-size: 1rem !important;
+  }
+
+  .transition-week8-page6-star-box .transition-week8-page6-star-list {
+    align-items: center;
+    gap: 0.45rem !important;
+  }
+
+  .transition-week8-page6-star-box .colored-small-star-input-label {
+    width: 150px !important;
+    aspect-ratio: 200 / 207;
+    box-sizing: border-box;
+    margin-top: 0.25rem !important;
+    padding: 1.55rem 0.7rem 1rem !important;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .transition-week8-page6-star-box textarea.colored-star-input {
+    min-height: 34px;
+    height: 34px;
+    padding: 0.1rem !important;
+    font-size: 0.78rem !important;
+    line-height: 1.15;
+  }
+
+  .transition-week8-page6-star-box textarea.colored-star-input::placeholder {
+    font-size: 0.72rem !important;
+  }
+
+  .transition-week8-page6-heart-box .transition-week8-page6-heart-list {
+    align-items: center;
+  }
+
+  .transition-week8-page6-single-star-box .transition-week8-page6-single-star-wrap {
+    align-items: center;
+  }
+
+  .transition-week8-page6-single-star-box .white-colored-small-star-input-label {
+    width: 220px !important;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    margin: 0.5rem auto 0 !important;
+    padding: 0 !important;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .transition-week8-page6-single-star-box textarea.white-star-input {
+    width: 54% !important;
+    min-height: 60px;
+    height: 60px;
+    padding: 0.2rem !important;
+    text-align: center;
+    font-size: 0.9rem !important;
+    line-height: 1.2;
+  }
+
+  .transition-week8-page6-single-star-box textarea.white-star-input::placeholder {
+    font-size: 0.85rem !important;
+  }
+
+  .transition-week6-page11-question-box .transition-week6-page11-question-label {
+    align-items: baseline;
+    margin-bottom: 0;
+  }
+
+  .transition-week6-page11-question-box .transition-week6-page11-dropdown-wrap {
+    margin-top: 0.5rem !important;
+  }
+
+  .transition-week6-page11-question-box .dropdown-input-label {
+    width: 100% !important;
+    padding: 0.55rem 0.75rem !important;
+  }
+
+  .transition-week6-page11-question-box select.dropdown-small-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 42px;
+    padding: 0.45rem 2rem 0.45rem 0.45rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.2;
   }
 }
 
@@ -465,8 +636,56 @@
     min-height: 72px;
   }
 
+  .transition-question-box .input-container {
+    padding: 0.8rem 0.6rem !important;
+  }
+
+  .transition-question-box .input-container > .label-input-container:not(:last-child),
+  .transition-question-box .input-container > div:not(:last-child) .label-input-container {
+    margin-bottom: 0.6rem;
+  }
+
+  .transition-question-box .transition-question-term .question-image,
   .transition-week4-page2-question-box .question-image {
     width: 96px;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-form {
+    margin: 0.45rem !important;
+  }
+
+  .transition-week8-page2-question-box .transition-week8-page2-options {
+    gap: 1rem;
+  }
+
+  .transition-week8-page6-star-box .colored-small-star-input-label {
+    width: 136px !important;
+    padding: 1.35rem 0.55rem 0.9rem !important;
+  }
+
+  .transition-week8-page6-star-box textarea.colored-star-input {
+    min-height: 30px;
+    height: 30px;
+    font-size: 0.72rem !important;
+  }
+
+  .transition-week8-page6-single-star-box .white-colored-small-star-input-label {
+    width: 190px !important;
+  }
+
+  .transition-week8-page6-single-star-box textarea.white-star-input {
+    min-height: 52px;
+    height: 52px;
+    font-size: 0.82rem !important;
+  }
+
+  .transition-week6-page11-question-box .dropdown-input-label {
+    padding: 0.45rem 0.6rem !important;
+  }
+
+  .transition-week6-page11-question-box select.dropdown-small-input {
+    min-height: 38px;
+    font-size: 0.88rem !important;
   }
 }
 .font-lg {

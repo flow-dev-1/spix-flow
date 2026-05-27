@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Icon } from "@iconify/react";
 import ArrowTrail from "@/assets/ArrowTrail.svg";
 import "./page10.css";
 import Button from "../../../components/Button";
@@ -11,7 +12,6 @@ import {
   navigateNext,
 } from "@/store/navigationSlice";
 import CardBoard from "./components/CardBoard";
-import StepIndicator from "../../../components/StepIndicator";
 import { getAssetUrl } from "../../../assetUrls";
 import { useDispatch } from "react-redux";
 import { adminData } from "@/store/adminReducer";
@@ -30,6 +30,7 @@ function WeekTwoPage4() {
   const userAnswers = useSelector(userAnswer);
   const [errorMessage, setErrorMessage] = useState("");
   const [showCurrentImage, setShowCurrentImage] = useState(true);
+  const [dndResetKey, setDndResetKey] = useState(0);
   const [bucketResults, setBucketResults] = useState({
     green: [],
     red: [],
@@ -183,8 +184,20 @@ function WeekTwoPage4() {
     return true;
   };
 
+  const handleReset = () => {
+    setErrorMessage("");
+    setBucketResults({
+      green: [],
+      red: [],
+    });
+    setShowCurrentImage(true);
+    setDndResetKey((key) => key + 1);
+    dispatch(setCurrentStep(1));
+    sessionStorage.setItem("flow-currentStep", "1");
+  };
+
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
+    <DragDropContext key={dndResetKey} onDragEnd={handleOnDragEnd}>
       <div className="d-flex flex-column align-items-center pt-2">
         <div className="d-flex custom-border-20 flex-column flex-md-row">
           <Droppable droppableId="image">
@@ -216,29 +229,26 @@ function WeekTwoPage4() {
             <div className="d-flex align-items-start mb-2">
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head" />
               <div className="text-center text-white pt-2">
-                <h1>{pageData.instruction}</h1>
+                <h1 className="transition-week6-drag-instruction">
+                  {pageData.instruction}
+                </h1>
               </div>
               <img src={ArrowTrail} alt="arrow trail" className="arrow-head" />
             </div>
-            <div className="d-flex justify-content-around align-items-center  px-0 py-0 px-md-4 py-md-2">
+            <div className="transition-week6-buckets-row px-0 py-0 px-md-4 py-md-2">
               {pageData.buckets.map((bucket) => (
-                <Droppable key={bucket.id} droppableId={bucket.id}>
+                <Droppable
+                  key={bucket.id}
+                  droppableId={bucket.id}
+                  ignoreContainerClipping
+                >
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
-                      className="p-0 p-md-2"
+                      className={`transition-week6-bucket-drop p-0 p-md-2 ${
+                        snapshot.isDraggingOver ? "is-dragging-over" : ""
+                      }`}
                       {...provided.droppableProps}
-                      style={{
-                        backgroundColor: snapshot.isDraggingOver
-                          ? "rgba(255, 255, 255, 0.1)"
-                          : "transparent",
-                        padding: "20px",
-                        borderRadius: "8px",
-                        minHeight: "100px",
-                        height: "300px",
-                        width: snapshot.isDraggingOver ? "200px" : "",
-                        // width: "200px",
-                      }}
                     >
                       <h2
                         className={
@@ -248,13 +258,15 @@ function WeekTwoPage4() {
                         {bucketResults[bucket.id]?.length}
                       </h2>
                       <div
-                        className={
+                        className={`${
                           bucket.id === "green" ? "inner-bucket" : "both-bucket"
-                        }
+                        } bucket-text`}
                       >
-                        {bucket.label}
+                        <span>{bucket.label}</span>
                       </div>
-                      {provided.placeholder}
+                      <div className="transition-week6-hidden-placeholder">
+                        {provided.placeholder}
+                      </div>
                     </div>
                   )}
                 </Droppable>
@@ -264,7 +276,26 @@ function WeekTwoPage4() {
         </div>
       </div>
       {errorMessage && <div className="text-danger">{errorMessage}</div>}
-      <StepIndicator totalSteps={totalSteps} />
+      <div className="transition-week6-progress-tools">
+        <div className="transition-week6-step-indicators">
+          {[...Array(totalSteps)].map((_, index) => (
+            <div
+              key={index}
+              className={`transition-week6-step-dot ${
+                index + 1 <= currentStep ? "is-active" : ""
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="transition-week6-reset-button"
+        >
+          <Icon icon="teenyicons:refresh-solid" width={18} />
+          <span>Reset</span>
+        </button>
+      </div>
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
         <Button text="Prev" customOnClick={handlePrevious} />
         <Button text="Next" customOnClick={saveUserInput} />

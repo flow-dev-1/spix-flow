@@ -56,16 +56,20 @@ function WeekSixPage2() {
       <QuestionBox>
         <div className="d-flex gap-3 -center-lg-custom flex-column flex-md-row">
           <h2 className="text-blue fs-1">Question: </h2>
-          <h2 className="text-gray fs-1">
+          <h2 className="text-gray fs-1 transition-question-text">
             {pageData.question}{" "}
-            {pageData.hasImage && (
-              <img
-                src={goalSetting}
-                alt="Goal Setting"
-                className="question-image"
-              />
+            {pageData.hasImage ? (
+              <span className="transition-question-term">
+                <img
+                  src={goalSetting}
+                  alt="Goal Setting"
+                  className="question-image"
+                />
+                <span className="transition-question-mark">?</span>
+              </span>
+            ) : (
+              "?"
             )}
-            ?
           </h2>
         </div>
         <BigTextBox handleChange={handleInputChange} value={myAnswer} />

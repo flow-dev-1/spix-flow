@@ -30,15 +30,15 @@ function Frame({ data, answers, setAnswers, setErrorMessage }) {
   };
 
   return (
-    <QuestionBox>
+    <QuestionBox className="transition-week6-page11-question-box">
       <div className="d-flex gap-2 flex-column flex-md-row">
-        <h2 className="text-blue fs-1 d-flex gap-2 ">
-          Question: <h2 className="d-md-none text-blue">{step - 1}</h2>{" "}
+        <h2 className="text-blue fs-1 d-flex gap-2 transition-week6-page11-question-label">
+          Question: <span className="d-md-none text-blue">{step - 1}</span>{" "}
         </h2>
         <h2 className="text-gray fs-1">{question}</h2>
       </div>
 
-      <div className="mt-2">
+      <div className="mt-2 transition-week6-page11-dropdown-wrap">
         <CustomDropDown
           value={answers.find((answer) => answer.stepId === step)?.value || ""}
           onChange={handleInputChange}

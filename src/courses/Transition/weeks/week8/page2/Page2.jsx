@@ -56,48 +56,50 @@ function WeekEightPage2() {
 
   return (
     <>
-      <PaddlessQuestionBox>
-        <div className="d-flex flex-column-reverse flex-md-row">
+      <PaddlessQuestionBox className="transition-week8-page2-question-box">
+        <div className="d-flex flex-column-reverse flex-md-row transition-week8-page2-layout">
           {/* Form Section */}
-          <div className="">
-            <form className="d-flex gap-2 flex-column m-2">
+          <div className="transition-week8-page2-form-col">
+            <form className="d-flex gap-2 flex-column m-2 transition-week8-page2-form">
               <h2 className="text-blue fs-1">Question:</h2>
-              <div className="d-flex flex-column gap- align-items-left">
+              <div className="d-flex flex-column align-items-left transition-week8-page2-content">
                 <h3 className="fs-1">{pageData.question}</h3>
-                {pageData.options.map((option, index) => {
-                  const optionKey = Object.keys(option);
-                  const optionID = option[optionKey[0]];
-                  const optionText = option[optionKey[1]];
-                  const isChecked = selectedOption === optionID;
-                  return (
-                    <div
-                      key={index}
-                      className="d-flex gap-2 align-items-center mt-5 mb-2 mx-3 pt-md-5"
-                    >
-                      <input
-                        type="radio"
-                        id={optionID}
-                        name="optionID"
-                        value={optionID}
-                        checked={isChecked}
-                        onChange={handleOptionChange}
-                        style={{ display: "none" }}
-                      />
-                      <img
-                        src={isChecked ? checkedImage : uncheckedImage}
-                        alt={optionKey}
-                        style={{ width: 40, height: 40, cursor: "pointer" }}
-                        onClick={() => {
-                          setErrorMessage("");
-                          setSelectedOption(optionID);
-                        }}
-                      />
-                      <label htmlFor={optionID} className="fs-4 fs-md-2">
-                        {optionText}
-                      </label>
-                    </div>
-                  );
-                })}
+                <div className="transition-week8-page2-options">
+                  {pageData.options.map((option, index) => {
+                    const optionKey = Object.keys(option);
+                    const optionID = option[optionKey[0]];
+                    const optionText = option[optionKey[1]];
+                    const isChecked = selectedOption === optionID;
+                    return (
+                      <div
+                        key={index}
+                        className="d-flex gap-2 align-items-center mt-5 mb-2 mx-3 pt-md-5 transition-week8-page2-option"
+                      >
+                        <input
+                          type="radio"
+                          id={optionID}
+                          name="optionID"
+                          value={optionID}
+                          checked={isChecked}
+                          onChange={handleOptionChange}
+                          style={{ display: "none" }}
+                        />
+                        <img
+                          src={isChecked ? checkedImage : uncheckedImage}
+                          alt={optionKey}
+                          style={{ width: 40, height: 40, cursor: "pointer" }}
+                          onClick={() => {
+                            setErrorMessage("");
+                            setSelectedOption(optionID);
+                          }}
+                        />
+                        <label htmlFor={optionID} className="fs-4 fs-md-2">
+                          {optionText}
+                        </label>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </form>
           </div>
