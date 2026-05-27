@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8" /><title>Redirecting...</title></head>
+  <body>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      params.set("startWeek", "2");
+      window.location.replace("/transition?" + params.toString());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,449 @@
+{
+  "metadata": {
+    "title": "From Curious to Confident: Transition with Ease",
+    "identifier": "https://spix.flowonline.app/transition",
+    "language": "en",
+    "modified": "2026-05-27T00:00:00.000Z"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/transition-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png",
+      "title": "Transition Course Cover"
+    }
+  ],
+  "readingOrder": [
+    {
+      "href": "https://spix.flowonline.app/transition/week1/index.html",
+      "type": "text/html",
+      "title": "Week 1"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week2/index.html",
+      "type": "text/html",
+      "title": "Week 2"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week3/index.html",
+      "type": "text/html",
+      "title": "Week 3"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week4/index.html",
+      "type": "text/html",
+      "title": "Week 4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week5/index.html",
+      "type": "text/html",
+      "title": "Week 5"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week6/index.html",
+      "type": "text/html",
+      "title": "Week 6"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week7/index.html",
+      "type": "text/html",
+      "title": "Week 7"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week8/index.html",
+      "type": "text/html",
+      "title": "Week 8"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week9/index.html",
+      "type": "text/html",
+      "title": "Week 9"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week10/index.html",
+      "type": "text/html",
+      "title": "Week 10"
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/transition",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week1/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week1/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week1",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=1",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+1/Week+1_7.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week2/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week2/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week2",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=2",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+2/Week+2_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+2/Week+2_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+2/Week+2_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week3/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week3/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week3",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=3",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+3/Week+3_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+3/Week+3_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+3/Week+3_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+3/Week+3_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week4/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week4/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week4",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=4",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+4/Week+4_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+4/Week+4_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+4/Week+4_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+4/Week+4_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week5/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week5/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week5",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=5",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+5/Week+5_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+5/Week+5_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+5/Week+5_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week6/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week6/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week6",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=6",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+6/Week+6_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+6/Week+6_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+6/Week+6_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+6/Week+6_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+6/Week+6_5.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+6/Week+6_6.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week7/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week7/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week7",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=7",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+7/Week+7_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+7/Week+7_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+7/Week+7_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week8/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week8/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week8",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=8",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week9/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week9/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week9",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=9",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+9/Week+9_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+9/Week+9_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+9/Week+9_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+9/Week+9_4.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week10/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week10/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week10",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=10",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+10/Week+10_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+10/Week+10_2.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}

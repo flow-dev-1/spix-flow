@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Navbar from "@/components/navbar/Navbar";
 import "@/styles/courses.css";
-import totCover from "@/assets/tot1-cover.jpg";
+import totCover from "@/assets/tot1-cover.png";
 import tot2Cover from "@/assets/tot2-cover.png";
+import transitionCover from "@/assets/transition-cover.png";
 
 const COURSES = [
   {
@@ -25,6 +26,16 @@ const COURSES = [
     image: tot2Cover,
     route: "/tot2",
     weeks: 5,
+  },
+  {
+    id: "transition",
+    title: "From Curious to Confident",
+    topic: "Transition with Ease",
+    description:
+      "This program helps learners build confidence, mindset, social skills, time management, goals, and coping skills for the next stage.",
+    image: transitionCover,
+    route: "/transition",
+    weeks: 10,
   },
 ];
 

@@ -1,0 +1,444 @@
+{
+  "metadata": {
+    "title": "From Curious to Confident: Transition with Ease"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/transition.json",
+      "type": "application/opds+json"
+    }
+  ],
+  "publications": [
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 1",
+        "subtitle": "Introduction To Transition. Also Talk About Your Why",
+        "identifier": "https://spix.flowonline.app/transition/week1/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week1-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week1/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week1/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week1",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=1",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 2",
+        "subtitle": "Growth And Fixed Mindset",
+        "identifier": "https://spix.flowonline.app/transition/week2/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week2-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week2/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week2/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week2",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=2",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 3",
+        "subtitle": "Understanding What Is In Your Control",
+        "identifier": "https://spix.flowonline.app/transition/week3/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week3-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week3/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week3/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week3",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=3",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 4",
+        "subtitle": "Understanding Values",
+        "identifier": "https://spix.flowonline.app/transition/week4/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week4-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week4/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week4/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week4",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=4",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 5",
+        "subtitle": "Emotional Intelligence",
+        "identifier": "https://spix.flowonline.app/transition/week5/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week5-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week5/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week5/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week5",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=5",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 6",
+        "subtitle": "Social Skills (Navigating Relationships)",
+        "identifier": "https://spix.flowonline.app/transition/week6/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week6-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week6/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week6/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week6",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=6",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 7",
+        "subtitle": "Time Management",
+        "identifier": "https://spix.flowonline.app/transition/week7/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week7-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week7/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week7/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week7",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=7",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 8",
+        "subtitle": "Goal Setting",
+        "identifier": "https://spix.flowonline.app/transition/week8/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week8-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week8/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week8/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week8",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=8",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 9",
+        "subtitle": "Resilience And Introduction To Coping Skills",
+        "identifier": "https://spix.flowonline.app/transition/week9/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week9-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week9/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week9/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week9",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=9",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "title": "Transition 1 - Week 10",
+        "subtitle": "Looking Ahead",
+        "identifier": "https://spix.flowonline.app/transition/week10/index.html",
+        "language": "en",
+        "modified": "2026-05-27T00:00:00.000Z"
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week10-manifest.json",
+          "type": "application/webpub+json"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week10/index.html",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week10/",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition/week10",
+          "type": "text/html"
+        },
+        {
+          "rel": "http://opds-spec.org/acquisition/open-access",
+          "href": "https://spix.flowonline.app/transition?startWeek=10",
+          "type": "text/html"
+        }
+      ],
+      "images": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "type": "image/png",
+          "title": "Transition Course Cover"
+        }
+      ]
+    }
+  ]
+}

@@ -16,7 +16,7 @@
       "type": "application/opds+json",
       "alternate": [
         {
-          "href": "https://spix.flowonline.app/assets/tot1-cover.jpg",
+          "href": "https://spix.flowonline.app/assets/tot1-cover.png",
           "rel": "icon",
           "type": "image/png",
           "title": "TOT Course Cover"
@@ -33,6 +33,19 @@
           "rel": "icon",
           "type": "image/png",
           "title": "TOT2 Course Cover"
+        }
+      ]
+    },
+    {
+      "href": "https://spix.flowonline.app/opds/transition.json",
+      "title": "From Curious to Confident: Transition with Ease",
+      "type": "application/opds+json",
+      "alternate": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition-cover.png",
+          "rel": "icon",
+          "type": "image/png",
+          "title": "Transition Course Cover"
         }
       ]
     }

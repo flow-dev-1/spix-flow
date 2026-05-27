@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "title": "Transition 1 - Week 8",
+    "subtitle": "Goal Setting",
+    "identifier": "https://spix.flowonline.app/transition/week8/index.html",
+    "language": "en",
+    "modified": "2026-05-27T00:00:00.000Z"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/transition-week8-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition/week8/index.html",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition/week8/",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition/week8",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition?startWeek=8",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png",
+      "title": "Transition Course Cover"
+    }
+  ],
+  "readingOrder": [
+    {
+      "href": "https://spix.flowonline.app/transition/week8/index.html",
+      "type": "text/html",
+      "title": "Transition 1 - Week 8"
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/transition/week8/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week8/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week8",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=8",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_2.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_3.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+8/Week+8_4.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}

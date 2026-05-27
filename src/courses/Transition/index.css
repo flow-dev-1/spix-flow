@@ -1,0 +1,106 @@
+.main-content {
+    display: flex;
+    margin-top: 59.6px;
+    margin-bottom: 50px;
+    padding-bottom: 20px;
+}
+
+aside {
+    flex-basis: 25vw;
+    padding: 40px 30px;
+    height: calc(100vh - 59.6px);
+    background-color: rgb(248, 245, 245);
+    box-shadow: 0 0 0.3px rgb(21, 4, 4);
+    margin: 0 3rem 0 0;
+}
+
+.week-content {
+    flex-basis: 70vw;
+    border-radius: 10px;
+    margin: 40px 100px 0 40px;
+    flex-grow: 2;
+}
+
+aside .back {
+    margin-left: 30px;
+    font-size: 1.2em;
+    color: #5b616a;
+}
+
+.compassion-title {
+    background: url(@/assets/selfawareness-images/course-title-bg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding: 20px 30px;
+    margin: 25px 0;
+}
+
+.compassion-title h2 {
+    color: white;
+}
+
+.compassion-title .compassion {
+    color: aquamarine;
+}
+
+.compassion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Reduced gap for 10 weeks */
+    padding: 0 20px;
+}
+
+.compassion-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Clickable week styles */
+.accessible-week {
+    opacity: 1 !important;
+    cursor: pointer;
+}
+
+.accessible-week:hover {
+    background-color: rgba(0, 188, 195, 0.1);
+    transform: translateX(5px);
+}
+
+.locked-week {
+    opacity: 0.5 !important;
+    pointer-events: none;
+}
+
+.active-week {
+    font-weight: bold;
+    opacity: 1 !important;
+    border-left: 4px solid #00BCC3;
+    color: #275dad;
+}
+
+@media (max-width: 1399px) {
+    aside {
+        padding: 20px 10px;
+        margin: 0 1rem 0 0;
+    }
+
+    .week-content {
+        flex-basis: 70vw;
+        margin: 20px 20px 0 20px;
+    }
+}
+
+@media (max-width: 1199px) {
+    aside {
+        padding: 20px 5px;
+        margin: 0 .5rem 0 0;
+    }
+
+    .week-content {
+        flex-basis: 70vw;
+        margin: 20px 20px 0 10px;
+    }
+}

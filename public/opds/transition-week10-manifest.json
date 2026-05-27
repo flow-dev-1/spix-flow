@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "title": "Transition 1 - Week 10",
+    "subtitle": "Looking Ahead",
+    "identifier": "https://spix.flowonline.app/transition/week10/index.html",
+    "language": "en",
+    "modified": "2026-05-27T00:00:00.000Z"
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/transition-week10-manifest.json",
+      "type": "application/webpub+json"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition/week10/index.html",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition/week10/",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition/week10",
+      "type": "text/html"
+    },
+    {
+      "rel": "http://opds-spec.org/acquisition/open-access",
+      "href": "https://spix.flowonline.app/transition?startWeek=10",
+      "type": "text/html"
+    }
+  ],
+  "images": [
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png",
+      "title": "Transition Course Cover"
+    }
+  ],
+  "readingOrder": [
+    {
+      "href": "https://spix.flowonline.app/transition/week10/index.html",
+      "type": "text/html",
+      "title": "Transition 1 - Week 10"
+    }
+  ],
+  "resources": [
+    {
+      "href": "https://spix.flowonline.app/transition/week10/index.html",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week10/",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition/week10",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/transition?startWeek=10",
+      "type": "text/html"
+    },
+    {
+      "href": "https://spix.flowonline.app/assets/transition-cover.png",
+      "type": "image/png"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+10/Week+10_1.mp4",
+      "type": "video/mp4"
+    },
+    {
+      "href": "https://d3sc34m1n26ele.cloudfront.net/SPIX-Transition/Week+10/Week+10_2.mp4",
+      "type": "video/mp4"
+    }
+  ]
+}
