@@ -85,8 +85,10 @@ function SonarStaircase({ scenario, answers, setAnswers, setErrorMessage }) {
                       cursor: "pointer",
                     }}
                   >
-                    {step.stepDescription}{" "}
-                    <span className="">
+                    <span className="sonar-step-description-text">
+                      {step.stepDescription}
+                    </span>
+                    <span className="sonar-step-icon">
                       <svg
                         width="24"
                         height="24"

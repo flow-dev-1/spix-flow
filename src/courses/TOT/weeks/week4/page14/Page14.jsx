@@ -15,6 +15,7 @@ import {
 } from "@/store/userAnswersReducer";
 import { adminData } from "@/store/adminReducer";
 import Frame from "./components/Frame";
+import "./page10.css";
 
 function WeekFourPage10() {
   const dispatch = useDispatch(); // Initialize dispatch
@@ -82,13 +83,13 @@ function WeekFourPage10() {
       case "instruction":
         return (
           <QuestionBox extraStyle="bg-blue pt-md-5">
-            <div className="text-center mb-5 mt-5 mt-md-4">
+            <div className="text-center mb-5 mt-5 mt-md-4 tot-week4-page14-instruction-heading">
               <h1 className="text-mute bg-white py-2 px-5 rounded d-inline week-2-question-text tot-text-instruction">
                 Journal Reflection Questions
               </h1>
             </div>
 
-            <div className="text-center mb-5 mt-3 mt-md-0">
+            <div className="text-center mb-5 mt-3 mt-md-0 tot-week4-page14-instruction-body">
               <h2 className="text-white py-2 px-5 rounded d-inline-block text-start tot-week-2-question-text">
                 Take this moment to pause, acknowledge your growth, and set{" "}
                 <br />

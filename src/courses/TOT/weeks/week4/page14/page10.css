@@ -1,0 +1,29 @@
+@media (max-width: 480px) {
+    .tot-week4-page14-instruction-heading{
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+        padding: 0 0.5rem;
+    }
+
+    .tot-week4-page14-instruction-heading h1{
+        display: inline-block !important;
+        max-width: 100%;
+        font-size: 1.2rem !important;
+        line-height: 1.25;
+        padding: 0.45rem 0.9rem !important;
+        white-space: normal;
+    }
+
+    .tot-week4-page14-instruction-body{
+        margin-top: 0.5rem !important;
+        margin-bottom: 1rem !important;
+        padding: 0 0.5rem;
+    }
+
+    .tot-week4-page14-instruction-body h2{
+        font-size: 0.95rem !important;
+        line-height: 1.35;
+        padding: 0.25rem 0.5rem !important;
+        text-align: center !important;
+    }
+}

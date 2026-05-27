@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CardBoard from "./CardBoard";
 import ArrowTrail from "@/assets/ArrowTrail.svg";
@@ -20,6 +20,9 @@ const DragAndDropFrame = ({
     orange: [],
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [activeBucketId, setActiveBucketId] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const activeBucketRef = useRef(null);
 
   useEffect(() => {
     if (!answers?.length) return;
@@ -48,20 +51,31 @@ const DragAndDropFrame = ({
   );
   const allImagesDropped = totalDropped >= images.length;
 
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
+  const getTrackedDestinationId = (destination) => {
+    if (activeBucketRef.current) return activeBucketRef.current;
+    if (destination?.droppableId && destination.droppableId !== "image") {
+      return destination.droppableId;
+    }
+    return null;
+  };
 
+  const handleOnDragEnd = (result) => {
     setErrorMessage("");
     const { source, destination } = result;
+    const destinationId = getTrackedDestinationId(destination);
 
-    if (source.droppableId === "image" && destination.droppableId !== "image") {
+    setIsDragging(false);
+    setActiveBucketId(null);
+    activeBucketRef.current = null;
+
+    if (source.droppableId === "image" && destinationId) {
       const draggedIndex = currentImageIndex;
 
       // Update bucket results
       const newBucketResults = {
         ...bucketResults,
-        [destination.droppableId]: [
-          ...(bucketResults[destination.droppableId] || []),
+        [destinationId]: [
+          ...(bucketResults[destinationId] || []),
           draggedIndex,
         ],
       };
@@ -103,6 +117,19 @@ const DragAndDropFrame = ({
     }
   };
 
+  const handleOnDragStart = () => {
+    setIsDragging(true);
+    setActiveBucketId(null);
+    activeBucketRef.current = null;
+  };
+
+  const handleOnDragUpdate = (update) => {
+    const destinationId = update.destination?.droppableId;
+    if (!destinationId || destinationId === "image") return;
+    activeBucketRef.current = destinationId;
+    setActiveBucketId(destinationId);
+  };
+
   const goToStep = (index) => {
     if (index < currentImageIndex) {
       setCurrentImageIndex(index);
@@ -115,6 +142,38 @@ const DragAndDropFrame = ({
 
     return () => {};
   }, [images]);
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const getPoint = (event) => {
+      const touch = event.touches?.[0] || event.changedTouches?.[0];
+      if (touch) {
+        return { x: touch.clientX, y: touch.clientY };
+      }
+      return { x: event.clientX, y: event.clientY };
+    };
+
+    const trackBucket = (event) => {
+      const { x, y } = getPoint(event);
+      const bucketElement = document
+        .elementsFromPoint(x, y)
+        .find((element) => element.closest?.(".support-circle-drop"))
+        ?.closest(".support-circle-drop");
+      const bucketId = bucketElement?.dataset?.bucketId || null;
+
+      activeBucketRef.current = bucketId;
+      setActiveBucketId(bucketId);
+    };
+
+    window.addEventListener("mousemove", trackBucket);
+    window.addEventListener("touchmove", trackBucket, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", trackBucket);
+      window.removeEventListener("touchmove", trackBucket);
+    };
+  }, [isDragging]);
 
   const renderDragItem = () => {
     if (currentImageIndex >= images.length || allImagesDropped) return null;
@@ -160,7 +219,11 @@ const DragAndDropFrame = ({
   return (
     <>
       {" "}
-      <DragDropContext onDragEnd={handleOnDragEnd}>
+      <DragDropContext
+        onDragStart={handleOnDragStart}
+        onDragUpdate={handleOnDragUpdate}
+        onDragEnd={handleOnDragEnd}
+      >
         <div className="row custom-border-20 w-100 m-0">
           {/* Left Droppable (50%) */}
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-center p-4">
@@ -185,7 +248,9 @@ const DragAndDropFrame = ({
                     />
                   )}
                   {renderDragItem()}
-                  {provided.placeholder}
+                  <div style={{ height: 0, overflow: "hidden" }}>
+                    {provided.placeholder}
+                  </div>
                 </div>
               )}
             </Droppable>
@@ -208,25 +273,33 @@ const DragAndDropFrame = ({
             <div className="support-circle-grid">
               {buckets &&
                 buckets.map((bucket) => (
-                  <Droppable key={bucket.title} droppableId={bucket.id}>
+                  <Droppable
+                    key={bucket.title}
+                    droppableId={bucket.id}
+                    ignoreContainerClipping
+                  >
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
-                        className="support-circle-drop draggable-bucket"
+                        className={`support-circle-drop draggable-bucket ${
+                          (
+                            activeBucketId
+                              ? activeBucketId === bucket.id
+                              : snapshot.isDraggingOver
+                          )
+                            ? "is-dragging-over"
+                            : ""
+                        }`}
+                        data-bucket-id={bucket.id}
                         {...provided.droppableProps}
-                        style={{
-                          backgroundColor: snapshot.isDraggingOver
-                            ? "rgba(255, 255, 255, 0.1)"
-                            : "transparent",
-                        }}
                       >
                         <h2
                           className={
                             bucket.id === "green"
-                              ? "inner-count"
+                              ? "support-circle-count support-circle-count--inner"
                               : bucket.id === "orange"
-                                ? "outer-count"
-                                : "both-count"
+                                ? "support-circle-count support-circle-count--middle"
+                                : "support-circle-count support-circle-count--outer"
                           }
                         >
                           {bucketResults[bucket.id]?.length || 0}
@@ -234,10 +307,10 @@ const DragAndDropFrame = ({
                         <div
                           className={
                             bucket.id === "green"
-                              ? "support-circle-bowl inner-bowl bucket-text"
+                              ? "support-circle-bowl support-circle-bowl--inner"
                               : bucket.id === "orange"
-                                ? "support-circle-bowl outer-bowl bucket-text"
-                                : "support-circle-bowl both-bowl bucket-text"
+                                ? "support-circle-bowl support-circle-bowl--middle"
+                                : "support-circle-bowl support-circle-bowl--outer"
                           }
                           style={
                             {
@@ -247,7 +320,9 @@ const DragAndDropFrame = ({
                         >
                           <p className="text-center">{bucket.title}</p>
                         </div>
-                        {provided.placeholder}
+                        <div style={{ height: 0, overflow: "hidden" }}>
+                          {provided.placeholder}
+                        </div>
                       </div>
                     )}
                   </Droppable>

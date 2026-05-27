@@ -197,7 +197,7 @@ const DragAndDropFrame = ({
               />
             </div>
 
-            <div className="d-flex justify-content-around align-items-center flex-wrap">
+            <div className="d-flex justify-content-around align-items-center flex-wrap tot-week4-page8-buckets-row">
               {buckets &&
                 buckets.map((bucket) => (
                   <Droppable key={bucket.title} droppableId={bucket.id}>

@@ -26,6 +26,8 @@
   transition: all 0.3s ease;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-items: stretch;
+  width: 100%;
 }
 
 .sonar-step:hover {
@@ -54,6 +56,13 @@
   font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 clamp(96px, 28%, 150px);
+  min-width: 0;
+  white-space: nowrap;
+  line-height: 1.1;
 }
 
 .sonar-step-description {
@@ -61,10 +70,27 @@
 
   /* align-self: center; */
   flex: 1;
+  min-width: 0;
   font-size: 0.95rem;
   opacity: 0.95;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+  line-height: 1.2;
+}
+
+.sonar-step-description-text {
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.sonar-step-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
 }
 
 .completion-check {
@@ -129,8 +155,13 @@
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-  .sonar-step {
-    /* padding: 15px 20px; */
+  .sonar-container {
+    padding-inline: 0 !important;
+  }
+
+  .sonar-container img {
+    max-width: 76px;
+    height: auto;
   }
 
   .sonar-step-number {
@@ -138,15 +169,25 @@
   }
 
   .sonar-step-name {
-    font-size: 1rem;
+    flex-basis: clamp(78px, 30%, 112px);
+    font-size: clamp(0.72rem, 3vw, 0.95rem);
+    padding: 0.65rem 0.25rem !important;
+    letter-spacing: 0;
   }
 
   .sonar-step-description {
-    font-size: 0.85rem;
+    font-size: clamp(0.72rem, 3vw, 0.9rem);
+    padding: 0.55rem 0.35rem !important;
+    gap: 0.25rem;
   }
 
   .sonar-step-wrapper {
     width: 100% !important;
+  }
+
+  .sonar-step-icon svg {
+    width: 18px;
+    height: 18px;
   }
 
   .completion-check {

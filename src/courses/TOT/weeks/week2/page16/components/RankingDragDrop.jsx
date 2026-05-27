@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import "../page12.css";
 
@@ -11,6 +11,9 @@ function RankingDragDrop({
 }) {
   const [rankings, setRankings] = useState({});
   const [availableResponses, setAvailableResponses] = useState(step.responses);
+  const [activeDropId, setActiveDropId] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const activeDropRef = useRef(null);
 
   const stepKey = `step_${currentStep}`;
 
@@ -31,25 +34,53 @@ function RankingDragDrop({
     }
   }, [answers, stepKey, step.responses]);
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
+  const getTrackedDestination = (destination) => {
+    if (activeDropRef.current) {
+      return {
+        droppableId: activeDropRef.current,
+        index: 0,
+      };
+    }
+    return destination;
+  };
 
+  const handleDragEnd = (result) => {
     const { source, destination } = result;
+    const trackedDestination = getTrackedDestination(destination);
+
+    setIsDragging(false);
+    setActiveDropId(null);
+    activeDropRef.current = null;
+
+    if (!trackedDestination) return;
 
     // If dropped in the same place, do nothing
     if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
+      source.droppableId === trackedDestination.droppableId &&
+      source.index === trackedDestination.index
     ) {
       return;
     }
 
     setErrorMessage("");
 
+    // Dragging from responses back to responses is a no-op.
+    if (
+      source.droppableId === "responses" &&
+      trackedDestination.droppableId === "responses"
+    ) {
+      return;
+    }
+
     // Dragging from responses to ranking slot
-    if (source.droppableId === "responses") {
+    if (
+      source.droppableId === "responses" &&
+      trackedDestination.droppableId.startsWith("rank_")
+    ) {
       const responseId = result.draggableId;
-      const targetRank = parseInt(destination.droppableId.replace("rank_", ""));
+      const targetRank = parseInt(
+        trackedDestination.droppableId.replace("rank_", "")
+      );
 
       // Check if slot already has an item
       if (rankings[targetRank]) {
@@ -80,18 +111,10 @@ function RankingDragDrop({
       }));
     }
 
-    // Dragging from responses back to responses (invalid drop, do nothing)
-    else if (
-      source.droppableId === "responses" &&
-      destination.droppableId === "responses"
-    ) {
-      return;
-    }
-
     // Dragging from ranking slot back to responses (remove from ranking)
     if (
       source.droppableId.startsWith("rank_") &&
-      destination.droppableId === "responses"
+      trackedDestination.droppableId === "responses"
     ) {
       const sourceRank = parseInt(source.droppableId.replace("rank_", ""));
       const responseId = rankings[sourceRank];
@@ -119,7 +142,9 @@ function RankingDragDrop({
     //  Dragging from one ranking slot to another
     else if (source.droppableId.startsWith("rank_")) {
       const sourceRank = parseInt(source.droppableId.replace("rank_", ""));
-      const targetRank = parseInt(destination.droppableId.replace("rank_", ""));
+      const targetRank = parseInt(
+        trackedDestination.droppableId.replace("rank_", "")
+      );
 
       if (sourceRank === targetRank) return;
 
@@ -150,19 +175,71 @@ function RankingDragDrop({
     }
   };
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+    setActiveDropId(null);
+    activeDropRef.current = null;
+  };
+
+  const handleDragUpdate = (update) => {
+    const destinationId = update.destination?.droppableId;
+    if (!destinationId) return;
+    activeDropRef.current = destinationId;
+    setActiveDropId(destinationId);
+  };
+
   const getResponseById = (id) => {
     return step.responses.find((r) => r.id === id);
   };
 
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const getPoint = (event) => {
+      const touch = event.touches?.[0] || event.changedTouches?.[0];
+      if (touch) {
+        return { x: touch.clientX, y: touch.clientY };
+      }
+      return { x: event.clientX, y: event.clientY };
+    };
+
+    const trackDropTarget = (event) => {
+      const { x, y } = getPoint(event);
+      const target = document
+        .elementsFromPoint(x, y)
+        .find((element) =>
+          element.closest?.("[data-ranking-drop-id]")
+        )
+        ?.closest("[data-ranking-drop-id]");
+      const dropId = target?.dataset?.rankingDropId || null;
+
+      activeDropRef.current = dropId;
+      setActiveDropId(dropId);
+    };
+
+    window.addEventListener("mousemove", trackDropTarget);
+    window.addEventListener("touchmove", trackDropTarget, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", trackDropTarget);
+      window.removeEventListener("touchmove", trackDropTarget);
+    };
+  }, [isDragging]);
+
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="row custom-border-20 w-100 m-0">
+    <DragDropContext
+      onDragStart={handleDragStart}
+      onDragUpdate={handleDragUpdate}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="row custom-border-20 w-100 m-0 tot-week2-ranking-frame">
         {/* Left Side - Available Responses */}
-        <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center p-4">
+        <div className="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center p-4 ranking-responses-panel">
           <Droppable droppableId="responses">
             {(provided, snapshot) => (
               <div
-                className="w-100 d-flex flex-column gap-3"
+                className="w-100 d-flex flex-column gap-3 ranking-responses-list"
+                data-ranking-drop-id="responses"
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 style={{
@@ -209,19 +286,28 @@ function RankingDragDrop({
         </div>
 
         {/* Right Side - Ranking Slots */}
-        <div className="col-12 col-md-6 bg-blue p-4">
+        <div className="col-12 col-md-6 bg-blue p-4 ranking-slots-panel">
           <div className="ranking-grid">
             {/* Top Row: 4 and 3 */}
             <div className="ranking-row">
               {[4, 3].map((rank) => (
                 <Droppable key={rank} droppableId={`rank_${rank}`}>
                   {(provided, snapshot) => (
+                    (() => {
+                      const isActiveDrop = activeDropId
+                        ? activeDropId === `rank_${rank}`
+                        : snapshot.isDraggingOver;
+
+                      return (
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className="ranking-slot"
+                      className={`ranking-slot ${
+                        isActiveDrop ? "ranking-slot-active" : ""
+                      }`}
+                      data-ranking-drop-id={`rank_${rank}`}
                       style={{
-                        backgroundColor: snapshot.isDraggingOver
+                        backgroundColor: isActiveDrop
                           ? "rgba(255, 255, 255, 0.81)"
                           : "rgb(255, 255, 255)",
                       }}
@@ -255,6 +341,8 @@ function RankingDragDrop({
                       )}
                       {provided.placeholder}
                     </div>
+                      );
+                    })()
                   )}
                 </Droppable>
               ))}
@@ -265,12 +353,21 @@ function RankingDragDrop({
               {[2, 1].map((rank) => (
                 <Droppable key={rank} droppableId={`rank_${rank}`}>
                   {(provided, snapshot) => (
+                    (() => {
+                      const isActiveDrop = activeDropId
+                        ? activeDropId === `rank_${rank}`
+                        : snapshot.isDraggingOver;
+
+                      return (
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className="ranking-slot"
+                      className={`ranking-slot ${
+                        isActiveDrop ? "ranking-slot-active" : ""
+                      }`}
+                      data-ranking-drop-id={`rank_${rank}`}
                       style={{
-                        backgroundColor: snapshot.isDraggingOver
+                        backgroundColor: isActiveDrop
                           ? "rgba(255, 255, 255, 0.81)"
                           : "rgb(255, 255, 255)",
                       }}
@@ -304,6 +401,8 @@ function RankingDragDrop({
                       )}
                       {provided.placeholder}
                     </div>
+                      );
+                    })()
                   )}
                 </Droppable>
               ))}
