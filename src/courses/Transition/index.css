@@ -28,9 +28,8 @@ aside .back {
 }
 
 .compassion-title {
-    background: url(@/assets/selfawareness-images/course-title-bg.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background: #275dad;
+    border-radius: 10px;
     padding: 20px 30px;
     margin: 25px 0;
 }
@@ -41,6 +40,12 @@ aside .back {
 
 .compassion-title .compassion {
     color: aquamarine;
+}
+
+.transition-nav-text {
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
 }
 
 .compassion-list {
@@ -102,5 +107,45 @@ aside .back {
     .week-content {
         flex-basis: 70vw;
         margin: 20px 20px 0 10px;
+    }
+}
+
+@media (max-width: 769px) {
+    aside,
+    .aside-class {
+        height: auto !important;
+        overflow-y: visible !important;
+        flex-basis: 100% !important;
+        width: 100%;
+        margin: 0 !important;
+        padding: 4px 16px !important;
+    }
+
+    .week-content {
+        margin: 4px 8px 0 8px !important;
+    }
+
+    .compassion-title {
+        padding: 12px 16px !important;
+        margin: 12px 0 !important;
+    }
+
+    .compassion-title h2 {
+        font-size: 0.8rem !important;
+    }
+
+    .compassion-list {
+        gap: 16px !important;
+        padding: 0 8px !important;
+    }
+
+    .compassion-list li span {
+        font-size: 0.8rem !important;
+    }
+
+    .main-content {
+        overflow: visible !important;
+        min-height: 100vh;
+        margin-top: 50px !important;
     }
 }

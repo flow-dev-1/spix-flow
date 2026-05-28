@@ -16,6 +16,7 @@ import {
 import "./index.css";
 // Import components
 import Hurray from "./components/Hurray";
+import { scrollToCourseTopOnMobile } from "../utils/scrollToCourseTop";
 
 // Week 1
 import TOT2PreAssesment from "./weeks/week1/preAssesement/PreAssesment.jsx";
@@ -773,6 +774,7 @@ const CourseContent = () => {
     sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
     sessionStorage.setItem("flow-currentPage", String(savedProgress.page));
     sessionStorage.setItem("flow-currentStep", String(savedProgress.step));
+    scrollToCourseTopOnMobile();
   };
 
   const isWeekAccessible = (weekNumber) => {

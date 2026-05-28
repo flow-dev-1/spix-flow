@@ -10,6 +10,27 @@ import {
   selectNavigationState,
 } from "@/store/navigationSlice";
 
+const isRespectWebViewSession = () => {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("respectLaunchVersion") === "1" ||
+    Boolean(sessionStorage.getItem("respect-launch-params"))
+  );
+};
+
+const closeRespectWebView = () => {
+  if (typeof window === "undefined") return false;
+
+  window.ReactNativeWebView?.postMessage(
+    JSON.stringify({ type: "CLOSE_WEBVIEW", action: "close" })
+  );
+  window.Android?.closeWebView?.();
+  window.close();
+
+  return true;
+};
+
 const Hurray = ({ currentWeek = 3 }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const dispatch = useDispatch();
@@ -20,10 +41,16 @@ const Hurray = ({ currentWeek = 3 }) => {
     sessionStorage.setItem("flow-currentPage", 1);
     sessionStorage.setItem("flow-currentStep", 1);
     if (isLastWeek) {
-      navigate("/dashboard/my-courses");
+      if (isRespectWebViewSession()) {
+        closeRespectWebView();
+        return false;
+      }
+      navigate("/transition", { replace: true });
+      return false;
     } else {
       dispatch(hideHurray());
     }
+    return false;
   };
 
   const getButtonText = () => {

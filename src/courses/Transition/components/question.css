@@ -285,6 +285,22 @@
   box-shadow: none;
 }
 
+.transition-question-box input:focus,
+.transition-question-box input:focus-visible,
+.transition-question-box textarea:focus,
+.transition-question-box textarea:focus-visible,
+.transition-question-box select:focus,
+.transition-question-box select:focus-visible,
+.question-box-container input:focus,
+.question-box-container input:focus-visible,
+.question-box-container textarea:focus,
+.question-box-container textarea:focus-visible,
+.question-box-container select:focus,
+.question-box-container select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .no-scrollbar {
   overflow: hidden;
 }

@@ -18,6 +18,7 @@ import "./index.css";
 // Import components
 import PopUp from "./components/ReviewPopUp";
 import Hurray from "./components/Hurray";
+import { scrollToCourseTopOnMobile } from "../utils/scrollToCourseTop";
 
 // Week 1
 import Page1 from "./weeks/week1/page1/Page1";
@@ -815,6 +816,7 @@ const CourseContent = () => {
     sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
     sessionStorage.setItem("flow-currentPage", String(savedProgress.page));
     sessionStorage.setItem("flow-currentStep", String(savedProgress.step));
+    scrollToCourseTopOnMobile();
   };
 
   const isWeekAccessible = (weekNumber) => {
@@ -917,10 +919,10 @@ const CourseContent = () => {
           </button>
 
           <div className="compassion-title">
-            <h2 className="fs-5 fs-md-3">
+            <h2 className="fs-5 fs-md-3 transition-nav-text">
               From Curious to Confident: Transition with Ease
             </h2>
-            <h2 className="compassion fs-5">Transition</h2>
+            <h2 className="compassion fs-5 transition-nav-text">Transition</h2>
           </div>
 
           <ul className="compassion-list">
