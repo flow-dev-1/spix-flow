@@ -1,0 +1,122 @@
+.transition2-drag-page {
+  width: 100%;
+}
+
+.transition2-drag-shell {
+  width: min(100%, 1029px) !important;
+  max-width: 1029px !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+}
+
+.transition2-drag-panel {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.transition2-bucket-dropzone {
+  position: relative;
+  flex: 0 0 50%;
+  max-width: 50%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.transition2-dnd-placeholder {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.transition2-character-bucket {
+  position: relative;
+  width: min(100%, 160px);
+}
+
+.transition2-character-bucket-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .transition2-drag-panel {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .transition2-bucket-dropzone {
+    height: 300px;
+  }
+}
+
+@media (max-width: 767px) {
+  .transition2-drag-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .transition2-drag-panel {
+    max-width: 100%;
+    padding: 1rem !important;
+  }
+
+  .transition2-drag-panel h1 {
+    font-size: 1.35rem !important;
+    line-height: 1.15;
+  }
+
+  .transition2-bucket-dropzone {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+    height: 190px !important;
+    min-height: 190px !important;
+    padding: 0.25rem !important;
+  }
+
+  .transition2-character-bucket {
+    width: min(100%, 120px);
+  }
+
+  .transition2-bucket-dropzone h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .transition2-drag-page .cardboard-image {
+    width: 170px;
+  }
+}
+
+@media (max-width: 480px) {
+  .transition2-drag-panel {
+    padding: 0.75rem 0.35rem !important;
+  }
+
+  .transition2-drag-panel h1 {
+    font-size: 1.05rem !important;
+  }
+
+  .transition2-bucket-dropzone {
+    height: 145px !important;
+    min-height: 145px !important;
+  }
+
+  .transition2-character-bucket {
+    width: min(100%, 92px);
+  }
+
+  .transition2-drag-page .arrow-head {
+    width: 42px;
+  }
+
+  .transition2-drag-page .cardboard-image {
+    width: 140px;
+  }
+}

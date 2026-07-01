@@ -37,6 +37,16 @@ const COURSES = [
     route: "/transition",
     weeks: 10,
   },
+  {
+    id: "transition2",
+    title: "Transition 2",
+    topic: "Preparing for the Next Chapter",
+    description:
+      "This program helps learners build purpose, independence, resilience, financial awareness, and practical skills for post-secondary life.",
+    image: transitionCover,
+    route: "/transition2",
+    weeks: 5,
+  },
 ];
 
 export default function Courses() {

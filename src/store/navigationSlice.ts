@@ -5,6 +5,8 @@ import { courseContent as tot2CourseContent } from "@/courses/TOT2/data/activity
 import { assessments as tot2Assessments } from "@/courses/TOT2/data/assessment";
 import { courseContent as transitionCourseContent } from "@/courses/Transition/data/activity";
 import { assessments as transitionAssessments } from "@/courses/Transition/data/assessment";
+import { courseContent as transition2CourseContent } from "@/courses/Transition2/data/activity";
+import { assessments as transition2Assessments } from "@/courses/Transition2/data/assessment";
 
 const courseData = {
   tot: {
@@ -18,6 +20,10 @@ const courseData = {
   transition: {
     courseContent: transitionCourseContent,
     assessments: transitionAssessments,
+  },
+  transition2: {
+    courseContent: transition2CourseContent,
+    assessments: transition2Assessments,
   },
 };
 

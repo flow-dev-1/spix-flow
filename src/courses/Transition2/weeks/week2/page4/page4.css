@@ -1,0 +1,67 @@
+.transition2-page8-content {
+  width: min(100%, 880px);
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+.transition2-page8-question {
+  color: #5b616a;
+  font-family: var(--headings1-font-family);
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  margin-bottom: 1.5rem;
+}
+
+.transition2-page8-options {
+  width: min(100%, 680px);
+  margin: 0 auto;
+}
+
+.transition2-page8-option {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #5b616a;
+  text-align: left;
+  font-size: clamp(1.2rem, 1.75vw, 1.7rem);
+  line-height: 1.15;
+  cursor: pointer;
+}
+
+.transition2-page8-option:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.transition2-page8-checkbox {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  margin-top: -0.15rem;
+}
+
+@media (max-width: 576px) {
+  .transition2-page8-content {
+    padding: 1.25rem 0.25rem;
+  }
+
+  .transition2-page8-question {
+    font-size: 1.55rem;
+    line-height: 1.15;
+  }
+
+  .transition2-page8-option {
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .transition2-page8-checkbox {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+}

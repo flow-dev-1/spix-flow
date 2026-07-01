@@ -1,0 +1,54 @@
+.transition2-week4-page14-choice-content {
+  width: min(100%, 850px);
+  margin: 0 auto;
+  padding: 2.75rem 1rem 2.5rem;
+}
+
+.transition2-week4-page14-choice-content h2 {
+  white-space: pre-line;
+}
+
+.transition2-week4-page14-choice-options {
+  width: min(100%, 650px);
+  margin: 1rem auto 0;
+}
+
+.transition2-week4-page14-choice-option {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #5b616a;
+  text-align: left;
+  font-size: clamp(1.1rem, 1.65vw, 1.5rem);
+  line-height: 1.15;
+  cursor: pointer;
+}
+
+.transition2-week4-page14-choice-option:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.transition2-week4-page14-choice-checkbox {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  margin-top: -0.2rem;
+}
+
+@media (max-width: 576px) {
+  .transition2-week4-page14-choice-content {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .transition2-week4-page14-choice-checkbox {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+}

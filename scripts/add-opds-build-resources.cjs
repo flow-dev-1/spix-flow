@@ -37,6 +37,7 @@ const courses = [
   { slug: "tot", weeks: 6 },
   { slug: "tot2", weeks: 5 },
   { slug: "transition", weeks: 10 },
+  { slug: "transition2", weeks: 5 },
 ];
 
 const weekHtmlResources = [];
@@ -111,6 +112,8 @@ const builtFileResources = [
   resource("/tot2/", "text/html"),
   resource("/transition", "text/html"),
   resource("/transition/", "text/html"),
+  resource("/transition2", "text/html"),
+  resource("/transition2/", "text/html"),
 ].concat(
   listFiles(DIST_DIR)
     .filter((filePath) => !path.relative(DIST_DIR, filePath).split(path.sep).includes("opds"))
@@ -147,6 +150,8 @@ const relativeBuiltFileResources = [
   relativeResource("../tot2/", "text/html"),
   relativeResource("../transition", "text/html"),
   relativeResource("../transition/", "text/html"),
+  relativeResource("../transition2", "text/html"),
+  relativeResource("../transition2/", "text/html"),
 ].concat(
   listFiles(DIST_DIR)
     .filter((filePath) => !path.relative(DIST_DIR, filePath).split(path.sep).includes("opds"))
@@ -250,6 +255,12 @@ function normalizeCatalogLaunches(catalogPath, slug) {
   "transition-week8-manifest.json",
   "transition-week9-manifest.json",
   "transition-week10-manifest.json",
+  "transition2-manifest.json",
+  "transition2-week1-manifest.json",
+  "transition2-week2-manifest.json",
+  "transition2-week3-manifest.json",
+  "transition2-week4-manifest.json",
+  "transition2-week5-manifest.json",
 ].forEach((fileName) => {
   addResources(path.join(OPDS_DIR, fileName), [serviceWorkerResource].concat(sharedResources));
   addServiceWorkerLink(path.join(OPDS_DIR, fileName));
@@ -257,7 +268,9 @@ function normalizeCatalogLaunches(catalogPath, slug) {
 
   const weekMatch = fileName.match(/week(\d+)/);
   if (weekMatch) {
-    const slug = fileName.startsWith("transition")
+    const slug = fileName.startsWith("transition2")
+      ? "transition2"
+      : fileName.startsWith("transition")
       ? "transition"
       : fileName.startsWith("tot2")
         ? "tot2"
@@ -274,3 +287,4 @@ function normalizeCatalogLaunches(catalogPath, slug) {
 normalizeCatalogLaunches(path.join(OPDS_DIR, "tot.json"), "tot");
 normalizeCatalogLaunches(path.join(OPDS_DIR, "tot2.json"), "tot2");
 normalizeCatalogLaunches(path.join(OPDS_DIR, "transition.json"), "transition");
+normalizeCatalogLaunches(path.join(OPDS_DIR, "transition2.json"), "transition2");

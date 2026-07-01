@@ -1,0 +1,36 @@
+.transition2-smart-text-box-label {
+  width: min(100%, 900px);
+  display: block;
+  margin: 0.35rem auto;
+}
+
+.transition2-smart-text-box-input {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 769px) {
+  .transition2-smart-text-box-label {
+    padding: 0.8rem 1.4rem !important;
+    min-height: 58px;
+  }
+
+  .transition2-smart-text-box-input {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    font-size: 0.95rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .transition2-smart-text-box-label {
+    padding: 0.65rem 0.8rem !important;
+    min-height: 52px;
+  }
+
+  .transition2-smart-text-box-input {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+}

@@ -48,6 +48,19 @@
           "title": "Transition Course Cover"
         }
       ]
+    },
+    {
+      "href": "https://spix.flowonline.app/opds/transition2.json",
+      "title": "Transition 2",
+      "type": "application/opds+json",
+      "alternate": [
+        {
+          "href": "https://spix.flowonline.app/assets/transition2-cover.jpg",
+          "rel": "icon",
+          "type": "image/png",
+          "title": "Transition 2 Course Cover"
+        }
+      ]
     }
   ]
 }

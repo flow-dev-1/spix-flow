@@ -1,4 +1,4 @@
-const APP_CACHE = "flow-app-v4";
+const APP_CACHE = "flow-app-v5";
 const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
@@ -16,6 +16,8 @@ const APP_SHELL_URLS = [
   "/tot2/",
   "/transition",
   "/transition/",
+  "/transition2",
+  "/transition2/",
   "/favicon.ico",
   "/logo.png",
   "/FLOW.png",
@@ -49,6 +51,13 @@ const APP_SHELL_URLS = [
   "/opds/transition-week8-manifest.json",
   "/opds/transition-week9-manifest.json",
   "/opds/transition-week10-manifest.json",
+  "/opds/transition2.json",
+  "/opds/transition2-manifest.json",
+  "/opds/transition2-week1-manifest.json",
+  "/opds/transition2-week2-manifest.json",
+  "/opds/transition2-week3-manifest.json",
+  "/opds/transition2-week4-manifest.json",
+  "/opds/transition2-week5-manifest.json",
   "/tot/week1/index.html",
   "/tot/week1/",
   "/tot/week1",
@@ -133,6 +142,26 @@ const APP_SHELL_URLS = [
   "/transition/week10/",
   "/transition/week10",
   "/transition?startWeek=10",
+  "/transition2/week1/index.html",
+  "/transition2/week1/",
+  "/transition2/week1",
+  "/transition2?startWeek=1",
+  "/transition2/week2/index.html",
+  "/transition2/week2/",
+  "/transition2/week2",
+  "/transition2?startWeek=2",
+  "/transition2/week3/index.html",
+  "/transition2/week3/",
+  "/transition2/week3",
+  "/transition2?startWeek=3",
+  "/transition2/week4/index.html",
+  "/transition2/week4/",
+  "/transition2/week4",
+  "/transition2?startWeek=4",
+  "/transition2/week5/index.html",
+  "/transition2/week5/",
+  "/transition2/week5",
+  "/transition2?startWeek=5",
 ];
 const CACHEABLE_ASSET_EXTENSIONS = [
   ".avif",
@@ -149,7 +178,7 @@ const CACHEABLE_ASSET_EXTENSIONS = [
   ".svg",
   ".webp",
 ];
-const NAVIGATION_ROUTE_PREFIXES = ["/courses", "/tot", "/tot2", "/transition"];
+const NAVIGATION_ROUTE_PREFIXES = ["/courses", "/tot", "/tot2", "/transition", "/transition2"];
 
 async function staleWhileRevalidate(cacheName, request) {
   const cache = await caches.open(cacheName);

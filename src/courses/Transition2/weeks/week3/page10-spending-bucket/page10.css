@@ -1,0 +1,60 @@
+.transition2-week3-page10-content {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 4.5rem 1rem 4rem;
+}
+
+.transition2-week3-page10-options {
+  width: min(100%, 680px);
+  margin: 1rem auto 0;
+}
+
+.transition2-week3-page10-option {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #5b616a;
+  text-align: left;
+  font-size: clamp(1.35rem, 1.8vw, 1.7rem);
+  line-height: 1.15;
+  cursor: pointer;
+}
+
+.transition2-week3-page10-option:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.transition2-week3-page10-checkbox {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  margin-top: -0.15rem;
+}
+
+@media (max-width: 576px) {
+  .transition2-week3-page10-content {
+    padding: 1.5rem 0.25rem;
+  }
+
+  .transition2-week3-page10-content .fs-1 {
+    font-size: 1.55rem !important;
+    line-height: 1.15;
+  }
+
+  .transition2-week3-page10-option {
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .transition2-week3-page10-checkbox {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+}
