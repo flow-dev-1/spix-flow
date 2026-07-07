@@ -1,23 +1,41 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Navbar from "@/components/navbar/Navbar";
 import "@/styles/onboarding.css";
 import heroBg from "@/assets/course2.png";
-import { parseRespectLaunchParams } from "@/services/xapi";
+import {
+  parseRespectLaunchParams,
+  sendXAPIStatement,
+  XAPI_VERBS,
+  RESPECT_LAUNCH_PARAMS_KEY,
+  RESPECT_LAUNCHED_KEY,
+  RESPECT_SESSION_STARTED_AT_KEY,
+} from "@/services/xapi";
 
 export default function Login() {
   const navigate = useNavigate();
+  const launch = parseRespectLaunchParams(window.location.search);
 
   // If launched by the RESPECT Launcher, params are in the URL — skip the
   // login screen entirely and go straight to the course.
-  useEffect(() => {
-    const launch = parseRespectLaunchParams(window.location.search);
-    if (launch) {
-      sessionStorage.setItem("respect-launch-params", JSON.stringify(launch));
-      navigate("/tot2", { replace: true });
+  useLayoutEffect(() => {
+    if (!launch) return;
+
+    sessionStorage.setItem(RESPECT_LAUNCH_PARAMS_KEY, JSON.stringify(launch));
+    if (!sessionStorage.getItem(RESPECT_SESSION_STARTED_AT_KEY)) {
+      sessionStorage.setItem(RESPECT_SESSION_STARTED_AT_KEY, String(Date.now()));
     }
-  }, []);
+
+    void (async () => {
+      if (!sessionStorage.getItem(RESPECT_LAUNCHED_KEY)) {
+        sessionStorage.setItem(RESPECT_LAUNCHED_KEY, "1");
+        await sendXAPIStatement(launch, XAPI_VERBS.launched);
+      }
+
+      navigate("/tot2", { replace: true });
+    })();
+  }, [launch, navigate]);
 
   const handleRespectSignIn = () => {
     // User is not inside a RESPECT session — navigate to course catalogue.
@@ -25,6 +43,8 @@ export default function Login() {
     // direct browser users are taken to the course list.
     navigate("/courses");
   };
+
+  if (launch) return null;
 
   return (
     <div className="root-layout">

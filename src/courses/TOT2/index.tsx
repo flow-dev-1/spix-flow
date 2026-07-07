@@ -125,6 +125,27 @@ const weeksTopic = [
   "Collaboration, Support Systems, and Inclusive Implementation",
 ];
 
+const FINAL_SCORE_KEY = "tot2-final-assessment-score";
+const PASSING_SCORE = 60;
+
+const getFinalAssessmentScore = () => {
+  try {
+    const raw = sessionStorage.getItem(FINAL_SCORE_KEY);
+    if (!raw) return null;
+
+    const saved = JSON.parse(raw);
+    const score = Number(saved?.raw);
+    if (!Number.isFinite(score)) return null;
+
+    return {
+      raw: score,
+      passed: Boolean(saved?.passed ?? score >= PASSING_SCORE),
+    };
+  } catch {
+    return null;
+  }
+};
+
 const getLaunchWeekFromUrl = () => {
   const pathMatch = window.location.pathname.match(
     /\/tot2\/week(\d+)(?:\/index\.html)?\/?$/i,
@@ -316,7 +337,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const showHurray = useSelector(selectShowHurray);
   const { isLastWeek } = useSelector(selectNavigationState);
 
-  const { sendCompleted, sendProgressed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
+  const { sendCompleted, sendProgressed, sendPassed, sendFailed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
 
   // On mount: try to restore position from the LRS State API (RESPECT sessions) or local fallback.
   useEffect(() => {
@@ -380,7 +401,29 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     });
 
     if (isLastWeek) {
-      sendCompleted(1.0);
+      void (async () => {
+        await sendCompleted();
+
+        const finalScore = getFinalAssessmentScore();
+        if (!finalScore) return;
+
+        const result = {
+          score: {
+            scaled: finalScore.raw / 100,
+            raw: finalScore.raw,
+            min: 0,
+            max: 100,
+          },
+        };
+
+        if (finalScore.passed) {
+          await sendPassed(result);
+        } else {
+          await sendFailed(result);
+        }
+
+        sessionStorage.removeItem(FINAL_SCORE_KEY);
+      })();
     } else {
       sendProgressed(currentWeek / 5);
     }

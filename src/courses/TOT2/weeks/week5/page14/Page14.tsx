@@ -21,6 +21,9 @@ import userService from "@/services/api/user";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
 
+const PASSING_SCORE = 60;
+const FINAL_SCORE_KEY = "tot2-final-assessment-score";
+
 function WeekFiveAssessment() {
   const dispatch = useDispatch();
   const currentStep = useSelector(selectCurrentStep);
@@ -43,13 +46,27 @@ function WeekFiveAssessment() {
   const mutation = useMutation({
     mutationFn: (data) => userService.submitCourseData(data), // Dispatch saveAssessment action
     onSuccess: (data) => {
+      const userScore = calculateResult(
+        assessmentData.questions,
+        answers,
+        totalSteps
+      );
+
+      try {
+        sessionStorage.setItem(
+          FINAL_SCORE_KEY,
+          JSON.stringify({
+            raw: userScore,
+            passed: userScore >= PASSING_SCORE,
+          }),
+        );
+      } catch {
+        // Non-fatal: completion can still be sent without the scored result.
+      }
+
       toast.dismiss();
       toast.success(
-        `You scored ${calculateResult(
-          assessmentData.questions,
-          answers,
-          totalSteps
-        )}% in the quiz`
+        `You scored ${userScore}% in the quiz`
       );
       toast.success(data.message || "Answers saved successfully!"); // Show success toast
       // dispatch(

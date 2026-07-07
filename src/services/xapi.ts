@@ -7,13 +7,30 @@
 export interface RespectLaunchParams {
   respectLaunchVersion: string;
   endpoint: string;       // xAPI LRS endpoint
-  auth: string;           // Bearer token
+  auth: string;           // RESPECT auth parameter value
   actor: string;          // JSON-stringified xAPI actor
   registration: string;
   activityId: string;     // activity_id param
   endpointOneroster?: string;
   givenName?: string;
   locale?: string;
+}
+
+export const RESPECT_LAUNCH_PARAMS_KEY = "respect-launch-params";
+export const RESPECT_LAUNCHED_KEY = "respect-xapi-launched";
+export const RESPECT_SESSION_STARTED_AT_KEY = "respect-session-started-at";
+
+export interface XAPIResult {
+  completion?: boolean;
+  success?: boolean;
+  duration?: string;
+  score?: {
+    scaled?: number;
+    raw?: number;
+    min?: number;
+    max?: number;
+  };
+  extensions?: Record<string, unknown>;
 }
 
 /** Parse RESPECT launch params from the current URL search string. */
@@ -34,11 +51,27 @@ export function parseRespectLaunchParams(search: string): RespectLaunchParams | 
   return { respectLaunchVersion: version, endpoint, auth, actor, registration, activityId, endpointOneroster, givenName, locale };
 }
 
+export function getStoredRespectLaunchParams(): RespectLaunchParams | null {
+  const stored = sessionStorage.getItem(RESPECT_LAUNCH_PARAMS_KEY);
+  if (!stored) return null;
+
+  try {
+    return JSON.parse(stored) as RespectLaunchParams;
+  } catch {
+    return null;
+  }
+}
+
+function authHeader(auth: string): string {
+  return /^(Basic|Bearer)\s+/i.test(auth) ? auth : `Basic ${auth}`;
+}
+
 /** Send an xAPI statement to the LRS. */
 export async function sendXAPIStatement(
   params: RespectLaunchParams,
   verb: { id: string; display: Record<string, string> },
-  result?: { completion?: boolean; success?: boolean; score?: { scaled: number } },
+  result?: XAPIResult,
+  options?: { keepalive?: boolean },
 ): Promise<void> {
   if (!params.endpoint || !params.auth) return;
 
@@ -65,17 +98,24 @@ export async function sendXAPIStatement(
     ? `${params.endpoint}statements`
     : `${params.endpoint}/statements`;
 
-  await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      // auth is the full Authorization header value per the Rustici launch spec
-      // (already includes scheme, e.g. "Basic dXNlcjpwYXNz")
-      Authorization: params.auth,
-      "X-Experience-API-Version": "1.0.3",
-    },
-    body: JSON.stringify(statement),
-  });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authHeader(params.auth),
+        "X-Experience-API-Version": "1.0.3",
+      },
+      keepalive: options?.keepalive,
+      body: JSON.stringify(statement),
+    });
+
+    if (!response.ok) {
+      console.warn(`xAPI statement failed with status ${response.status}`);
+    }
+  } catch (error) {
+    console.warn("xAPI statement failed", error);
+  }
 }
 
 export const XAPI_VERBS = {
@@ -90,6 +130,18 @@ export const XAPI_VERBS = {
   progressed: {
     id: "http://adlnet.gov/expapi/verbs/progressed",
     display: { "en-US": "progressed" },
+  },
+  passed: {
+    id: "http://adlnet.gov/expapi/verbs/passed",
+    display: { "en-US": "passed" },
+  },
+  failed: {
+    id: "http://adlnet.gov/expapi/verbs/failed",
+    display: { "en-US": "failed" },
+  },
+  terminated: {
+    id: "http://adlnet.gov/expapi/verbs/terminated",
+    display: { "en-US": "terminated" },
   },
 };
 
@@ -119,7 +171,7 @@ function stateUrl(params: RespectLaunchParams): string {
 
 const STATE_HEADERS = (auth: string) => ({
   "Content-Type": "application/json",
-  Authorization: auth,
+  Authorization: authHeader(auth),
   "X-Experience-API-Version": "1.0.3",
 });
 
@@ -184,8 +236,8 @@ export async function saveProgress(
 }
 
 export interface WeekResponses {
-  activities: any[];
-  assessments: any[];
+  activities: unknown[];
+  assessments: unknown[];
 }
 
 function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
