@@ -112,8 +112,7 @@ function WeekFiveAssessment() {
 
     if (isLastQuestion) {
       console.log(userAnswers.activities.length, "asdf");
-      const hasUnansweredQuestions =
-        answers.length !== totalSteps || userAnswers.activities.length !== 4;
+      const hasUnansweredQuestions = answers.length !== totalSteps;
       if (hasUnansweredQuestions) {
         setErrorMessage(
           "Oops! Some unanswered questions have been detected. Kindly go back and review!"

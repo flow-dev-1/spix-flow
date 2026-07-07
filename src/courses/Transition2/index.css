@@ -78,6 +78,29 @@
     height: auto;
 }
 
+/* ─── Course title box ────────────────────────────────────── */
+.compassion-title {
+  background: #275dad;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin: 25px 0;
+}
+.compassion-title h2 { color: white; }
+.compassion-title .compassion { color: aquamarine; }
+
+/* ─── Week list ───────────────────────────────────────────── */
+.compassion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0 20px;
+}
+.compassion-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 @media (max-width: 769px) {
     .transition2-back-to-courses {
         display: none !important;

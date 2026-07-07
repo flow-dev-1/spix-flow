@@ -176,7 +176,7 @@ export const courseContent = {
         },
       },
       {
-        id: 13,
+        id: 12,
         type: "multiStep",
         steps: [
           {
@@ -266,7 +266,7 @@ export const courseContent = {
         },
       },
       {
-        id: 14,
+        id: 13,
         type: "video",
         videoSrc:
           "https://d3sc34m1n26ele.cloudfront.net/Transition_2/Week+1/Week+1_7.mp4",

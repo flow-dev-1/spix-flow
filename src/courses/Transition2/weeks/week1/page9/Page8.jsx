@@ -29,9 +29,9 @@ function Page8() {
   const [answers, setAnswers] = useState({});
 
   useEffect(() => {
-    if (!userAnswers) return;
+    if (!userAnswers || !pageData) return;
     const response = userAnswers?.activities?.find(
-      (item) => item.page === pageData.id
+      (item) => item.page === pageData?.id
     );
     setAnswers(
       response?.answer && typeof response.answer === "object"
@@ -39,7 +39,7 @@ function Page8() {
         : {}
     );
     return () => {};
-  }, [userAnswers, pageData.id]);
+  }, [userAnswers, pageData?.id]);
 
   const saveUserInput = () => {
     if (adminDatas.isAdmin) return true;
@@ -61,7 +61,7 @@ function Page8() {
 
     dispatch(
       saveActivity({
-        page: pageData.id,
+        page: pageData?.id,
         answer: answers,
       })
     );

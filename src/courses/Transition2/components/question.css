@@ -18,7 +18,10 @@
   background-position: cover;
 }
 
-.small-input:focus {
+.small-input:focus,
+.form-control:focus,
+textarea:focus,
+input:focus {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;

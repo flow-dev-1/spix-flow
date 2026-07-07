@@ -113,9 +113,7 @@ function WeekThreeAssessment() {
     console.log(userAnswers.activities.length, "userAnswers.activities.length");
 
     if (isLastQuestion) {
-      const hasUnansweredQuestions =
-        answers.length !== totalSteps ||
-        userAnswers.activities.length !== expectedActivityCount;
+      const hasUnansweredQuestions = answers.length !== totalSteps;
 
       if (hasUnansweredQuestions) {
         setErrorMessage(

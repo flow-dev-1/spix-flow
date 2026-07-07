@@ -530,7 +530,7 @@ const CourseContent = () => {
   };
 
   const isWeekAccessible = (weekNumber) => {
-    return weekNumber <= maxAccessibleWeek;
+    return weekNumber >= 1 && weekNumber <= weeksTopic.length;
   };
 
   const isWeekCompleted = (weekNumber) => {
@@ -580,60 +580,7 @@ const CourseContent = () => {
             Logout
           </div>
 
-          <div className="d-block d-lg-none position-relative">
-            <Icon
-              icon="mdi:menu"
-              width={30}
-              onClick={toggleMenu}
-              style={{
-                cursor: "pointer",
-              }}
-            />
-            {menuVisible && (
-              <div
-                className="d-lg-none position-absolute"
-                style={{
-                  top: "30px",
-                  left: "-100px",
-                  borderRadius: "15px",
-                  border: "1px solid rgba(244, 241, 241, 0.9)",
-                }}
-              >
-                <div
-                  style={{
-                    cursor: "pointer",
-                    overflow: "hidden",
-                    borderRadius: "15px",
-                    background: "rgba(255,255,255,0.9)",
-                  }}
-                  className="border-5 px-4 pt-4 pb-1"
-                >
-                  <ul className="d-flex gap-3 flex-column">
-                    <li className="">
-                      <Link to={"/courses"}>Overview</Link>
-                    </li>
-                    <li className="">
-                      <Link to={"/courses"}>Profile</Link>
-                    </li>
-                    <li className="">
-                      <Link to={"/courses"}>MyCourse</Link>
-                    </li>
-                    <li className="">
-                      <Link to={"/courses"}>Support</Link>
-                    </li>
-                    <li className="text-nowrap">
-                      <Link to={"/courses"}>
-                        Payment History
-                      </Link>
-                    </li>
-                    <li className=" text-danger" onClick={logOut}>
-                      Log Out
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            )}
-          </div>
+
         </div>
       </nav>
 
