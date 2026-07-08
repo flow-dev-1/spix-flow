@@ -430,7 +430,7 @@ export const courseContent = {
         },
       },
       {
-        id: 13,
+        id: 12,
         type: "multiStep",
         instruction:
           "Choose the top 5 Values that matter most to you right now.",
@@ -521,7 +521,7 @@ export const courseContent = {
         },
       },
       {
-        id: 14,
+        id: 13,
         type: "video",
         videoSrc:
           "https://d3sc34m1n26ele.cloudfront.net/Transition_2/Week+2/Week+2_7.mp4",
@@ -630,17 +630,7 @@ export const courseContent = {
         },
       },
       {
-        id: 5,
-        type: "video",
-        videoSrc:
-          "https://d3sc34m1n26ele.cloudfront.net/Transition_2/Week+4/Week+4_3.mp4",
-        navigation: {
-          prev: true,
-          next: true,
-        },
-      },
-      {
-        id: 6,
+        id: 4,
         type: "question",
         questionType: "text",
         question:

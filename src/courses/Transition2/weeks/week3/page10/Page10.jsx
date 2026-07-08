@@ -13,12 +13,9 @@ import { getWeekAssessment, getWeekContentExcludingVideos } from "../../../data"
 import StepIndicator from "../../../components/StepIndicator";
 import {
   userAnswer,
-  updateData,
   saveAssessment,
 } from "@/store/userAnswersReducer";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import userService from "@/services/api/user";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
 
@@ -41,37 +38,6 @@ function WeekThreeAssessment() {
     setAnswers(userAnswers?.assessments || []);
     return () => {};
   }, [userAnswers]);
-
-  // Mutation for saving user data
-  const mutation = useMutation({
-    mutationFn: (data) => userService.submitCourseData(data), // Dispatch saveAssessment action
-    onSuccess: (data) => {
-      toast.dismiss();
-      toast.success(
-        `You scored ${calculateResult(
-          assessmentData.questions,
-          answers,
-          totalSteps
-        )}% in the quiz`
-      );
-      toast.success(data.message || "Answers saved successfully!"); // Show success toast
-      dispatch(
-        updateData({
-          course: null,
-          courseEnrollmentId: null,
-          week: 1,
-          activities: [],
-          assessments: [],
-        })
-      );
-      dispatch(navigateNext());
-    },
-    onError: (error) => {
-      console.log(error, "errorrrr");
-      toast.dismiss();
-      toast.error(error?.message || error?.error || "Error saving answers"); // Show error toast
-    },
-  });
 
   const handleOptionSelect = (optionKey) => {
     setErrorMessage("");
@@ -128,11 +94,9 @@ function WeekThreeAssessment() {
         totalSteps
       );
 
-      mutation.mutate({
-        ...userAnswers,
-        assessments: answers,
-        rating: userScore.toString(),
-      });
+      toast.dismiss();
+      toast.success(`You scored ${userScore}% in the quiz`);
+      dispatch(navigateNext());
 
       // For nested questions check that all answeres were provided. when page is refreshed data may be lost
 
@@ -241,7 +205,7 @@ function WeekThreeAssessment() {
       {/* Display error message */}
       <StepIndicator totalSteps={totalSteps} />
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
-        <Button text="Prev" loading={mutation.isPending} />
+        <Button text="Prev" />
         {shouldShowReviewButton ? (
           <Button
             text="Review"
@@ -251,7 +215,6 @@ function WeekThreeAssessment() {
           <Button
             text="Next"
             customOnClick={saveUserData}
-            loading={mutation.isPending}
           />
         )}
       </div>

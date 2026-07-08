@@ -7,6 +7,7 @@ import {
   selectShowReview,
   selectShowHurray,
   selectCurrentPage,
+  selectCurrentStep,
   setCurrentWeek,
   setCurrentPage,
   setCurrentStep,
@@ -97,8 +98,6 @@ import WeekFivePage9 from "./weeks/week5/page9/Page9.jsx";
 import WeekFivePage10 from "./weeks/week5/page10/Page10.jsx";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import userService from "@/services/api/user";
 import {
   updateData,
   userAnswer,
@@ -109,8 +108,13 @@ import { adminData } from "@/store/adminReducer";
 import { setCourse as setCurrentCourse } from "@/store/navigationSlice";
 import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
+import { useRespectLaunch } from "@/hooks/useRespectLaunch";
+import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 
 const TOTAL_WEEKS = 5;
+const courseProgressKey = "transition2-flowProgress";
+const weekProgressKey = (weekNumber) => `transition2-week-progress-${weekNumber}`;
+const responseKey = (weekNumber) => `transition2-flowResponses-week${weekNumber}`;
 
 const getLaunchWeekFromUrl = () => {
   const pathMatch = window.location.pathname.match(
@@ -123,32 +127,112 @@ const getLaunchWeekFromUrl = () => {
   return startWeekParam ? Number(startWeekParam) : null;
 };
 
+const getSavedWeekProgress = (weekNumber) => {
+  try {
+    const raw =
+      localStorage.getItem(weekProgressKey(weekNumber)) ||
+      sessionStorage.getItem(weekProgressKey(weekNumber));
+    if (!raw) return { page: 1, step: 1 };
+
+    const saved = JSON.parse(raw);
+    const page = Number(saved?.page);
+    const step = Number(saved?.step);
+    return { page: page > 0 ? page : 1, step: step > 0 ? step : 1 };
+  } catch {
+    return { page: 1, step: 1 };
+  }
+};
+
+const getSavedCourseProgress = () => {
+  try {
+    const raw =
+      localStorage.getItem(courseProgressKey) ||
+      sessionStorage.getItem(courseProgressKey);
+    if (!raw) return null;
+
+    const saved = JSON.parse(raw);
+    const currentWeek = Number(saved?.currentWeek);
+    const currentPage = Number(saved?.currentPage);
+    const currentStep = Number(saved?.currentStep);
+    const highestWeek = Number(saved?.highestWeek);
+
+    if (!currentWeek || !currentPage || !currentStep) return null;
+    return {
+      currentWeek,
+      currentPage,
+      currentStep,
+      highestWeek: highestWeek || currentWeek,
+    };
+  } catch {
+    return null;
+  }
+};
+
+const saveWeekProgress = (weekNumber, page, step) => {
+  if (!weekNumber || !page || !step) return;
+
+  const value = JSON.stringify({ page, step });
+  try {
+    localStorage.setItem(weekProgressKey(weekNumber), value);
+    sessionStorage.setItem(weekProgressKey(weekNumber), value);
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+};
+
+const saveCourseProgressLocally = (weekNumber, page, step, highestWeek) => {
+  if (!weekNumber || !page || !step) return;
+
+  const value = JSON.stringify({
+    currentWeek: weekNumber,
+    currentPage: page,
+    currentStep: step,
+    highestWeek: Math.max(highestWeek || weekNumber, weekNumber),
+  });
+
+  try {
+    localStorage.setItem(courseProgressKey, value);
+    sessionStorage.setItem(courseProgressKey, value);
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+};
+
+const getSavedWeekResponsesLocally = (weekNumber) => {
+  try {
+    const raw = localStorage.getItem(responseKey(weekNumber));
+    if (!raw) return null;
+
+    const saved = JSON.parse(raw);
+    return {
+      activities: Array.isArray(saved?.activities) ? saved.activities : [],
+      assessments: Array.isArray(saved?.assessments) ? saved.assessments : [],
+    };
+  } catch {
+    return null;
+  }
+};
+
+const saveWeekResponsesLocally = (weekNumber, responses) => {
+  if (!weekNumber || !responses) return;
+  if (!responses.activities?.length && !responses.assessments?.length) return;
+
+  try {
+    localStorage.setItem(
+      responseKey(weekNumber),
+      JSON.stringify({
+        activities: responses.activities ?? [],
+        assessments: responses.assessments ?? [],
+      }),
+    );
+  } catch {
+    // Ignore storage quota/private mode failures.
+  }
+};
+
 const WeekContent = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const userAnswers = useSelector(userAnswer);
-  const location = useLocation(); // Get location object
-  const [enrollmentId, setEnrollmentId] = useState(null);
-  const [course, setCourseId] = useState(null);
-  const { isAdmin } = useSelector(adminData);
-
-  // Access data from location.state
-  const enrolmentData = location.state?.enrollmentData; // Assuming enrollData is passed in state
-
-  useEffect(() => {
-    if (enrolmentData?._id) {
-      setEnrollmentId(enrolmentData._id);
-      setCourseId(enrolmentData?.course?._id ?? null);
-      return;
-    }
-
-    userService.getSingleEnrollment("").then((res) => {
-      if (res?.enrollment?._id) {
-        setEnrollmentId(res.enrollment._id);
-        setCourseId("transition2");
-      }
-    });
-  }, []);
 
   useEffect(() => {
     const launchWeek = getLaunchWeekFromUrl();
@@ -182,52 +266,106 @@ const WeekContent = () => {
 
   const currentWeek = useSelector(selectCurrentWeek);
   const currentPage = useSelector(selectCurrentPage);
+  const currentStep = useSelector(selectCurrentStep);
   const showReview = useSelector(selectShowReview);
   const showHurray = useSelector(selectShowHurray);
-
-  // toDo: Fetch User assessment and Activity Data
-  const { data, isLoading, status, isError } = useQuery({
-    queryKey: [
-      `dashboard-transition-2-course-${currentWeek}`,
-      enrollmentId,
-      currentWeek,
-    ],
-    queryFn: () => userService.getUserCourseData(enrollmentId, currentWeek),
-    enabled: !!enrollmentId && !!currentWeek,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
-    keepPreviousData: false,
-  });
+  const { sendCompleted, sendProgressed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
 
   useEffect(() => {
-    if (!data) return;
+    restoreProgress().then((saved) => {
+      const localSaved = getSavedCourseProgress();
+      const restored = saved || localSaved;
+      let targetWeek = restored?.currentWeek || 1;
+      let targetPage = restored?.currentPage || 1;
+      let targetStep = restored?.currentStep || 1;
+      const highestAuthorizedWeek = Math.max(restored?.highestWeek || 1, targetWeek);
 
-    if (data.assessment && data.activity) {
-      dispatch(
-        updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId,
-          week: currentWeek,
-          activities: data.activity?.activities,
-          assessments: data.assessment?.assessments,
-        })
-      );
+      const launchWeek = getLaunchWeekFromUrl();
+      if (launchWeek && launchWeek >= 1 && launchWeek <= TOTAL_WEEKS) {
+        const isCompletedLaunchWeek = highestAuthorizedWeek > launchWeek;
+        const savedLaunchProgress =
+          restored?.currentWeek === launchWeek && !isCompletedLaunchWeek
+            ? { page: restored.currentPage, step: restored.currentStep }
+            : isCompletedLaunchWeek
+              ? { page: 1, step: 1 }
+              : getSavedWeekProgress(launchWeek);
+
+        targetWeek = launchWeek;
+        targetPage = savedLaunchProgress.page;
+        targetStep = savedLaunchProgress.step;
+      }
+
+      dispatch(setCurrentWeek(targetWeek));
+      dispatch(setCurrentPage(targetPage));
+      dispatch(setCurrentStep(targetStep));
+      sessionStorage.setItem("flow-currentWeek", String(targetWeek));
+      sessionStorage.setItem("flow-currentPage", String(targetPage));
+      sessionStorage.setItem("flow-currentStep", String(targetStep));
+      saveWeekProgress(targetWeek, targetPage, targetStep);
+      saveCourseProgressLocally(targetWeek, targetPage, targetStep, highestAuthorizedWeek);
+      sessionStorage.setItem("flow-highestWeek", String(Math.max(highestAuthorizedWeek, targetWeek)));
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!showHurray) return;
+
+    if (currentWeek >= TOTAL_WEEKS) {
+      sendCompleted(1.0);
     } else {
+      sendProgressed(currentWeek / TOTAL_WEEKS);
+    }
+  }, [showHurray]);
+
+  useEffect(() => {
+    if (!currentWeek || !currentPage) return;
+    const step = currentStep || Number(sessionStorage.getItem("flow-currentStep") ?? 1);
+    const highestWeek = Math.max(currentWeek, Number(sessionStorage.getItem("flow-highestWeek") ?? 1));
+
+    saveWeekProgress(currentWeek, currentPage, step);
+    saveCourseProgressLocally(currentWeek, currentPage, step, highestWeek);
+    persistProgress({
+      currentWeek,
+      currentPage,
+      currentStep: step,
+      highestWeek,
+    });
+  }, [currentWeek, currentPage, currentStep]);
+
+  useEffect(() => {
+    if (!currentWeek) return;
+    loadResponses(currentWeek).then((saved) => {
+      if (!saved) saved = getSavedWeekResponsesLocally(currentWeek);
+      if (!saved) return;
+
       dispatch(
         updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId
-            ? enrollmentId
-            : userAnswers.courseEnrollmentId,
+          course: "transition2",
+          courseEnrollmentId: null,
           week: currentWeek,
-          activities: userAnswers.activities,
-          assessments: userAnswers.assessments,
-        })
+          activities: saved.activities,
+          assessments: saved.assessments,
+        }),
       );
-    }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWeek]);
 
-    return () => { };
-  }, [data]);
+  useEffect(() => {
+    if (!currentWeek) return;
+    if (userAnswers.week !== currentWeek) return;
+    if (!userAnswers.activities?.length && !userAnswers.assessments?.length) return;
+
+    const responses = {
+      activities: userAnswers.activities ?? [],
+      assessments: userAnswers.assessments ?? [],
+    };
+
+    saveResponses(currentWeek, responses);
+    saveWeekResponsesLocally(currentWeek, responses);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
   if (showHurray) {
@@ -434,12 +572,19 @@ const WeekContent = () => {
 const CourseContent = () => {
   const { isAdmin } = useSelector(adminData);
   const currentWeek = useSelector(selectCurrentWeek);
+  const currentPage = useSelector(selectCurrentPage);
+  const currentStep = useSelector(selectCurrentStep);
+  const showHurray = useSelector(selectShowHurray);
+  const currentUserAnswers = useSelector(userAnswer);
+  useSpixWeekCache(currentWeek, "transition2", TOTAL_WEEKS);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
   const [menuVisible, setMenuVisible] = useState(false);
   const [enrollmentProgress, setEnrollmentProgress] = useState(0);
-  const [maxAccessibleWeek, setMaxAccessibleWeek] = useState(1);
+  const [maxAccessibleWeek, setMaxAccessibleWeek] = useState(
+    () => Number(sessionStorage.getItem("flow-highestWeek") ?? 1),
+  );
 
   const weeksTopic = [
     "Defining Your Next Chapter",
@@ -449,47 +594,22 @@ const CourseContent = () => {
     "Goal Setting and Resilience",
   ];
 
-  // Get enrollment data from location state
-  const enrolmentData = location.state?.enrollmentData;
-
   useEffect(() => {
-    if (enrolmentData?.progress) {
-      setEnrollmentProgress(enrolmentData.progress);
+    saveWeekProgress(currentWeek, currentPage, currentStep);
+    saveCourseProgressLocally(currentWeek, currentPage, currentStep, maxAccessibleWeek);
 
-      // Calculate max accessible week based on progress
-      // Each week is 20% of the course (100% / 5 weeks = 20% per week)
+    setMaxAccessibleWeek((prev) => {
+      const next = Math.max(prev, currentWeek);
+      sessionStorage.setItem("flow-highestWeek", String(next));
+
       const progressPerWeek = 100 / weeksTopic.length;
-      const calculatedMaxWeek = Math.ceil(
-        enrolmentData.progress / progressPerWeek
-      );
+      const completedWeeks =
+        showHurray && currentWeek >= TOTAL_WEEKS ? TOTAL_WEEKS : next - 1;
+      setEnrollmentProgress(Math.round(Math.min(completedWeeks * progressPerWeek, 100)));
 
-      // Allow access to current incomplete week + next week
-      // Example: 80% progress = week 4 completed, so allow access up to week 5
-      const accessibleWeek = Math.max(
-        1,
-        Math.min(calculatedMaxWeek + 1, weeksTopic.length)
-      );
-      setMaxAccessibleWeek(accessibleWeek);
-    }
-  }, [enrolmentData]);
-
-  // Update maxAccessibleWeek and enrollmentProgress when currentWeek changes (e.g., after completing a week)
-  // This ensures the navigation and progress bar update immediately without requiring a page refresh
-  useEffect(() => {
-    if (currentWeek > maxAccessibleWeek) {
-      setMaxAccessibleWeek(currentWeek);
-    }
-
-    // Update progress based on the current week
-    // When moving to a new week, it means the previous week was completed
-    const progressPerWeek = 100 / weeksTopic.length;
-    const calculatedProgress = (currentWeek - 1) * progressPerWeek;
-
-    // Only update if the calculated progress is higher than the current progress
-    if (calculatedProgress > enrollmentProgress) {
-      setEnrollmentProgress(calculatedProgress);
-    }
-  }, [currentWeek, maxAccessibleWeek, enrollmentProgress, weeksTopic.length]);
+      return next;
+    });
+  }, [currentWeek, currentPage, currentStep, showHurray, weeksTopic.length]);
 
   useEffect(() => {
     const segments = location.pathname.split("/").filter(Boolean);
@@ -513,24 +633,29 @@ const CourseContent = () => {
   }, [location.pathname, dispatch]);
 
   const handleWeekClick = (weekNumber) => {
-    // Only allow navigation to completed weeks or the current week in progress
-    if (weekNumber <= maxAccessibleWeek) {
-      // Clear previous week data before switching
-      dispatch(clearData());
-
-      dispatch(setCurrentWeek(weekNumber));
-      dispatch(setCurrentPage(1));
-      dispatch(setCurrentStep(1));
-
-      // Update session storage
-      sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
-      sessionStorage.setItem("flow-currentPage", "1");
-      sessionStorage.setItem("flow-currentStep", "1");
+    saveWeekProgress(currentWeek, currentPage, currentStep);
+    if (currentUserAnswers?.week === currentWeek) {
+      saveWeekResponsesLocally(currentWeek, currentUserAnswers);
     }
+
+    const isCompletedWeek = maxAccessibleWeek > weekNumber;
+    const savedProgress = isCompletedWeek
+      ? { page: 1, step: 1 }
+      : getSavedWeekProgress(weekNumber);
+
+    dispatch(clearData());
+
+    dispatch(setCurrentWeek(weekNumber));
+    dispatch(setCurrentPage(savedProgress.page));
+    dispatch(setCurrentStep(savedProgress.step));
+
+    sessionStorage.setItem("flow-currentWeek", weekNumber.toString());
+    sessionStorage.setItem("flow-currentPage", String(savedProgress.page));
+    sessionStorage.setItem("flow-currentStep", String(savedProgress.step));
   };
 
   const isWeekAccessible = (weekNumber) => {
-    return weekNumber >= 1 && weekNumber <= weeksTopic.length;
+    return true;
   };
 
   const isWeekCompleted = (weekNumber) => {
