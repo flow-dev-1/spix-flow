@@ -18,6 +18,11 @@ import {
 import { toast } from "react-toastify";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
+import {
+  clearAssessmentDraft,
+  getAssessmentDraft,
+  saveAssessmentDraft,
+} from "../../../utils/assessmentDrafts";
 
 function WeekOneAssessment() {
   const dispatch = useDispatch();
@@ -33,9 +38,13 @@ function WeekOneAssessment() {
 
   useEffect(() => {
     if (!userAnswers) return;
-    setAnswers(userAnswers?.assessments || []);
-    return () => { };
-  }, [userAnswers]);
+    const draftAnswers = getAssessmentDraft(userAnswers, currentWeek);
+    setAnswers(
+      Array.isArray(draftAnswers)
+        ? draftAnswers
+        : userAnswers?.assessments || []
+    );
+  }, [currentWeek, userAnswers.courseEnrollmentId]);
 
   const handleOptionSelect = (optionKey) => {
     setErrorMessage("");
@@ -57,6 +66,8 @@ function WeekOneAssessment() {
         });
       }
 
+      saveAssessmentDraft(userAnswers, currentWeek, updatedAnswers);
+      dispatch(saveAssessment(updatedAnswers));
       return updatedAnswers;
     });
   };
@@ -93,6 +104,7 @@ function WeekOneAssessment() {
 
       toast.dismiss();
       toast.success(`You scored ${userScore}% in the quiz`);
+      clearAssessmentDraft(userAnswers, currentWeek);
       dispatch(navigateNext());
 
       // For nested questions check that all answeres were provided. when page is refreshed data may be lost
@@ -127,7 +139,9 @@ function WeekOneAssessment() {
           options: formattedOptions,
         }}
         currentStep={currentStep}
-        selectedOption={answers[currentStep - 1]?.value || ""}
+        selectedOption={
+          answers.find((answer) => answer.id === currentStep)?.value || ""
+        }
         onOptionSelect={handleOptionSelect}
       />
     );
@@ -138,7 +152,9 @@ function WeekOneAssessment() {
   // If we're on the last question and user has made a selection,
   // show the review popup instead of the next button
 
-  const hasCurrentSelection = !!answers[currentStep];
+  const hasCurrentSelection = answers.some(
+    (answer) => answer.id === currentStep && answer.value
+  );
   const shouldShowReviewButton = isLastQuestion && hasCurrentSelection;
 
   return (

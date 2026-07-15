@@ -19,6 +19,10 @@ import {
 
 const PROGRESS_EXTENSION = "https://w3id.org/xapi/video/extensions/progress";
 
+function launchKey(params: RespectLaunchParams) {
+  return `${params.registration || "no-registration"}::${params.activityId || "no-activity"}`;
+}
+
 function toIsoDuration(startedAt: number, endedAt = Date.now()) {
   const elapsedSeconds = Math.max(0, Math.round((endedAt - startedAt) / 1000));
   const hours = Math.floor(elapsedSeconds / 3600);
@@ -37,21 +41,27 @@ export function useRespectLaunch() {
   const location = useLocation();
   const paramsRef = useRef<RespectLaunchParams | null>(null);
   const terminatedRef = useRef(false);
+  const launchKeyRef = useRef<string | null>(null);
   const sessionStartedAtRef = useRef<number>(Date.now());
 
-  if (!paramsRef.current) {
-    const fromURL = parseRespectLaunchParams(location.search);
-    if (fromURL) {
+  const fromURL = parseRespectLaunchParams(location.search);
+  if (fromURL) {
+    const nextLaunchKey = launchKey(fromURL);
+    if (launchKeyRef.current !== nextLaunchKey) {
       sessionStorage.setItem(RESPECT_LAUNCH_PARAMS_KEY, JSON.stringify(fromURL));
+      sessionStorage.setItem(RESPECT_SESSION_STARTED_AT_KEY, String(Date.now()));
       paramsRef.current = fromURL;
-    } else {
-      const stored = sessionStorage.getItem(RESPECT_LAUNCH_PARAMS_KEY);
-      if (stored) {
-        try {
-          paramsRef.current = JSON.parse(stored);
-        } catch {
-          // Ignore corrupt storage.
-        }
+      launchKeyRef.current = nextLaunchKey;
+      terminatedRef.current = false;
+    }
+  } else if (!paramsRef.current) {
+    const stored = sessionStorage.getItem(RESPECT_LAUNCH_PARAMS_KEY);
+    if (stored) {
+      try {
+        paramsRef.current = JSON.parse(stored);
+        launchKeyRef.current = launchKey(paramsRef.current);
+      } catch {
+        // Ignore corrupt storage.
       }
     }
   }
@@ -64,10 +74,12 @@ export function useRespectLaunch() {
   }
 
   useEffect(() => {
-    if (!paramsRef.current || sessionStorage.getItem(RESPECT_LAUNCHED_KEY)) return;
-    sessionStorage.setItem(RESPECT_LAUNCHED_KEY, "1");
+    if (!paramsRef.current) return;
+    const launchedKey = `${RESPECT_LAUNCHED_KEY}:${launchKey(paramsRef.current)}`;
+    if (sessionStorage.getItem(launchedKey)) return;
+    sessionStorage.setItem(launchedKey, "1");
     sendXAPIStatement(paramsRef.current, XAPI_VERBS.launched).catch(() => {});
-  }, []);
+  }, [location.search]);
 
   const getElapsedDuration = useCallback(() => {
     return toIsoDuration(sessionStartedAtRef.current);
@@ -131,14 +143,26 @@ export function useRespectLaunch() {
   useEffect(() => {
     if (!paramsRef.current) return;
 
-    const handleBeforeUnload = () => {
+    const handleSessionExit = () => {
       void sendTerminated({}, true);
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        void sendTerminated({}, true);
+      }
+    };
+
+    window.addEventListener("beforeunload", handleSessionExit, { capture: true });
+    window.addEventListener("pagehide", handleSessionExit, { capture: true });
+    window.addEventListener("unload", handleSessionExit, { capture: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange, { capture: true });
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleSessionExit, { capture: true });
+      window.removeEventListener("pagehide", handleSessionExit, { capture: true });
+      window.removeEventListener("unload", handleSessionExit, { capture: true });
+      document.removeEventListener("visibilitychange", handleVisibilityChange, { capture: true });
       void sendTerminated();
     };
   }, [sendTerminated]);

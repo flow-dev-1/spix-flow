@@ -123,7 +123,7 @@ function Week1({ enrollmentId, setWeekOneData, isSchool, studentId }) {
 
       const answerObject = answersList?.find(
         (activity) => activity.stepId === itemId
-      ).value;
+      )?.value;
 
       // return answerObject ? answerObject[index] : null;
       return answerObject ? answerObject : null;
@@ -231,6 +231,51 @@ function Week1({ enrollmentId, setWeekOneData, isSchool, studentId }) {
         )}
       </div>
     );
+
+  const renderScenarioFeedbackAction = (activityId, stepId) => {
+    const feedback = getActivityFeedback(activityId, stepId);
+    if (!isAdmin || feedback) return null;
+
+    return (
+      <Icon
+        onClick={() => {
+          setActivityFeedbackId({ activityId, itemId: stepId });
+          handleModalOpen();
+        }}
+        style={{ color: "#D6D6D6" }}
+        width={35}
+        icon="tabler:message-2"
+      />
+    );
+  };
+
+  const renderScenarioFeedback = (activityId, stepId) => {
+    const feedback = getActivityFeedback(activityId, stepId);
+    if (!feedback) return null;
+
+    return (
+      <div className="d-flex gap-3">
+        <p className="text-bg-secondary rounded-4 px-1 px-md-3 fs-md-5 align-self-start">
+          Feedback
+        </p>
+        <p className="bg-step-active text-gray fs-md-5 flex-grow-1 p-md-2 p-1 rounded">
+          {feedback}
+        </p>
+        {isAdmin && (
+          <Icon
+            onClick={() => {
+              setModalData(feedback);
+              setActivityFeedbackId({ activityId, itemId: stepId });
+              handleModalOpen();
+            }}
+            style={{ color: "#275DAD" }}
+            width={35}
+            icon="lucide:edit"
+          />
+        )}
+      </div>
+    );
+  };
 
   const getScenarioQuestionPairs = (activity) => {
     const steps = activity?.steps || [];
@@ -473,12 +518,18 @@ function Week1({ enrollmentId, setWeekOneData, isSchool, studentId }) {
               <p className="fs-md-5 flex-grow-1">
                 {getActivityAnswer(activityScenarios.id)?.[questionStep?.stepId]}
               </p>
-              {idx === 0 && renderFeedbackAction(activityScenarios.id)}
+              {renderScenarioFeedbackAction(
+                activityScenarios.id,
+                questionStep?.stepId
+              )}
             </div>
+            {renderScenarioFeedback(
+              activityScenarios.id,
+              questionStep?.stepId
+            )}
           </div>
         )
       )}
-      {renderFeedback(activityScenarios.id)}
       <hr />
       {/* Assesment 1 */}
       <p className="bg-yellow py-1 px-2 py-md-3 px-md-5 text-gray d-inline-block rounded-5 fs-md-4">

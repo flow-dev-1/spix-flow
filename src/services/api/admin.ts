@@ -60,17 +60,6 @@ class AdminOBJ {
     }
   };
 
-  generateAIFeedback = async (payload: any, token: string) => {
-    try {
-      const response = await api.post(`api/admins/generate-ai-feedback`, payload, {
-        headers: { Authorization: `Bearer ${token}` },
-        timeout: 120000,
-      });
-      return response.data;
-    } catch (err: any) {
-      return err?.response?.data || err.message;
-    }
-  };
 }
 
 const admin = new AdminOBJ();
