@@ -12,6 +12,7 @@ import {
   setCurrentWeek,
   setCurrentPage,
   setCurrentStep,
+  hideReviewPopup,
 } from "@/store/navigationSlice";
 import "./index.css";
 // Import components
@@ -132,7 +133,7 @@ import WeekSixPage12 from "./weeks/week6/page12/Page12";
 import WeekSixPage13 from "./weeks/week6/page13/Page13";
 import WeekSixPage14 from "./weeks/week6/page14/Page14";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import userService from "@/services/api/user";
 import {
@@ -222,7 +223,7 @@ const saveCourseProgressLocally = (weekNumber, page, step, highestWeek) => {
     currentWeek: weekNumber,
     currentPage: page,
     currentStep: step,
-    highestWeek: Math.max(highestWeek || weekNumber, weekNumber),
+    highestWeek: Math.min(Math.max(highestWeek || weekNumber, weekNumber), TOTAL_WEEKS),
   });
 
   try {
@@ -320,7 +321,23 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const currentStep = useSelector(selectCurrentStep);
   const showReview = useSelector(selectShowReview);
   const showHurray = useSelector(selectShowHurray);
-  const { sendCompleted, sendProgressed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
+  const {
+    isRespectSession,
+    launchParams,
+    sendCompleted,
+    sendProgressed,
+    restoreProgress,
+    persistProgress,
+    saveResponses,
+    loadResponses,
+  } = useRespectLaunch();
+  const completedWeeksRef = useRef(new Set());
+
+  useEffect(() => {
+    if (isRespectSession && showReview) {
+      dispatch(hideReviewPopup());
+    }
+  }, [dispatch, isRespectSession, showReview]);
 
   useEffect(() => {
     restoreProgress().then((saved) => {
@@ -368,17 +385,23 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     if (!showHurray) return;
 
     setMaxAccessibleWeek((prev) => {
-      const next = Math.max(prev, currentWeek + 1);
+      const next = Math.min(Math.max(prev, currentWeek + 1), TOTAL_WEEKS);
       sessionStorage.setItem("flow-highestWeek", String(next));
       return next;
     });
 
-    if (currentWeek >= TOTAL_WEEKS) {
-      sendCompleted(1.0);
-    } else {
-      sendProgressed(currentWeek / TOTAL_WEEKS);
+    const registrationKey = launchParams?.registration || "local";
+    const completionKey = `tot-xapi-completed-${registrationKey}-week-${currentWeek}`;
+    if (completedWeeksRef.current.has(completionKey) || sessionStorage.getItem(completionKey)) return;
+
+    completedWeeksRef.current.add(completionKey);
+    sessionStorage.setItem(completionKey, "1");
+    void sendCompleted();
+
+    if (currentWeek < TOTAL_WEEKS) {
+      void sendProgressed(currentWeek / TOTAL_WEEKS);
     }
-  }, [showHurray]);
+  }, [showHurray, currentWeek, launchParams?.registration, sendCompleted, sendProgressed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
@@ -735,7 +758,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   return (
     <>
       {getComponent()}
-      {showReview && <PopUp />}
+      {showReview && !isRespectSession && <PopUp />}
     </>
   );
 };

@@ -11,6 +11,7 @@ import {
   setCurrentWeek,
   setCurrentPage,
   setCurrentStep,
+  hideReviewPopup,
 } from "@/store/navigationSlice";
 import "./index.css";
 // Import components
@@ -97,7 +98,7 @@ import WeekFivePage8 from "./weeks/week5/page8/Page8.jsx";
 import WeekFivePage9 from "./weeks/week5/page9/Page9.jsx";
 import WeekFivePage10 from "./weeks/week5/page10/Page10.jsx";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   updateData,
   userAnswer,
@@ -269,7 +270,23 @@ const WeekContent = () => {
   const currentStep = useSelector(selectCurrentStep);
   const showReview = useSelector(selectShowReview);
   const showHurray = useSelector(selectShowHurray);
-  const { sendCompleted, sendProgressed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
+  const {
+    isRespectSession,
+    launchParams,
+    sendCompleted,
+    sendProgressed,
+    restoreProgress,
+    persistProgress,
+    saveResponses,
+    loadResponses,
+  } = useRespectLaunch();
+  const completedWeeksRef = useRef(new Set());
+
+  useEffect(() => {
+    if (isRespectSession && showReview) {
+      dispatch(hideReviewPopup());
+    }
+  }, [dispatch, isRespectSession, showReview]);
 
   useEffect(() => {
     restoreProgress().then((saved) => {
@@ -311,12 +328,18 @@ const WeekContent = () => {
   useEffect(() => {
     if (!showHurray) return;
 
-    if (currentWeek >= TOTAL_WEEKS) {
-      sendCompleted(1.0);
-    } else {
-      sendProgressed(currentWeek / TOTAL_WEEKS);
+    const registrationKey = launchParams?.registration || "local";
+    const completionKey = `transition2-xapi-completed-${registrationKey}-week-${currentWeek}`;
+    if (completedWeeksRef.current.has(completionKey) || sessionStorage.getItem(completionKey)) return;
+
+    completedWeeksRef.current.add(completionKey);
+    sessionStorage.setItem(completionKey, "1");
+    void sendCompleted();
+
+    if (currentWeek < TOTAL_WEEKS) {
+      void sendProgressed(currentWeek / TOTAL_WEEKS);
     }
-  }, [showHurray]);
+  }, [showHurray, currentWeek, launchParams?.registration, sendCompleted, sendProgressed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
@@ -565,7 +588,7 @@ const WeekContent = () => {
   return (
     <>
       {getComponent()}
-      {showReview && <PopUp />}
+      {showReview && !isRespectSession && <PopUp />}
     </>
   );
 };

@@ -100,7 +100,7 @@ import WeekFivePage12 from "./weeks/week5/page12/Page12.jsx";
 import WeekFivePage13 from "./weeks/week5/page13/Page13.jsx";
 import WeekFivePage14 from "./weeks/week5/page14/Page14.jsx";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useVideoDownload } from "./hooks/useVideoDownload";
 import userService from "@/services/api/user";
@@ -124,6 +124,7 @@ const weeksTopic = [
   "Practical Strategies for Supporting Students with Common Special Needs",
   "Collaboration, Support Systems, and Inclusive Implementation",
 ];
+const TOTAL_WEEKS = weeksTopic.length;
 
 const FINAL_SCORE_KEY = "tot2-final-assessment-score";
 const PASSING_SCORE = 60;
@@ -229,7 +230,7 @@ const saveCourseProgressLocally = (
     currentWeek: weekNumber,
     currentPage: page,
     currentStep: step,
-    highestWeek: Math.max(highestWeek || weekNumber, weekNumber),
+    highestWeek: Math.min(Math.max(highestWeek || weekNumber, weekNumber), TOTAL_WEEKS),
   });
 
   try {
@@ -337,7 +338,18 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const showHurray = useSelector(selectShowHurray);
   const { isLastWeek } = useSelector(selectNavigationState);
 
-  const { sendCompleted, sendProgressed, sendPassed, sendFailed, restoreProgress, persistProgress, saveResponses, loadResponses } = useRespectLaunch();
+  const {
+    launchParams,
+    sendCompleted,
+    sendProgressed,
+    sendPassed,
+    sendFailed,
+    restoreProgress,
+    persistProgress,
+    saveResponses,
+    loadResponses,
+  } = useRespectLaunch();
+  const completedWeeksRef = useRef<Set<string>>(new Set());
 
   // On mount: try to restore position from the LRS State API (RESPECT sessions) or local fallback.
   useEffect(() => {
@@ -395,10 +407,17 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     if (!showHurray) return;
     
     setMaxAccessibleWeek((prev: number) => {
-      const next = Math.max(prev, currentWeek + 1);
+      const next = Math.min(Math.max(prev, currentWeek + 1), TOTAL_WEEKS);
       sessionStorage.setItem("flow-highestWeek", String(next));
       return next;
     });
+
+    const registrationKey = launchParams?.registration || "local";
+    const completionKey = `tot2-xapi-completed-${registrationKey}-week-${currentWeek}`;
+    if (completedWeeksRef.current.has(completionKey) || sessionStorage.getItem(completionKey)) return;
+
+    completedWeeksRef.current.add(completionKey);
+    sessionStorage.setItem(completionKey, "1");
 
     if (isLastWeek) {
       void (async () => {
@@ -425,9 +444,19 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
         sessionStorage.removeItem(FINAL_SCORE_KEY);
       })();
     } else {
-      sendProgressed(currentWeek / 5);
+      void sendCompleted();
+      void sendProgressed(currentWeek / 5);
     }
-  }, [showHurray]);
+  }, [
+    showHurray,
+    currentWeek,
+    isLastWeek,
+    launchParams?.registration,
+    sendCompleted,
+    sendFailed,
+    sendPassed,
+    sendProgressed,
+  ]);
 
   // Persist position to the LRS State API whenever the user advances
   useEffect(() => {
@@ -771,7 +800,7 @@ const CourseContent = () => {
     saveCourseProgressLocally(currentWeek, currentPage, currentStep, maxAccessibleWeek);
 
     setMaxAccessibleWeek((prev) => {
-      const next = Math.max(prev, currentWeek);
+      const next = Math.min(Math.max(prev, currentWeek), TOTAL_WEEKS);
       sessionStorage.setItem("flow-highestWeek", String(next));
       
       const progressPerWeek = 100 / weeksTopic.length;

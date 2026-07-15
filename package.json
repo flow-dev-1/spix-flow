@@ -9,6 +9,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "mock:lrs": "node scripts/mock-respect-lrs.cjs",
+    "respect:test": "npm run build && node scripts/mock-respect-lrs.cjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
