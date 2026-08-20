@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tincan xmlns="http://projecttincan.com/tincan.xsd">
+  <activities>
+    <activity id="https://spix.flowonline.app/tot2/week2/index.html" type="http://adlnet.gov/expapi/activities/lesson">
+      <name>Week 2: The Inclusive Mindset: Empathy and Compassion</name>
+      <description lang="en-US">Week 2: The Inclusive Mindset: Empathy and Compassion</description>
+      <launch lang="en-US">../tot2/week2/index.html</launch>
+    </activity>
+  </activities>
+</tincan>

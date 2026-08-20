@@ -28,11 +28,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/tot2-week1-manifest.json",
-          "type": "application/opds-publication+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2/week1/index.html",
           "type": "text/html"
@@ -51,6 +46,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2?startWeek=1",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week1-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/tot2-week1-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -80,11 +90,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/tot2-week2-manifest.json",
-          "type": "application/opds-publication+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2/week2/index.html",
           "type": "text/html"
@@ -103,6 +108,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2?startWeek=2",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week2-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/tot2-week2-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -132,11 +152,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/tot2-week3-manifest.json",
-          "type": "application/opds-publication+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2/week3/index.html",
           "type": "text/html"
@@ -155,6 +170,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2?startWeek=3",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week3-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/tot2-week3-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -184,11 +214,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/tot2-week4-manifest.json",
-          "type": "application/opds-publication+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2/week4/index.html",
           "type": "text/html"
@@ -207,6 +232,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2?startWeek=4",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week4-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/tot2-week4-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -236,11 +276,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/tot2-week5-manifest.json",
-          "type": "application/opds-publication+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2/week5/index.html",
           "type": "text/html"
@@ -259,6 +294,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/tot2?startWeek=5",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/tot2-week5-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/tot2-week5-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [

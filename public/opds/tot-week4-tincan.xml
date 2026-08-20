@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tincan xmlns="http://projecttincan.com/tincan.xsd">
+  <activities>
+    <activity id="https://spix.flowonline.app/tot/week4/index.html" type="http://adlnet.gov/expapi/activities/lesson">
+      <name>TOT Course 1 - Week 4</name>
+      <description lang="en-US">TOT Course 1 - Week 4</description>
+      <launch lang="en-US">../tot/week4/index.html</launch>
+    </activity>
+  </activities>
+</tincan>

@@ -16,9 +16,9 @@ The accidentally created file in the wrong app was removed:
 Frontend/src/utils/respectXapi.js
 ```
 
-## Reference Document
+## Current Reference Documents
 
-The RESPECT reference PDF is here:
+The original RESPECT reference PDF is here:
 
 ```txt
 C:\Users\MY PC\Downloads\RESPECT xAPI Reference.pdf
@@ -30,18 +30,30 @@ Main understanding from the document:
 - SPIX-flow must send xAPI statements back to the LRS endpoint supplied in those params.
 - Normal local/FLOW usage must continue to work if RESPECT params are absent.
 
-## RESPECT Launch Params
-
-SPIX-flow should read:
+The current upstream integration contract is:
 
 ```txt
-respectLaunchVersion
+https://github.com/UstadMobile/Respect/blob/main/README_ADD_YOUR_APP.md
+https://github.com/UstadMobile/Respect/wiki/xAPI-Recommended-Reading
+```
+
+It additionally requires a launchable-app manifest, an OPDS default collection,
+one publication manifest and `tincan.xml` per learning unit, and xAPI launch handling.
+
+## RESPECT Launch Params
+
+SPIX-flow reads the standard Rustici launch parameters:
+
+```txt
 endpoint
 auth
 actor
 registration
 activity_id
 ```
+
+`respectLaunchVersion` remains supported but is optional. Standard launches are
+recognized when `endpoint`, `auth`, `actor`, and `activity_id` are present.
 
 Optional params already supported in SPIX-flow:
 
@@ -51,7 +63,8 @@ given_name
 locale
 ```
 
-If `respectLaunchVersion` is missing, treat it as a non-RESPECT session and skip xAPI calls gracefully.
+Ordinary URLs without either a version marker or the standard launch parameter
+set remain non-RESPECT sessions and skip xAPI calls gracefully.
 
 ## Existing SPIX-flow Files
 
@@ -70,6 +83,36 @@ src/pages/Login.tsx
 - sends `launched` once
 - exposes helpers for completion/progress
 - supports progress and weekly response persistence via xAPI State API
+
+## Discovery Metadata
+
+The source metadata is in:
+
+```txt
+public/launchable-app.json
+public/respect-manifest.json
+public/opds/index.json
+public/opds/*-manifest.json
+public/opds/*-tincan.xml
+```
+
+`respect-manifest.json` is retained as a compatibility URL but now contains the
+same current launchable-app schema as `launchable-app.json`.
+
+Generate and normalize all metadata with:
+
+```txt
+npm run respect:prepare
+```
+
+The generator is:
+
+```txt
+scripts/prepare-respect-metadata.cjs
+```
+
+It currently prepares 26 learning units across TOT1, TOT2, Transition 1, and
+Transition 2. The normal production build runs it automatically before Vite.
 
 ## Changes Already Made
 
@@ -97,6 +140,15 @@ passed
 failed
 terminated
 ```
+
+- Standard Rustici launches no longer depend on `respectLaunchVersion`.
+- `activity_id` routes to its actual SPIX course and week instead of always TOT2.
+- Launch routing is restricted to SPIX production activity identifiers.
+- All advertised courses send completion/pass lifecycle statements.
+- Completion/pass statements are guarded so another week cannot be reported
+  against the originally launched learning-unit activity ID.
+- Login no longer sends a duplicate `launched` statement; the shared launch hook
+  owns that lifecycle event.
 
 - Expanded result typing to allow:
 
@@ -171,52 +223,13 @@ New verbs exist in `XAPI_VERBS`, but still need wiring where appropriate:
 - `failed`
 - `terminated`
 
-## Recommended Next Steps
+## Current Completion Rule
 
-1. Review `src/hooks/useRespectLaunch.ts`.
-   - Add helper methods for:
+Each published week is one RESPECT learning unit. Reaching that week's final
+screen sends `completed` and `passed` for the launched `activity_id`. TOT2's
+final assessment can additionally send its actual score and pass/fail result.
 
-```txt
-sendPassed
-sendFailed
-sendTerminated
-```
-
-2. Add `terminated` tracking.
-   - Use route unmount and/or `beforeunload`.
-   - Include duration if available.
-
-3. Decide completion rule.
-   Recommended rule:
-
-```txt
-completed = learner reaches the final screen of the launched lesson/activity
-```
-
-Do not treat the whole course as completed unless RESPECT launches the whole course as one activity.
-
-4. Wire one course first.
-   Start with the RESPECT-launched SPIX-flow course, likely one of:
-
-```txt
-src/courses/TOT2/index.tsx
-src/courses/TOT/index.tsx
-```
-
-5. Progress tracking.
-   `sendProgressed(scoreScaled)` currently uses a score-shaped result.
-   Consider changing or adding a method that sends RESPECT-style progress extension:
-
-```ts
-{
-  extensions: {
-    "https://w3id.org/xapi/video/extensions/progress": 0.45
-  }
-}
-```
-
-6. Scored activities.
-   On scored assessments, call:
+Scored statements use:
 
 ```txt
 passed
@@ -239,7 +252,15 @@ with:
 }
 ```
 
-7. Run verification.
+## Remaining Verification
+
+1. Add `https://spix.flowonline.app/launchable-app.json` to a real RESPECT
+   launcher and confirm all 26 units are discovered.
+2. Launch at least one week from each course and confirm course/week routing.
+3. Confirm the launcher LRS accepts `launched`, `completed`, `passed`, and
+   `terminated`, including CORS preflight from the production origin.
+4. Confirm offline download succeeds for each publication's `resources` list.
+5. Run verification.
    Useful commands from `spix-flow`:
 
 ```txt
@@ -258,7 +279,7 @@ If Node is not on PATH, use:
 Use a URL like this for local testing:
 
 ```txt
-http://localhost:5173/login?respectLaunchVersion=1&endpoint=http://localhost:34197/xapi/&auth=abc123&registration=550e8400-e29b-41d4-a716-446655440000&activity_id=https://spix-flow/course/lesson-1&actor={"objectType":"Agent","name":"Test Learner","account":{"homePage":"https://ke.onrespect.app","name":"learner-1"}}
+http://localhost:8080/?endpoint=http://localhost:34197/xapi/&auth=abc123&registration=550e8400-e29b-41d4-a716-446655440000&activity_id=https://spix.flowonline.app/tot2/week1/index.html&actor={"objectType":"Agent","name":"Test Learner","account":{"homePage":"https://ke.onrespect.app","name":"learner-1"}}
 ```
 
 In practice, URL-encode the `actor` JSON.

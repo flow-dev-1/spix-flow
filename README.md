@@ -18,7 +18,8 @@ The script will:
 **Connect from the RESPECT Android APK:**
 - Server URL: `http://<YOUR_LAN_IP>:8098/`
 - Login: `admin` / `Flow2026!`
-- SPIX manifest: `https://spix.flowonline.app/respect-manifest.json`
+- SPIX launchable-app manifest: `https://spix.flowonline.app/launchable-app.json`
+- Legacy compatibility URL: `https://spix.flowonline.app/respect-manifest.json`
 
 ---
 

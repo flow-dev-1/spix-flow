@@ -5,7 +5,7 @@
  */
 
 export interface RespectLaunchParams {
-  respectLaunchVersion: string;
+  respectLaunchVersion?: string;
   endpoint: string;       // xAPI LRS endpoint
   auth: string;           // RESPECT auth parameter value
   actor: string;          // JSON-stringified xAPI actor
@@ -36,9 +36,7 @@ export interface XAPIResult {
 /** Parse RESPECT launch params from the current URL search string. */
 export function parseRespectLaunchParams(search: string): RespectLaunchParams | null {
   const params = new URLSearchParams(search);
-  const version = params.get("respectLaunchVersion");
-  if (!version) return null;
-
+  const version = params.get("respectLaunchVersion") ?? undefined;
   const endpoint = params.get("endpoint") ?? "";
   const auth = params.get("auth") ?? "";
   const actor = params.get("actor") ?? "";
@@ -48,7 +46,43 @@ export function parseRespectLaunchParams(search: string): RespectLaunchParams | 
   const givenName = params.get("given_name") ?? undefined;
   const locale = params.get("locale") ?? undefined;
 
+  const hasRusticiLaunchParams = endpoint && auth && actor && activityId;
+  if (!version && !hasRusticiLaunchParams) return null;
+
   return { respectLaunchVersion: version, endpoint, auth, actor, registration, activityId, endpointOneroster, givenName, locale };
+}
+
+const COURSE_ROUTES = new Set(["tot", "tot2", "transition", "transition2"]);
+
+export interface RespectLaunchTarget {
+  course: string;
+  week: number;
+  route: string;
+}
+
+/** Resolve the SPIX learning unit represented by a RESPECT activity_id. */
+export function getRespectLaunchTarget(activityId: string): RespectLaunchTarget | null {
+  if (!activityId) return null;
+
+  try {
+    const activityUrl = new URL(activityId, "https://spix.flowonline.app");
+    if (activityUrl.origin !== "https://spix.flowonline.app") return null;
+    const match = activityUrl.pathname.match(
+      /^\/(tot|tot2|transition|transition2)\/week(\d+)(?:\/index\.html)?\/?$/i,
+    );
+    if (!match) return null;
+
+    const course = match[1].toLowerCase();
+    const week = Number(match[2]);
+    if (!COURSE_ROUTES.has(course) || !Number.isInteger(week) || week < 1) return null;
+    return { course, week, route: `/${course}/week${week}/index.html` };
+  } catch {
+    return null;
+  }
+}
+
+export function getRespectLaunchRoute(activityId: string): string | null {
+  return getRespectLaunchTarget(activityId)?.route ?? null;
 }
 
 export function getStoredRespectLaunchParams(): RespectLaunchParams | null {
@@ -64,6 +98,21 @@ export function getStoredRespectLaunchParams(): RespectLaunchParams | null {
 
 function authHeader(auth: string): string {
   return /^(Basic|Bearer)\s+/i.test(auth) ? auth : `Basic ${auth}`;
+}
+
+function getCourseStateIdentity(activityId: string) {
+  const target = getRespectLaunchTarget(activityId);
+  if (target) {
+    return {
+      activityId: `https://spix.flowonline.app/${target.course}`,
+      courseSlug: target.course,
+    };
+  }
+
+  return {
+    activityId: activityId || "https://spix.flowonline.app/tot2",
+    courseSlug: "tot2",
+  };
 }
 
 /** Send an xAPI statement to the LRS. */
@@ -154,14 +203,10 @@ export interface LearnerProgress {
 
 function stateUrl(params: RespectLaunchParams): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
-  
-  // Use a shared activity id for global progress tracking across all weeks
-  const globalActivityId = params.activityId 
-    ? params.activityId.replace(/\/week\d+\/?$/, "") 
-    : "https://spix.flowonline.app/tot2";
+  const { activityId } = getCourseStateIdentity(params.activityId);
     
   const q = new URLSearchParams({
-    activityId: globalActivityId,
+    activityId,
     agent: params.actor,
     stateId: "flowProgress",
     ...(params.registration ? { registration: params.registration } : {}),
@@ -179,10 +224,7 @@ const STATE_HEADERS = (auth: string) => ({
 export async function getProgress(
   params: RespectLaunchParams,
 ): Promise<LearnerProgress | null> {
-  const globalActivityId = params.activityId 
-    ? params.activityId.replace(/\/week\d+\/?$/, "") 
-    : "https://spix.flowonline.app/tot2";
-  const courseSlug = globalActivityId.split("/").pop() || "tot2";
+  const { courseSlug } = getCourseStateIdentity(params.activityId);
 
   const localGet = () => {
     try {
@@ -200,11 +242,13 @@ export async function getProgress(
       method: "GET",
       headers: STATE_HEADERS(params.auth),
     });
-    if (res.status === 404) return localGet();
-    if (!res.ok) return localGet();
-    return (await res.json()) as LearnerProgress;
+    if (res.status === 404) return null;
+    if (!res.ok) return null;
+    const progress = (await res.json()) as LearnerProgress;
+    lastStatePayload.set(stateUrl(params), JSON.stringify(progress));
+    return progress;
   } catch {
-    return localGet();
+    return null;
   }
 }
 
@@ -214,10 +258,7 @@ export async function saveProgress(
   progress: LearnerProgress,
 ): Promise<void> {
   try {
-    const globalActivityId = params.activityId 
-      ? params.activityId.replace(/\/week\d+\/?$/, "") 
-      : "https://spix.flowonline.app/tot2";
-    const courseSlug = globalActivityId.split("/").pop() || "tot2";
+    const { courseSlug } = getCourseStateIdentity(params.activityId);
     localStorage.setItem(`${courseSlug}-flowProgress`, JSON.stringify(progress));
   } catch {
     // ignore
@@ -225,11 +266,7 @@ export async function saveProgress(
 
   if (!params.endpoint || !params.auth) return;
   try {
-    await fetch(stateUrl(params), {
-      method: "PUT",
-      headers: STATE_HEADERS(params.auth),
-      body: JSON.stringify(progress),
-    });
+    await putJsonState(stateUrl(params), params.auth, progress);
   } catch {
     // non-fatal
   }
@@ -242,20 +279,38 @@ export interface WeekResponses {
 
 function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
-  
-  // Use a shared activity id for global progress tracking across all weeks
-  const globalActivityId = params.activityId 
-    ? params.activityId.replace(/\/week\d+\/?$/, "") 
-    : "https://spix.flowonline.app/tot2";
-  const courseSlug = globalActivityId.split("/").pop() || "tot2";
+  const { activityId, courseSlug } = getCourseStateIdentity(params.activityId);
     
   const q = new URLSearchParams({
-    activityId: globalActivityId,
+    activityId,
     agent: params.actor,
     stateId: `${courseSlug}-flowResponses-week${week}`,
     ...(params.registration ? { registration: params.registration } : {}),
   });
   return `${base}activities/state?${q.toString()}`;
+}
+
+const lastStatePayload = new Map<string, string>();
+
+async function putJsonState(url: string, auth: string, value: unknown): Promise<void> {
+  const payload = JSON.stringify(value);
+  if (lastStatePayload.get(url) === payload) return;
+  lastStatePayload.set(url, payload);
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: STATE_HEADERS(auth),
+      body: payload,
+    });
+
+    if (!response.ok && lastStatePayload.get(url) === payload) {
+      lastStatePayload.delete(url);
+    }
+  } catch (error) {
+    if (lastStatePayload.get(url) === payload) lastStatePayload.delete(url);
+    throw error;
+  }
 }
 
 /** Save user responses (activities & assessments) for a given week to the LRS State API. */
@@ -266,11 +321,7 @@ export async function saveWeekResponses(
 ): Promise<void> {
   if (!params.endpoint || !params.auth) return;
   try {
-    await fetch(weekResponsesUrl(params, week), {
-      method: "PUT",
-      headers: STATE_HEADERS(params.auth),
-      body: JSON.stringify(responses),
-    });
+    await putJsonState(weekResponsesUrl(params, week), params.auth, responses);
   } catch {
     // non-fatal
   }
@@ -289,7 +340,9 @@ export async function getWeekResponses(
     });
     if (res.status === 404) return null;
     if (!res.ok) return null;
-    return (await res.json()) as WeekResponses;
+    const responses = (await res.json()) as WeekResponses;
+    lastStatePayload.set(weekResponsesUrl(params, week), JSON.stringify(responses));
+    return responses;
   } catch {
     return null;
   }

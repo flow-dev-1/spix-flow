@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/add-opds-build-resources.cjs",
+    "respect:prepare": "node scripts/prepare-respect-metadata.cjs",
+    "build": "npm run respect:prepare && vite build && node scripts/add-opds-build-resources.cjs",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

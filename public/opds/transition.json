@@ -20,11 +20,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week1-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week1/index.html",
           "type": "text/html"
@@ -43,6 +38,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=1",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week1-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week1-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -63,11 +73,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week2-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week2/index.html",
           "type": "text/html"
@@ -86,6 +91,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=2",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week2-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week2-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -106,11 +126,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week3-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week3/index.html",
           "type": "text/html"
@@ -129,6 +144,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=3",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week3-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week3-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -149,11 +179,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week4-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week4/index.html",
           "type": "text/html"
@@ -172,6 +197,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=4",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week4-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week4-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -192,11 +232,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week5-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week5/index.html",
           "type": "text/html"
@@ -215,6 +250,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=5",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week5-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week5-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -235,11 +285,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week6-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week6/index.html",
           "type": "text/html"
@@ -258,6 +303,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=6",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week6-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week6-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -278,11 +338,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week7-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week7/index.html",
           "type": "text/html"
@@ -301,6 +356,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=7",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week7-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week7-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -321,11 +391,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week8-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week8/index.html",
           "type": "text/html"
@@ -344,6 +409,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=8",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week8-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week8-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -364,11 +444,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week9-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week9/index.html",
           "type": "text/html"
@@ -387,6 +462,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=9",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week9-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week9-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [
@@ -407,11 +497,6 @@
       },
       "links": [
         {
-          "rel": "self",
-          "href": "https://spix.flowonline.app/opds/transition-week10-manifest.json",
-          "type": "application/webpub+json"
-        },
-        {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week10/index.html",
           "type": "text/html"
@@ -430,6 +515,21 @@
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition?startWeek=10",
           "type": "text/html"
+        },
+        {
+          "rel": "self",
+          "href": "https://spix.flowonline.app/opds/transition-week10-manifest.json",
+          "type": "application/opds-publication+json"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/tincanxml",
+          "href": "https://spix.flowonline.app/opds/transition-week10-tincan.xml",
+          "type": "application/xml"
+        },
+        {
+          "rel": "https://id.openeel.org/rel/launchable-app",
+          "href": "https://spix.flowonline.app/launchable-app.json",
+          "type": "application/opds-publication+json"
         }
       ],
       "images": [

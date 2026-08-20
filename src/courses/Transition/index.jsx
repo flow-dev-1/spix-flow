@@ -272,7 +272,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const {
     isRespectSession,
     launchParams,
+    launchTarget,
     sendCompleted,
+    sendPassed,
     sendProgressed,
     restoreProgress,
     persistProgress,
@@ -280,6 +282,8 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef(new Set());
+  const respectProgressReadyRef = useRef(!isRespectSession);
+  const respectResponsesReadyWeekRef = useRef(null);
 
   // Access data from location.state
   const enrolmentData = location.state?.enrollmentData; // Assuming enrollData is passed in state
@@ -338,7 +342,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
   useEffect(() => {
     restoreProgress().then((saved) => {
-      const localSaved = getSavedCourseProgress();
+      const localSaved = isRespectSession ? null : getSavedCourseProgress();
       const restored = saved || localSaved;
       let targetWeek = restored?.currentWeek || 1;
       let targetPage = restored?.currentPage || 1;
@@ -353,7 +357,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
             ? { page: restored.currentPage, step: restored.currentStep }
             : isCompletedLaunchWeek
               ? { page: 1, step: 1 }
-              : getSavedWeekProgress(launchWeek);
+              : isRespectSession
+                ? { page: 1, step: 1 }
+                : getSavedWeekProgress(launchWeek);
 
         targetWeek = launchWeek;
         targetPage = savedLaunchProgress.page;
@@ -370,16 +376,20 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       saveCourseProgressLocally(targetWeek, targetPage, targetStep, highestAuthorizedWeek);
 
       setMaxAccessibleWeek((prev) => {
-        const next = Math.min(Math.max(prev, highestAuthorizedWeek, targetWeek), TOTAL_WEEKS);
+        const next = isRespectSession
+          ? Math.min(Math.max(highestAuthorizedWeek, targetWeek), TOTAL_WEEKS)
+          : Math.min(Math.max(prev, highestAuthorizedWeek, targetWeek), TOTAL_WEEKS);
         sessionStorage.setItem("flow-highestWeek", String(next));
         return next;
       });
+      respectProgressReadyRef.current = true;
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!showHurray) return;
+    if (isRespectSession && launchTarget?.week !== currentWeek) return;
 
     setMaxAccessibleWeek((prev) => {
       const next = Math.min(Math.max(prev, currentWeek + 1), TOTAL_WEEKS);
@@ -393,15 +403,19 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
     completedWeeksRef.current.add(completionKey);
     sessionStorage.setItem(completionKey, "1");
-    void sendCompleted();
+    void (async () => {
+      await sendCompleted();
+      await sendPassed({ score: { scaled: 1 } });
+    })();
 
     if (currentWeek < TOTAL_WEEKS) {
       void sendProgressed(currentWeek / TOTAL_WEEKS);
     }
-  }, [showHurray, currentWeek, launchParams?.registration, sendCompleted, sendProgressed]);
+  }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed, sendProgressed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
+    if (isRespectSession && !respectProgressReadyRef.current) return;
     const step = currentStep || Number(sessionStorage.getItem("flow-currentStep") ?? 1);
     const highestWeek = Math.min(Math.max(currentWeek, maxAccessibleWeek), TOTAL_WEEKS);
     saveWeekProgress(currentWeek, currentPage, step);
@@ -470,17 +484,22 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
   useEffect(() => {
     if (!currentWeek) return;
-    loadResponses(currentWeek).then((saved) => {
-      if (!saved) saved = getSavedWeekResponsesLocally(currentWeek);
-      if (!saved) return;
+    if (isRespectSession && !respectProgressReadyRef.current) return;
+    const weekToRestore = currentWeek;
+    if (isRespectSession) respectResponsesReadyWeekRef.current = null;
+    loadResponses(weekToRestore).then((saved) => {
+      if (!saved && !isRespectSession) saved = getSavedWeekResponsesLocally(weekToRestore);
+      if (!saved && !isRespectSession) return;
+      const restored = saved ?? { activities: [], assessments: [] };
+      if (isRespectSession) respectResponsesReadyWeekRef.current = weekToRestore;
 
       dispatch(
         updateData({
           course: course,
           courseEnrollmentId: enrollmentId ?? userAnswers.courseEnrollmentId,
-          week: currentWeek,
-          activities: saved.activities,
-          assessments: saved.assessments,
+          week: weekToRestore,
+          activities: restored.activities,
+          assessments: restored.assessments,
         }),
       );
     });
@@ -489,6 +508,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
   useEffect(() => {
     if (!currentWeek) return;
+    if (isRespectSession && respectResponsesReadyWeekRef.current !== currentWeek) return;
     if (userAnswers.week !== currentWeek) return;
     if (!userAnswers.activities?.length && !userAnswers.assessments?.length) return;
 
