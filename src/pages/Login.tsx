@@ -6,10 +6,8 @@ import "@/styles/onboarding.css";
 import heroBg from "@/assets/course2.png";
 import {
   parseRespectLaunchParams,
-  sendXAPIStatement,
-  XAPI_VERBS,
+  getRespectLaunchRoute,
   RESPECT_LAUNCH_PARAMS_KEY,
-  RESPECT_LAUNCHED_KEY,
   RESPECT_SESSION_STARTED_AT_KEY,
 } from "@/services/xapi";
 
@@ -27,14 +25,7 @@ export default function Login() {
       sessionStorage.setItem(RESPECT_SESSION_STARTED_AT_KEY, String(Date.now()));
     }
 
-    void (async () => {
-      if (!sessionStorage.getItem(RESPECT_LAUNCHED_KEY)) {
-        sessionStorage.setItem(RESPECT_LAUNCHED_KEY, "1");
-        await sendXAPIStatement(launch, XAPI_VERBS.launched);
-      }
-
-      navigate("/tot2", { replace: true });
-    })();
+    navigate(getRespectLaunchRoute(launch.activityId) || "/courses", { replace: true });
   }, [launch, navigate]);
 
   const handleRespectSignIn = () => {

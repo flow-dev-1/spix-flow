@@ -7,6 +7,7 @@ import {
   saveProgress,
   saveWeekResponses,
   getWeekResponses,
+  getRespectLaunchTarget,
   XAPI_VERBS,
   RESPECT_LAUNCH_PARAMS_KEY,
   RESPECT_LAUNCHED_KEY,
@@ -147,23 +148,12 @@ export function useRespectLaunch() {
       void sendTerminated({}, true);
     };
 
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        void sendTerminated({}, true);
-      }
-    };
-
     window.addEventListener("beforeunload", handleSessionExit, { capture: true });
     window.addEventListener("pagehide", handleSessionExit, { capture: true });
-    window.addEventListener("unload", handleSessionExit, { capture: true });
-    document.addEventListener("visibilitychange", handleVisibilityChange, { capture: true });
 
     return () => {
       window.removeEventListener("beforeunload", handleSessionExit, { capture: true });
       window.removeEventListener("pagehide", handleSessionExit, { capture: true });
-      window.removeEventListener("unload", handleSessionExit, { capture: true });
-      document.removeEventListener("visibilitychange", handleVisibilityChange, { capture: true });
-      void sendTerminated();
     };
   }, [sendTerminated]);
 
@@ -189,6 +179,7 @@ export function useRespectLaunch() {
 
   return {
     launchParams: paramsRef.current,
+    launchTarget: getRespectLaunchTarget(paramsRef.current?.activityId ?? ""),
     isRespectSession: !!paramsRef.current,
     sendCompleted,
     sendProgressed,

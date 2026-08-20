@@ -8,11 +8,6 @@
   },
   "links": [
     {
-      "rel": "self",
-      "href": "https://spix.flowonline.app/opds/transition-week4-manifest.json",
-      "type": "application/webpub+json"
-    },
-    {
       "rel": "http://opds-spec.org/acquisition/open-access",
       "href": "https://spix.flowonline.app/transition/week4/index.html",
       "type": "text/html"
@@ -31,6 +26,21 @@
       "rel": "http://opds-spec.org/acquisition/open-access",
       "href": "https://spix.flowonline.app/transition?startWeek=4",
       "type": "text/html"
+    },
+    {
+      "rel": "self",
+      "href": "https://spix.flowonline.app/opds/transition-week4-manifest.json",
+      "type": "application/opds-publication+json"
+    },
+    {
+      "rel": "https://id.openeel.org/rel/tincanxml",
+      "href": "https://spix.flowonline.app/opds/transition-week4-tincan.xml",
+      "type": "application/xml"
+    },
+    {
+      "rel": "https://id.openeel.org/rel/launchable-app",
+      "href": "https://spix.flowonline.app/launchable-app.json",
+      "type": "application/opds-publication+json"
     }
   ],
   "images": [
@@ -43,8 +53,7 @@
   "readingOrder": [
     {
       "href": "https://spix.flowonline.app/transition/week4/index.html",
-      "type": "text/html",
-      "title": "Transition 1 - Week 4"
+      "type": "text/html"
     }
   ],
   "resources": [

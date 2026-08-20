@@ -339,7 +339,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const { isLastWeek } = useSelector(selectNavigationState);
 
   const {
+    isRespectSession,
     launchParams,
+    launchTarget,
     sendCompleted,
     sendProgressed,
     sendPassed,
@@ -350,11 +352,13 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef<Set<string>>(new Set());
+  const respectProgressReadyRef = useRef(!isRespectSession);
+  const respectResponsesReadyWeekRef = useRef<number | null>(null);
 
   // On mount: try to restore position from the LRS State API (RESPECT sessions) or local fallback.
   useEffect(() => {
     restoreProgress().then((saved) => {
-      const localSaved = getSavedCourseProgress();
+      const localSaved = isRespectSession ? null : getSavedCourseProgress();
       const restored = saved || localSaved;
       let targetWeek = restored?.currentWeek || 1;
       let targetPage = restored?.currentPage || 1;
@@ -377,7 +381,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
                 }
               : isCompletedLaunchWeek
                 ? { page: 1, step: 1 }
-                : getSavedWeekProgress(reqWeek);
+                : isRespectSession
+                  ? { page: 1, step: 1 }
+                  : getSavedWeekProgress(reqWeek);
           targetWeek = reqWeek;
           targetPage = savedLaunchProgress.page;
           targetStep = savedLaunchProgress.step;
@@ -394,10 +400,13 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       saveCourseProgressLocally(targetWeek, targetPage, targetStep, highestAuthorizedWeek);
       
       setMaxAccessibleWeek((prev) => {
-        const next = Math.max(prev, highestAuthorizedWeek, targetWeek);
+        const next = isRespectSession
+          ? Math.max(highestAuthorizedWeek, targetWeek)
+          : Math.max(prev, highestAuthorizedWeek, targetWeek);
         sessionStorage.setItem("flow-highestWeek", String(next));
         return next;
       });
+      respectProgressReadyRef.current = true;
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -405,6 +414,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Fire xAPI progress/completion when the week-end screen appears
   useEffect(() => {
     if (!showHurray) return;
+    if (isRespectSession && launchTarget?.week !== currentWeek) return;
     
     setMaxAccessibleWeek((prev: number) => {
       const next = Math.min(Math.max(prev, currentWeek + 1), TOTAL_WEEKS);
@@ -444,14 +454,19 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
         sessionStorage.removeItem(FINAL_SCORE_KEY);
       })();
     } else {
-      void sendCompleted();
-      void sendProgressed(currentWeek / 5);
+      void (async () => {
+        await sendCompleted();
+        await sendPassed({ score: { scaled: 1 } });
+        await sendProgressed(currentWeek / 5);
+      })();
     }
   }, [
     showHurray,
     currentWeek,
+    isRespectSession,
     isLastWeek,
     launchParams?.registration,
+    launchTarget?.week,
     sendCompleted,
     sendFailed,
     sendPassed,
@@ -461,6 +476,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Persist position to the LRS State API whenever the user advances
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
+    if (isRespectSession && !respectProgressReadyRef.current) return;
     const step = currentStep || Number(sessionStorage.getItem("flow-currentStep") ?? 1);
     const highestWeek = Math.max(currentWeek, maxAccessibleWeek);
     saveCourseProgressLocally(currentWeek, currentPage, step, highestWeek);
@@ -527,21 +543,22 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Restore responses from LRS (or localStorage fallback) when the week changes
   useEffect(() => {
     if (!currentWeek) return;
-    loadResponses(currentWeek).then((saved) => {
-      // Fallback to localStorage if LRS failed or returned nothing
-      if (!saved) {
-        saved = getSavedWeekResponsesLocally(currentWeek);
-      }
-
-      if (!saved) return;
+    if (isRespectSession && !respectProgressReadyRef.current) return;
+    const weekToRestore = currentWeek;
+    if (isRespectSession) respectResponsesReadyWeekRef.current = null;
+    loadResponses(weekToRestore).then((saved) => {
+      if (!saved && !isRespectSession) saved = getSavedWeekResponsesLocally(weekToRestore);
+      if (!saved && !isRespectSession) return;
+      const restored = saved ?? { activities: [], assessments: [] };
+      if (isRespectSession) respectResponsesReadyWeekRef.current = weekToRestore;
       
       dispatch(
         updateData({
           course: course,
           courseEnrollmentId: enrollmentId ?? userAnswers.courseEnrollmentId,
-          week: currentWeek,
-          activities: saved.activities,
-          assessments: saved.assessments,
+          week: weekToRestore,
+          activities: restored.activities,
+          assessments: restored.assessments,
         }),
       );
     });
@@ -551,6 +568,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Auto-save responses to LRS AND localStorage whenever the user answers a question
   useEffect(() => {
     if (!currentWeek) return;
+    if (isRespectSession && respectResponsesReadyWeekRef.current !== currentWeek) return;
     
     // WEEK-SYNC GUARD: Prevent saving if the Redux store hasn't synchronized to the current week yet.
     // This prevents stale data from a previous week leaking into the current week's storage slot during navigation.

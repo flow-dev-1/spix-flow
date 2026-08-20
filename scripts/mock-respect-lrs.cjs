@@ -172,33 +172,33 @@ server.listen(port, "127.0.0.1", () => {
   console.log("");
   console.log("Transition:");
   for (let week = 1; week <= 10; week += 1) {
-    const activityId = encodeURIComponent(`https://spix.flowonline.app/transition/week${week}`);
+    const activityId = encodeURIComponent(`https://spix.flowonline.app/transition/week${week}/index.html`);
     console.log(
-      `Week ${week}: http://127.0.0.1:${port}/transition/week${week}?respectLaunchVersion=1&endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
+      `Week ${week}: http://127.0.0.1:${port}/transition/week${week}/index.html?endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
     );
   }
   console.log("");
   console.log("Transition 2:");
   for (let week = 1; week <= 5; week += 1) {
-    const activityId = encodeURIComponent(`https://spix.flowonline.app/transition2/week${week}`);
+    const activityId = encodeURIComponent(`https://spix.flowonline.app/transition2/week${week}/index.html`);
     console.log(
-      `Week ${week}: http://127.0.0.1:${port}/transition2/week${week}?respectLaunchVersion=1&endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
+      `Week ${week}: http://127.0.0.1:${port}/transition2/week${week}/index.html?endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
     );
   }
   console.log("");
   console.log("TOT2:");
   for (let week = 1; week <= 5; week += 1) {
-    const activityId = encodeURIComponent(`https://spix.flowonline.app/tot2/week${week}`);
+    const activityId = encodeURIComponent(`https://spix.flowonline.app/tot2/week${week}/index.html`);
     console.log(
-      `Week ${week}: http://127.0.0.1:${port}/tot2/week${week}?respectLaunchVersion=1&endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
+      `Week ${week}: http://127.0.0.1:${port}/tot2/week${week}/index.html?endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
     );
   }
   console.log("");
   console.log("TOT:");
   for (let week = 1; week <= 6; week += 1) {
-    const activityId = encodeURIComponent(`https://spix.flowonline.app/tot/week${week}`);
+    const activityId = encodeURIComponent(`https://spix.flowonline.app/tot/week${week}/index.html`);
     console.log(
-      `Week ${week}: http://127.0.0.1:${port}/tot/week${week}?respectLaunchVersion=1&endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
+      `Week ${week}: http://127.0.0.1:${port}/tot/week${week}/index.html?endpoint=${endpoint}&auth=${auth}&actor=${actor}&registration=${registration}&activity_id=${activityId}`
     );
   }
 });

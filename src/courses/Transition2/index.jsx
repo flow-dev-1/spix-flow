@@ -273,7 +273,9 @@ const WeekContent = () => {
   const {
     isRespectSession,
     launchParams,
+    launchTarget,
     sendCompleted,
+    sendPassed,
     sendProgressed,
     restoreProgress,
     persistProgress,
@@ -281,6 +283,8 @@ const WeekContent = () => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef(new Set());
+  const respectProgressReadyRef = useRef(!isRespectSession);
+  const respectResponsesReadyWeekRef = useRef(null);
 
   useEffect(() => {
     if (isRespectSession && showReview) {
@@ -290,7 +294,7 @@ const WeekContent = () => {
 
   useEffect(() => {
     restoreProgress().then((saved) => {
-      const localSaved = getSavedCourseProgress();
+      const localSaved = isRespectSession ? null : getSavedCourseProgress();
       const restored = saved || localSaved;
       let targetWeek = restored?.currentWeek || 1;
       let targetPage = restored?.currentPage || 1;
@@ -305,7 +309,9 @@ const WeekContent = () => {
             ? { page: restored.currentPage, step: restored.currentStep }
             : isCompletedLaunchWeek
               ? { page: 1, step: 1 }
-              : getSavedWeekProgress(launchWeek);
+              : isRespectSession
+                ? { page: 1, step: 1 }
+                : getSavedWeekProgress(launchWeek);
 
         targetWeek = launchWeek;
         targetPage = savedLaunchProgress.page;
@@ -321,12 +327,14 @@ const WeekContent = () => {
       saveWeekProgress(targetWeek, targetPage, targetStep);
       saveCourseProgressLocally(targetWeek, targetPage, targetStep, highestAuthorizedWeek);
       sessionStorage.setItem("flow-highestWeek", String(Math.max(highestAuthorizedWeek, targetWeek)));
+      respectProgressReadyRef.current = true;
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!showHurray) return;
+    if (isRespectSession && launchTarget?.week !== currentWeek) return;
 
     const registrationKey = launchParams?.registration || "local";
     const completionKey = `transition2-xapi-completed-${registrationKey}-week-${currentWeek}`;
@@ -334,15 +342,19 @@ const WeekContent = () => {
 
     completedWeeksRef.current.add(completionKey);
     sessionStorage.setItem(completionKey, "1");
-    void sendCompleted();
+    void (async () => {
+      await sendCompleted();
+      await sendPassed({ score: { scaled: 1 } });
+    })();
 
     if (currentWeek < TOTAL_WEEKS) {
       void sendProgressed(currentWeek / TOTAL_WEEKS);
     }
-  }, [showHurray, currentWeek, launchParams?.registration, sendCompleted, sendProgressed]);
+  }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed, sendProgressed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
+    if (isRespectSession && !respectProgressReadyRef.current) return;
     const step = currentStep || Number(sessionStorage.getItem("flow-currentStep") ?? 1);
     const highestWeek = Math.max(currentWeek, Number(sessionStorage.getItem("flow-highestWeek") ?? 1));
 
@@ -358,17 +370,22 @@ const WeekContent = () => {
 
   useEffect(() => {
     if (!currentWeek) return;
-    loadResponses(currentWeek).then((saved) => {
-      if (!saved) saved = getSavedWeekResponsesLocally(currentWeek);
-      if (!saved) return;
+    if (isRespectSession && !respectProgressReadyRef.current) return;
+    const weekToRestore = currentWeek;
+    if (isRespectSession) respectResponsesReadyWeekRef.current = null;
+    loadResponses(weekToRestore).then((saved) => {
+      if (!saved && !isRespectSession) saved = getSavedWeekResponsesLocally(weekToRestore);
+      if (!saved && !isRespectSession) return;
+      const restored = saved ?? { activities: [], assessments: [] };
+      if (isRespectSession) respectResponsesReadyWeekRef.current = weekToRestore;
 
       dispatch(
         updateData({
           course: "transition2",
           courseEnrollmentId: null,
-          week: currentWeek,
-          activities: saved.activities,
-          assessments: saved.assessments,
+          week: weekToRestore,
+          activities: restored.activities,
+          assessments: restored.assessments,
         }),
       );
     });
@@ -377,6 +394,7 @@ const WeekContent = () => {
 
   useEffect(() => {
     if (!currentWeek) return;
+    if (isRespectSession && respectResponsesReadyWeekRef.current !== currentWeek) return;
     if (userAnswers.week !== currentWeek) return;
     if (!userAnswers.activities?.length && !userAnswers.assessments?.length) return;
 
