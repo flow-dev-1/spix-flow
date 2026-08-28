@@ -4,9 +4,11 @@
     "title": "SPIX - Flow Online Learning",
     "author": {
       "name": "Flow Online Learning",
-      "links": {
-        "href": "https://spix.flowonline.app"
-      }
+      "links": [
+        {
+          "href": "https://spix.flowonline.app"
+        }
+      ]
     },
     "identifier": "https://spix.flowonline.app/app",
     "language": "en",

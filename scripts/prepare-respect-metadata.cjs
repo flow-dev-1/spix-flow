@@ -44,7 +44,7 @@ const appManifest = {
     title: "SPIX - Flow Online Learning",
     author: {
       name: "Flow Online Learning",
-      links: { href: APP_ORIGIN },
+      links: [{ href: APP_ORIGIN }],
     },
     identifier: `${APP_ORIGIN}/app`,
     language: "en",
