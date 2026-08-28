@@ -284,6 +284,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const completedWeeksRef = useRef(new Set());
   const respectProgressReadyRef = useRef(!isRespectSession);
   const respectResponsesReadyWeekRef = useRef(null);
+  const [isRespectProgressReady, setIsRespectProgressReady] = useState(!isRespectSession);
 
   // Access data from location.state
   const enrolmentData = location.state?.enrollmentData; // Assuming enrollData is passed in state
@@ -383,6 +384,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
         return next;
       });
       respectProgressReadyRef.current = true;
+      setIsRespectProgressReady(true);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -521,6 +523,14 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     saveWeekResponsesLocally(currentWeek, responses);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAnswers.activities, userAnswers.assessments]);
+
+  if (isRespectSession && !isRespectProgressReady) {
+    return (
+      <div className="d-flex min-vh-50 align-items-center justify-content-center py-5">
+        <div className="spinner-border text-info" role="status" aria-label="Loading course" />
+      </div>
+    );
+  }
 
   // If showing hurray, render that instead
   if (showHurray) {
