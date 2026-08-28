@@ -1,4 +1,4 @@
-const APP_CACHE = "flow-app-v5";
+const APP_CACHE = "flow-app-v6";
 const VIDEO_CACHE = "flow-videos-v8";
 const ASSET_CACHE = "flow-assets-v2";
 const CLOUDFRONT_HOST = "d3sc34m1n26ele.cloudfront.net";
@@ -197,12 +197,18 @@ async function staleWhileRevalidate(cacheName, request) {
 
 async function navigationResponse(request) {
   const cache = await caches.open(APP_CACHE);
+  const requestUrl = new URL(request.url);
+  const isXapiLaunch = ["endpoint", "auth", "actor", "activity_id"].some((param) =>
+    requestUrl.searchParams.has(param),
+  );
 
   try {
     const response = await fetch(request);
     if (response.ok) {
-      cache.put(request, response.clone());
-      cache.put("/index.html", response.clone());
+      if (!isXapiLaunch) {
+        await cache.put(request, response.clone());
+      }
+      await cache.put("/index.html", response.clone());
     }
     return response;
   } catch {
