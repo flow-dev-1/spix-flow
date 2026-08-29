@@ -11,10 +11,10 @@ const TINCAN_REL = "https://id.openeel.org/rel/tincanxml";
 const APP_REL = "https://id.openeel.org/rel/launchable-app";
 
 const courses = [
-  { slug: "tot", catalog: "tot.json", weeks: 6 },
-  { slug: "tot2", catalog: "tot2.json", weeks: 5 },
-  { slug: "transition", catalog: "transition.json", weeks: 10 },
-  { slug: "transition2", catalog: "transition2.json", weeks: 5 },
+  { slug: "tot", catalog: "tot.json", weeks: 6, subject: "Education" },
+  { slug: "tot2", catalog: "tot2.json", weeks: 5, subject: "Education" },
+  { slug: "transition", catalog: "transition.json", weeks: 10, subject: "Life Skills" },
+  { slug: "transition2", catalog: "transition2.json", weeks: 5, subject: "Life Skills" },
 ];
 
 function readJson(filePath) {
@@ -44,11 +44,10 @@ const appManifest = {
     title: "SPIX - Flow Online Learning",
     author: {
       name: "Flow Online Learning",
-      links: [{ href: APP_ORIGIN }],
     },
     identifier: `${APP_ORIGIN}/app`,
     language: "en",
-    modified: "2026-08-20T00:00:00Z",
+    modified: "2026-08-29T00:00:00Z",
   },
   links: [
     {
@@ -100,6 +99,36 @@ for (const course of courses) {
 
     publication.metadata = publication.metadata || {};
     publication.metadata.identifier = activityId;
+    if (!publication.metadata["@type"]) {
+      publication.metadata["@type"] = "http://schema.org/Course";
+    }
+    if (!publication.metadata.author) {
+      publication.metadata.author = "Flow Online Learning";
+    }
+    if (!publication.metadata.subject) {
+      publication.metadata.subject = [
+        { name: course.subject, scheme: "https://www.bisg.org/#bisac", code: "EDU000000" },
+      ];
+    }
+
+    // Keep only the index.html acquisition link (matches RESPECT reference format)
+    publication.links = (publication.links || []).filter(
+      (l) => l.rel !== "http://opds-spec.org/acquisition/open-access"
+    );
+    publication.links.push({
+      rel: "http://opds-spec.org/acquisition/open-access",
+      href: launchUrl,
+      type: "text/html",
+    });
+
+    // Normalize images to only href and type
+    if (publication.images) {
+      publication.images = publication.images.map((img) => ({
+        href: img.href,
+        type: img.type,
+      }));
+    }
+
     publication.links = replaceLink(publication.links, "self", {
       rel: "self",
       href: manifestUrl,

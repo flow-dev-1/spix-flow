@@ -3,16 +3,11 @@
     "@type": "https://id.openeel.org/schema/launchable-app",
     "title": "SPIX - Flow Online Learning",
     "author": {
-      "name": "Flow Online Learning",
-      "links": [
-        {
-          "href": "https://spix.flowonline.app"
-        }
-      ]
+      "name": "Flow Online Learning"
     },
     "identifier": "https://spix.flowonline.app/app",
     "language": "en",
-    "modified": "2026-08-20T00:00:00Z"
+    "modified": "2026-08-29T00:00:00Z"
   },
   "links": [
     {

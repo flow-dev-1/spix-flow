@@ -16,27 +16,21 @@
         "subtitle": "Introduction To Transition. Also Talk About Your Why",
         "identifier": "https://spix.flowonline.app/transition/week1/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week1/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week1/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week1",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=1",
           "type": "text/html"
         },
         {
@@ -58,8 +52,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -69,27 +62,21 @@
         "subtitle": "Growth And Fixed Mindset",
         "identifier": "https://spix.flowonline.app/transition/week2/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week2/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week2/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week2",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=2",
           "type": "text/html"
         },
         {
@@ -111,8 +98,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -122,27 +108,21 @@
         "subtitle": "Understanding What Is In Your Control",
         "identifier": "https://spix.flowonline.app/transition/week3/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week3/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week3/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week3",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=3",
           "type": "text/html"
         },
         {
@@ -164,8 +144,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -175,27 +154,21 @@
         "subtitle": "Understanding Values",
         "identifier": "https://spix.flowonline.app/transition/week4/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week4/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week4/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week4",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=4",
           "type": "text/html"
         },
         {
@@ -217,8 +190,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -228,27 +200,21 @@
         "subtitle": "Emotional Intelligence",
         "identifier": "https://spix.flowonline.app/transition/week5/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week5/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week5/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week5",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=5",
           "type": "text/html"
         },
         {
@@ -270,8 +236,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -281,27 +246,21 @@
         "subtitle": "Social Skills (Navigating Relationships)",
         "identifier": "https://spix.flowonline.app/transition/week6/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week6/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week6/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week6",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=6",
           "type": "text/html"
         },
         {
@@ -323,8 +282,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -334,27 +292,21 @@
         "subtitle": "Time Management",
         "identifier": "https://spix.flowonline.app/transition/week7/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week7/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week7/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week7",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=7",
           "type": "text/html"
         },
         {
@@ -376,8 +328,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -387,27 +338,21 @@
         "subtitle": "Goal Setting",
         "identifier": "https://spix.flowonline.app/transition/week8/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week8/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week8/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week8",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=8",
           "type": "text/html"
         },
         {
@@ -429,8 +374,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -440,27 +384,21 @@
         "subtitle": "Resilience And Introduction To Coping Skills",
         "identifier": "https://spix.flowonline.app/transition/week9/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week9/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week9/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week9",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=9",
           "type": "text/html"
         },
         {
@@ -482,8 +420,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     },
@@ -493,27 +430,21 @@
         "subtitle": "Looking Ahead",
         "identifier": "https://spix.flowonline.app/transition/week10/index.html",
         "language": "en",
-        "modified": "2026-05-27T00:00:00.000Z"
+        "modified": "2026-05-27T00:00:00.000Z",
+        "@type": "http://schema.org/Course",
+        "author": "Flow Online Learning",
+        "subject": [
+          {
+            "name": "Life Skills",
+            "scheme": "https://www.bisg.org/#bisac",
+            "code": "EDU000000"
+          }
+        ]
       },
       "links": [
         {
           "rel": "http://opds-spec.org/acquisition/open-access",
           "href": "https://spix.flowonline.app/transition/week10/index.html",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week10/",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition/week10",
-          "type": "text/html"
-        },
-        {
-          "rel": "http://opds-spec.org/acquisition/open-access",
-          "href": "https://spix.flowonline.app/transition?startWeek=10",
           "type": "text/html"
         },
         {
@@ -535,8 +466,7 @@
       "images": [
         {
           "href": "https://spix.flowonline.app/assets/transition-cover.png",
-          "type": "image/png",
-          "title": "Transition Course Cover"
+          "type": "image/png"
         }
       ]
     }
