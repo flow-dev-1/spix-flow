@@ -57,7 +57,7 @@ const appManifest = {
     },
     {
       rel: "collection",
-      href: DEFAULT_COLLECTION_URL,
+      href: "opds/index.json",
       type: "application/opds+json",
     },
     {

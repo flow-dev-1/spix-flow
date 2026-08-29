@@ -17,7 +17,7 @@
     },
     {
       "rel": "collection",
-      "href": "https://spix.flowonline.app/opds/index.json",
+      "href": "opds/index.json",
       "type": "application/opds+json"
     },
     {
