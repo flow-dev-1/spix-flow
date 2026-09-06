@@ -6,6 +6,7 @@ import {
   parseRespectLaunchParams,
   saveWeekResponses,
   sendXAPIStatement,
+  getXAPIStatementDeliveryError,
   XAPI_VERBS,
   type RespectLaunchParams,
 } from "./xapi";
@@ -192,7 +193,7 @@ describe("xAPI statement delivery", () => {
   });
   it("reports a non-2xx response as undelivered so it can be retried", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
-      new Response(null, { status: 503 }),
+      new Response("LRS temporarily unavailable", { status: 503 }),
     );
     vi.spyOn(console, "warn").mockImplementation(() => {});
 
@@ -202,5 +203,8 @@ describe("xAPI statement delivery", () => {
       { completion: false },
       { statementId: "81eb690e-cb17-4a63-92de-cc0567ec6899" },
     )).resolves.toBe(false);
+    expect(getXAPIStatementDeliveryError(XAPI_VERBS.progressed.id)).toBe(
+      "HTTP 503: LRS temporarily unavailable",
+    );
   });
 });

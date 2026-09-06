@@ -115,6 +115,12 @@ function getCourseStateIdentity(activityId: string) {
   };
 }
 
+const statementDeliveryErrors = new Map<string, string>();
+
+export function getXAPIStatementDeliveryError(verbId: string): string | null {
+  return statementDeliveryErrors.get(verbId) ?? null;
+}
+
 /** Send an xAPI statement to the LRS. */
 export async function sendXAPIStatement(
   params: RespectLaunchParams,
@@ -176,12 +182,18 @@ export async function sendXAPIStatement(
     });
 
     if (response.ok || response.status === 409) {
+      statementDeliveryErrors.delete(verb.id);
       return true;
     }
 
-    console.warn(`xAPI statement failed with status ${response.status}`);
+    const responseBody = (await response.text()).trim().replace(/\s+/g, " ").slice(0, 160);
+    const errorDetail = `HTTP ${response.status}${responseBody ? `: ${responseBody}` : ""}`;
+    statementDeliveryErrors.set(verb.id, errorDetail);
+    console.warn(`xAPI statement failed: ${errorDetail}`);
     return false;
   } catch (error) {
+    const errorDetail = error instanceof Error ? error.message : String(error);
+    statementDeliveryErrors.set(verb.id, `Network error: ${errorDetail}`);
     console.warn("xAPI statement failed", error);
     return false;
   }

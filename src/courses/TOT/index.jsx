@@ -145,6 +145,7 @@ import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
 import { setCourse } from "@/store/navigationSlice";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
+import { getXAPIStatementDeliveryError, XAPI_VERBS } from "@/services/xapi";
 import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 
 const TOTAL_WEEKS = 6;
@@ -453,7 +454,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
               await new Promise((resolve) => setTimeout(resolve, 500 * (2 ** attempt)));
             }
             if (attempt === 2) {
-              setRespectStatus((status) => ({ ...status, [verb]: "failed — retry by reopening" }));
+              const deliveryError = getXAPIStatementDeliveryError(XAPI_VERBS[verb].id);
+              setRespectStatus((status) => ({
+                ...status,
+                [verb]: deliveryError ? `failed: ${deliveryError}` : "failed — retry by reopening",
+              }));
             }
           }
         } finally {
