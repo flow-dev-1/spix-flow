@@ -16,6 +16,10 @@ import {
 } from "@/store/navigationSlice";
 import "./question.css"
 
+const isRespectWebViewSession = () => {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).has("activity_id") || Boolean(sessionStorage.getItem("respect-launch-params"));
+};
 const Hurray = ({ currentWeek = 3 }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const dispatch = useDispatch();
@@ -66,9 +70,11 @@ const Hurray = ({ currentWeek = 3 }) => {
         )}
       </div>
 
-      <div className="d-flex justify-content-center w-1029px mt-4">
-        <Button text={getButtonText()} customOnClick={handleNext} loading={false} />
-      </div>
+      {!isRespectWebViewSession() && (
+        <div className="d-flex justify-content-center w-1029px mt-4">
+          <Button text={getButtonText()} customOnClick={handleNext} loading={false} />
+        </div>
+      )}
     </>
   );
 };

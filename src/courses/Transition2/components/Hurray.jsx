@@ -23,6 +23,10 @@ const weekEndImages = {
   5: week5End,
 };
 
+const isRespectWebViewSession = () => {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).has("activity_id") || Boolean(sessionStorage.getItem("respect-launch-params"));
+};
 const Hurray = ({ currentWeek = 3 }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const dispatch = useDispatch();
@@ -71,9 +75,11 @@ const Hurray = ({ currentWeek = 3 }) => {
         ))}
       </div>
 
-      <div className="d-flex justify-content-center w-1029px mt-4">
-        <Button text={getButtonText()} customOnClick={handleNext} />
-      </div>
+      {!isRespectWebViewSession() && (
+        <div className="d-flex justify-content-center w-1029px mt-4">
+          <Button text={getButtonText()} customOnClick={handleNext} />
+        </div>
+      )}
     </>
   );
 };

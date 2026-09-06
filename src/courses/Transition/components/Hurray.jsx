@@ -70,9 +70,11 @@ const Hurray = ({ currentWeek = 3 }) => {
           You have made it to the <br /> end of Week {currentWeek}
         </p>
       </div>
-      <div className="d-flex justify-content-center w-1029px mt-4">
-        <Button text={getButtonText()} customOnClick={handleNext} />
-      </div>
+      {!isRespectWebViewSession() && (
+        <div className="d-flex justify-content-center w-1029px mt-4">
+          <Button text={getButtonText()} customOnClick={handleNext} />
+        </div>
+      )}
     </>
   );
 };
