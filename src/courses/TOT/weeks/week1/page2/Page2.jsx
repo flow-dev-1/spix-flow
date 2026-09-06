@@ -41,28 +41,16 @@ function Page2() {
 
   const handleOptionSelect = (optionKey) => {
     setErrorMessage("");
-    setAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      const stepIndex = updatedAnswers.findIndex(
-        (answer) => answer.id === currentStep,
-      );
-
-      if (stepIndex !== -1) {
-        updatedAnswers[stepIndex] = {
-          ...updatedAnswers[stepIndex],
-          value: optionKey,
-        };
-      } else {
-        updatedAnswers.push({
-          id: currentStep,
-          value: optionKey,
-        });
-      }
-
-      return updatedAnswers;
-    });
+    const updatedAnswers = [
+      ...answers.filter((answer) => answer.id !== currentStep),
+      { id: currentStep, value: optionKey },
+    ];
+    setAnswers(updatedAnswers);
+    dispatch(saveActivity({
+      page: pageData.id,
+      answer: updatedAnswers,
+    }));
   };
-
   const saveUserInput = () => {
     if (adminDatas.isAdmin) return true;
     if (currentStep == 1) return true;

@@ -134,8 +134,6 @@ import WeekSixPage13 from "./weeks/week6/page13/Page13";
 import WeekSixPage14 from "./weeks/week6/page14/Page14";
 
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import userService from "@/services/api/user";
 import {
   updateData,
   userAnswer,
@@ -266,36 +264,38 @@ const saveWeekResponsesLocally = (weekNumber, responses) => {
   }
 };
 
-const hasSavedResponses = (responses) => {
-  return Boolean(responses?.activities?.length || responses?.assessments?.length);
-};
-
+const RespectStatusPanel = ({ status }) => (
+  <aside
+    style={{
+      position: "fixed",
+      right: "12px",
+      bottom: "12px",
+      zIndex: 9999,
+      maxWidth: "340px",
+      padding: "12px",
+      borderRadius: "8px",
+      background: "#102a43",
+      color: "white",
+      fontSize: "13px",
+      boxShadow: "0 4px 16px rgba(0, 0, 0, 0.3)",
+    }}
+  >
+    <strong>Temporary RESPECT check</strong>
+    <div>Launch: detected</div>
+    <div>Progress: {status.progress}</div>
+    <div>Answers: {status.answers}</div>
+    <div>Last save: {status.save}</div>
+    <div>Completed: {status.completed}</div>
+    <div>Passed: {status.passed}</div>
+    <div>Progressed: {status.progressed}</div>
+  </aside>
+);
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userAnswers = useSelector(userAnswer);
   const location = useLocation(); // Get location object
-  const [enrollmentId, setEnrollmentId] = useState(null);
-  const [course, setCourse] = useState(null);
   const { isAdmin } = useSelector(adminData);
-
-  // Access data from location.state
-  const enrolmentData = location.state?.enrollmentData; // Assuming enrollData is passed in state
-
-  useEffect(() => {
-    if (enrolmentData?._id) {
-      setEnrollmentId(enrolmentData._id);
-      setCourse(enrolmentData?.course?._id ?? null);
-      return;
-    }
-
-    userService.getSingleEnrollment("").then((res) => {
-      if (res?.enrollment?._id) {
-        setEnrollmentId(res.enrollment._id);
-        setCourse(res.enrollment?.course?._id ?? "tot");
-      }
-    });
-  }, []);
 
   useEffect(() => {
     const currentWeek = sessionStorage.getItem("flow-currentWeek")
@@ -336,7 +336,16 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const completedWeeksRef = useRef(new Set());
   const weekOneStatementsInFlightRef = useRef(new Set());
   const respectProgressReadyRef = useRef(!isRespectSession);
+  const [respectProgressReady, setRespectProgressReady] = useState(!isRespectSession);
   const respectResponsesReadyWeekRef = useRef(null);
+  const [respectStatus, setRespectStatus] = useState({
+    progress: "loading",
+    answers: "waiting",
+    save: "waiting",
+    completed: "waiting",
+    passed: "waiting",
+    progressed: "waiting",
+  });
 
   useEffect(() => {
     if (isRespectSession && showReview) {
@@ -387,6 +396,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
         return next;
       });
       respectProgressReadyRef.current = true;
+      setRespectProgressReady(true);
+      setRespectStatus((status) => ({
+        ...status,
+        progress: saved ? "restored" : "started fresh",
+      }));
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -413,7 +427,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
       void Promise.all(statements.map(async ([verb, send, args]) => {
         const deliveryKey = `${completionKey}-${verb}`;
-        if (sessionStorage.getItem(deliveryKey) || weekOneStatementsInFlightRef.current.has(deliveryKey)) return;
+        if (sessionStorage.getItem(deliveryKey)) {
+          setRespectStatus((status) => ({ ...status, [verb]: "already sent ✓" }));
+          return;
+        }
+        if (weekOneStatementsInFlightRef.current.has(deliveryKey)) return;
 
         let statementId = sessionStorage.getItem(`${deliveryKey}-statement-id`);
         if (!statementId) {
@@ -422,15 +440,20 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
         }
 
         weekOneStatementsInFlightRef.current.add(deliveryKey);
+        setRespectStatus((status) => ({ ...status, [verb]: "sending" }));
         try {
           for (let attempt = 0; attempt < 3; attempt += 1) {
             const delivered = await send(...args, statementId);
             if (delivered) {
               sessionStorage.setItem(deliveryKey, "1");
+              setRespectStatus((status) => ({ ...status, [verb]: "sent ✓" }));
               break;
             }
             if (attempt < 2) {
               await new Promise((resolve) => setTimeout(resolve, 500 * (2 ** attempt)));
+            }
+            if (attempt === 2) {
+              setRespectStatus((status) => ({ ...status, [verb]: "failed — retry by reopening" }));
             }
           }
         } finally {
@@ -469,74 +492,28 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     });
   }, [currentWeek, currentPage, currentStep, maxAccessibleWeek]);
 
-  // toDo: Fetch User assessment and Activity Data
-  const { data, isLoading, status, isError } = useQuery({
-    queryKey: [
-      `dashboard-tot-course-${currentWeek}`,
-      enrollmentId,
-      currentWeek,
-    ],
-    queryFn: () => userService.getUserCourseData(enrollmentId, currentWeek),
-    enabled: !!enrollmentId && !!currentWeek,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
-    keepPreviousData: false,
-  });
-
-  useEffect(() => {
-    if (!data) return;
-
-    const localSaved = getSavedWeekResponsesLocally(currentWeek);
-    const serverResponses = {
-      activities: data.activity?.activities ?? [],
-      assessments: data.assessment?.assessments ?? [],
-    };
-    const responses = hasSavedResponses(serverResponses)
-      ? serverResponses
-      : localSaved || serverResponses;
-
-    if (data.assessment && data.activity) {
-      dispatch(
-        updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId,
-          week: currentWeek,
-          activities: responses.activities,
-          assessments: responses.assessments,
-        }),
-      );
-    } else {
-      dispatch(
-        updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId
-            ? enrollmentId
-            : userAnswers.courseEnrollmentId,
-          week: currentWeek,
-          activities: responses.activities,
-          assessments: responses.assessments,
-        }),
-      );
-    }
-
-    return () => { };
-  }, [data]);
-
   useEffect(() => {
     if (!currentWeek) return;
-    if (isRespectSession && !respectProgressReadyRef.current) return;
+    if (isRespectSession && !respectProgressReady) return;
     const weekToRestore = currentWeek;
     if (isRespectSession) respectResponsesReadyWeekRef.current = null;
     loadResponses(currentWeek).then((saved) => {
       if (!saved && !isRespectSession) saved = getSavedWeekResponsesLocally(weekToRestore);
       if (!saved && !isRespectSession) return;
       const restored = saved ?? { activities: [], assessments: [] };
-      if (isRespectSession) respectResponsesReadyWeekRef.current = weekToRestore;
+      if (isRespectSession) {
+        respectResponsesReadyWeekRef.current = weekToRestore;
+        const answerCount = restored.activities.length + restored.assessments.length;
+        setRespectStatus((status) => ({
+          ...status,
+          answers: answerCount ? `restored ${answerCount} saved item(s)` : "none found",
+        }));
+      }
 
       dispatch(
         updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId ?? userAnswers.courseEnrollmentId,
+          course: "tot",
+          courseEnrollmentId: null,
           week: weekToRestore,
           activities: restored.activities,
           assessments: restored.assessments,
@@ -544,7 +521,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       );
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWeek]);
+  }, [currentWeek, respectProgressReady]);
 
   useEffect(() => {
     if (!currentWeek) return;
@@ -557,7 +534,13 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       assessments: userAnswers.assessments ?? [],
     };
 
-    saveResponses(currentWeek, responses);
+    setRespectStatus((status) => ({ ...status, save: "saving" }));
+    void saveResponses(currentWeek, responses).then((saved) => {
+      setRespectStatus((status) => ({
+        ...status,
+        save: saved ? "saved ✓" : "failed",
+      }));
+    });
     try {
       localStorage.setItem(responseKey(currentWeek), JSON.stringify(responses));
     } catch {
@@ -567,8 +550,15 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
+  const showRespectStatus = isRespectSession && currentWeek === 1;
+
   if (showHurray) {
-    return <Hurray currentWeek={currentWeek} />;
+    return (
+      <>
+        <Hurray currentWeek={currentWeek} />
+        {showRespectStatus && <RespectStatusPanel status={respectStatus} />}
+      </>
+    );
   }
 
   // Determine which component to render based on week and page
@@ -817,6 +807,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     <>
       {getComponent()}
       {showReview && !isRespectSession && <PopUp />}
+      {showRespectStatus && <RespectStatusPanel status={respectStatus} />}
     </>
   );
 };
@@ -837,7 +828,6 @@ const CourseContent = () => {
   const [maxAccessibleWeek, setMaxAccessibleWeek] = useState(
     () => Number(sessionStorage.getItem("flow-highestWeek") ?? 1),
   );
-  const [enrollmentId, setEnrollmentId] = useState(null);
 
   const weeksTopic = [
     "Understanding SEL & Positive Psychology",
@@ -847,16 +837,6 @@ const CourseContent = () => {
     "Integrating SEL into Teaching Methods",
     "Teacher Well-being & Sustainable SEL Practices",
   ];
-
-  // Get enrollment data from location state
-  const enrolmentData = location.state?.enrollmentData;
-
-  // Capture enrollmentId from location state on mount
-  useEffect(() => {
-    if (enrolmentData?._id) {
-      setEnrollmentId(enrolmentData._id);
-    }
-  }, []);
 
   // Derive progress locally from the highest week reached. This mirrors TOT2:
   // week cards are launchable, while progress/checkmarks remain informational.

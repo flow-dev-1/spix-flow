@@ -299,9 +299,9 @@ function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
 
 const lastStatePayload = new Map<string, string>();
 
-async function putJsonState(url: string, auth: string, value: unknown): Promise<void> {
+async function putJsonState(url: string, auth: string, value: unknown): Promise<boolean> {
   const payload = JSON.stringify(value);
-  if (lastStatePayload.get(url) === payload) return;
+  if (lastStatePayload.get(url) === payload) return true;
   lastStatePayload.set(url, payload);
 
   try {
@@ -314,6 +314,7 @@ async function putJsonState(url: string, auth: string, value: unknown): Promise<
     if (!response.ok && lastStatePayload.get(url) === payload) {
       lastStatePayload.delete(url);
     }
+    return response.ok;
   } catch (error) {
     if (lastStatePayload.get(url) === payload) lastStatePayload.delete(url);
     throw error;
@@ -325,12 +326,12 @@ export async function saveWeekResponses(
   params: RespectLaunchParams,
   week: number,
   responses: WeekResponses,
-): Promise<void> {
-  if (!params.endpoint || !params.auth) return;
+): Promise<boolean> {
+  if (!params.endpoint || !params.auth) return false;
   try {
-    await putJsonState(weekResponsesUrl(params, week), params.auth, responses);
+    return await putJsonState(weekResponsesUrl(params, week), params.auth, responses);
   } catch {
-    // non-fatal
+    return false;
   }
 }
 

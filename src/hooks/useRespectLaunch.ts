@@ -167,8 +167,8 @@ export function useRespectLaunch() {
     return saveProgress(paramsRef.current, progress);
   };
 
-  const saveResponses = (week: number, responses: WeekResponses): Promise<void> => {
-    if (!paramsRef.current) return Promise.resolve();
+  const saveResponses = (week: number, responses: WeekResponses): Promise<boolean> => {
+    if (!paramsRef.current) return Promise.resolve(false);
     return saveWeekResponses(paramsRef.current, week, responses);
   };
 
