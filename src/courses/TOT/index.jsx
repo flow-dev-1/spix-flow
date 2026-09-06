@@ -154,6 +154,7 @@ import {
 } from "@/services/xapi";
 import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 import { getWeekAssessment } from "./data";
+import { calculateScore } from "./utility";
 
 const TOTAL_WEEKS = 6;
 const courseProgressKey = "tot-flowProgress";
@@ -280,13 +281,8 @@ const saveWeekResponsesLocally = (weekNumber, responses) => {
 
 const calculateAssessmentScore = (weekNumber, answers) => {
   const questions = getWeekAssessment(weekNumber)?.questions ?? [];
-  const answersById = new Map((answers ?? []).map((answer) => [answer.id, answer.value]));
-  const raw = questions.filter(
-    (question) => answersById.get(question.id) === question.correctOption,
-  ).length;
-  const max = questions.length;
-
-  return { raw, min: 0, max, scaled: max ? raw / max : 0 };
+  const { raw, min, max, scaled } = calculateScore(questions, answers, questions.length);
+  return { raw, min, max, scaled };
 };
 
 const RespectStatusPanel = ({ status }) => (
