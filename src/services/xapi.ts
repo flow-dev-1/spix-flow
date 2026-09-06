@@ -175,11 +175,12 @@ export async function sendXAPIStatement(
       body: JSON.stringify(statement),
     });
 
-    if (!response.ok) {
-      console.warn(`xAPI statement failed with status ${response.status}`);
-      return false;
+    if (response.ok || response.status === 409) {
+      return true;
     }
-    return true;
+
+    console.warn(`xAPI statement failed with status ${response.status}`);
+    return false;
   } catch (error) {
     console.warn("xAPI statement failed", error);
     return false;

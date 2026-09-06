@@ -178,6 +178,18 @@ describe("xAPI statement delivery", () => {
 
     expect(fetchMock.mock.calls[0][1]?.body).toBe(fetchMock.mock.calls[1][1]?.body);
   });
+  it("treats a 409 duplicate statement as already delivered", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 409 }),
+    );
+
+    await expect(sendXAPIStatement(
+      launchParams,
+      XAPI_VERBS.completed,
+      { completion: true },
+      { statementId: "98616793-6f92-496c-a03f-666da8279ad1" },
+    )).resolves.toBe(true);
+  });
   it("reports a non-2xx response as undelivered so it can be retried", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(null, { status: 503 }),
