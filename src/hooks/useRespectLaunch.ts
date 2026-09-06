@@ -86,34 +86,34 @@ export function useRespectLaunch() {
     return toIsoDuration(sessionStartedAtRef.current);
   }, []);
 
-  const sendCompleted = useCallback((scoreScaled?: number) => {
-    if (!paramsRef.current) return Promise.resolve();
+  const sendCompleted = useCallback((scoreScaled?: number, statementId?: string) => {
+    if (!paramsRef.current) return Promise.resolve(false);
     return sendXAPIStatement(paramsRef.current, XAPI_VERBS.completed, {
       completion: true,
       duration: getElapsedDuration(),
       ...(scoreScaled !== undefined ? { score: { scaled: scoreScaled } } : {}),
-    }).catch(() => {});
+    }, { statementId }).catch(() => false);
   }, [getElapsedDuration]);
 
-  const sendProgressed = useCallback((progress: number) => {
-    if (!paramsRef.current) return Promise.resolve();
+  const sendProgressed = useCallback((progress: number, statementId?: string) => {
+    if (!paramsRef.current) return Promise.resolve(false);
     const boundedProgress = Math.max(0, Math.min(progress, 1));
     return sendXAPIStatement(paramsRef.current, XAPI_VERBS.progressed, {
       completion: false,
       extensions: {
         [PROGRESS_EXTENSION]: boundedProgress,
       },
-    }).catch(() => {});
+    }, { statementId }).catch(() => false);
   }, []);
 
-  const sendPassed = useCallback((result: XAPIResult = {}) => {
-    if (!paramsRef.current) return Promise.resolve();
+  const sendPassed = useCallback((result: XAPIResult = {}, statementId?: string) => {
+    if (!paramsRef.current) return Promise.resolve(false);
     return sendXAPIStatement(paramsRef.current, XAPI_VERBS.passed, {
       ...result,
       completion: true,
       success: true,
       duration: result.duration ?? getElapsedDuration(),
-    }).catch(() => {});
+    }, { statementId }).catch(() => false);
   }, [getElapsedDuration]);
 
   const sendFailed = useCallback((result: XAPIResult = {}) => {
@@ -123,7 +123,7 @@ export function useRespectLaunch() {
       completion: true,
       success: false,
       duration: result.duration ?? getElapsedDuration(),
-    }).catch(() => {});
+    }).then(() => undefined).catch(() => {});
   }, [getElapsedDuration]);
 
   const sendTerminated = useCallback((result: XAPIResult = {}, keepalive = false) => {

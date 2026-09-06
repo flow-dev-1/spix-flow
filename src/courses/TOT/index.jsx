@@ -334,6 +334,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef(new Set());
+  const weekOneStatementsInFlightRef = useRef(new Set());
   const respectProgressReadyRef = useRef(!isRespectSession);
   const respectResponsesReadyWeekRef = useRef(null);
 
@@ -402,6 +403,43 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
     const registrationKey = launchParams?.registration || "local";
     const completionKey = `tot-xapi-completed-${registrationKey}-week-${currentWeek}`;
+
+    if (isRespectSession && currentWeek === 1) {
+      const statements = [
+        ["completed", sendCompleted, []],
+        ["passed", sendPassed, [{ score: { scaled: 1 } }]],
+        ["progressed", sendProgressed, [1 / TOTAL_WEEKS]],
+      ];
+
+      void Promise.all(statements.map(async ([verb, send, args]) => {
+        const deliveryKey = `${completionKey}-${verb}`;
+        if (sessionStorage.getItem(deliveryKey) || weekOneStatementsInFlightRef.current.has(deliveryKey)) return;
+
+        let statementId = sessionStorage.getItem(`${deliveryKey}-statement-id`);
+        if (!statementId) {
+          statementId = crypto.randomUUID();
+          sessionStorage.setItem(`${deliveryKey}-statement-id`, statementId);
+        }
+
+        weekOneStatementsInFlightRef.current.add(deliveryKey);
+        try {
+          for (let attempt = 0; attempt < 3; attempt += 1) {
+            const delivered = await send(...args, statementId);
+            if (delivered) {
+              sessionStorage.setItem(deliveryKey, "1");
+              break;
+            }
+            if (attempt < 2) {
+              await new Promise((resolve) => setTimeout(resolve, 500 * (2 ** attempt)));
+            }
+          }
+        } finally {
+          weekOneStatementsInFlightRef.current.delete(deliveryKey);
+        }
+      }));
+      return;
+    }
+
     if (completedWeeksRef.current.has(completionKey) || sessionStorage.getItem(completionKey)) return;
 
     completedWeeksRef.current.add(completionKey);

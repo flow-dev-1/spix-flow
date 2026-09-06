@@ -120,9 +120,9 @@ export async function sendXAPIStatement(
   params: RespectLaunchParams,
   verb: { id: string; display: Record<string, string> },
   result?: XAPIResult,
-  options?: { keepalive?: boolean },
-): Promise<void> {
-  if (!params.endpoint || !params.auth) return;
+  options?: { keepalive?: boolean; statementId?: string },
+): Promise<boolean> {
+  if (!params.endpoint || !params.auth) return false;
 
   let actorObj: object;
   try {
@@ -132,6 +132,7 @@ export async function sendXAPIStatement(
   }
 
   const statement = {
+    ...(options?.statementId ? { id: options.statementId } : {}),
     actor: actorObj,
     verb,
     object: {
@@ -143,13 +144,16 @@ export async function sendXAPIStatement(
     ...(params.registration ? { context: { registration: params.registration } } : {}),
   };
 
-  const url = params.endpoint.endsWith("/")
+  const statementsUrl = params.endpoint.endsWith("/")
     ? `${params.endpoint}statements`
     : `${params.endpoint}/statements`;
+  const url = options?.statementId
+    ? `${statementsUrl}?${new URLSearchParams({ statementId: options.statementId })}`
+    : statementsUrl;
 
   try {
     const response = await fetch(url, {
-      method: "POST",
+      method: options?.statementId ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: authHeader(params.auth),
@@ -161,9 +165,12 @@ export async function sendXAPIStatement(
 
     if (!response.ok) {
       console.warn(`xAPI statement failed with status ${response.status}`);
+      return false;
     }
+    return true;
   } catch (error) {
     console.warn("xAPI statement failed", error);
+    return false;
   }
 }
 

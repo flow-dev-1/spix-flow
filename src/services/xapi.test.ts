@@ -4,6 +4,8 @@ import {
   getRespectLaunchRoute,
   parseRespectLaunchParams,
   saveWeekResponses,
+  sendXAPIStatement,
+  XAPI_VERBS,
   type RespectLaunchParams,
 } from "./xapi";
 
@@ -103,5 +105,43 @@ describe("RESPECT State API", () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(null, { status: 404 }));
 
     await expect(getProgress(launchParams)).resolves.toBeNull();
+  });
+});
+describe("xAPI statement delivery", () => {
+  it("uses an idempotent PUT when a statement ID is supplied", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 204 }),
+    );
+
+    await expect(sendXAPIStatement(
+      launchParams,
+      XAPI_VERBS.completed,
+      { completion: true },
+      { statementId: "ca4597a4-4517-4c91-b65d-0a20f93b11ef" },
+    )).resolves.toBe(true);
+
+    const [requestUrl, request] = fetchMock.mock.calls[0];
+    expect(request?.method).toBe("PUT");
+    expect(new URL(String(requestUrl)).searchParams.get("statementId")).toBe(
+      "ca4597a4-4517-4c91-b65d-0a20f93b11ef",
+    );
+    expect(JSON.parse(String(request?.body))).toMatchObject({
+      id: "ca4597a4-4517-4c91-b65d-0a20f93b11ef",
+      verb: XAPI_VERBS.completed,
+    });
+  });
+
+  it("reports a non-2xx response as undelivered so it can be retried", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 503 }),
+    );
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(sendXAPIStatement(
+      launchParams,
+      XAPI_VERBS.progressed,
+      { completion: false },
+      { statementId: "81eb690e-cb17-4a63-92de-cc0567ec6899" },
+    )).resolves.toBe(false);
   });
 });
