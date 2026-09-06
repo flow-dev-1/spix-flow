@@ -83,9 +83,11 @@ const Hurray = ({ currentWeek = 3, isRespectSession = false }) => {
         )}
       </div>
 
-      <div className="d-flex justify-content-center w-1029px mt-4">
-        <Button text={getButtonText()} customOnClick={handleNext} />
-      </div>
+      {!isRespectSession && (
+        <div className="d-flex justify-content-center w-1029px mt-4">
+          <Button text={getButtonText()} customOnClick={handleNext} />
+        </div>
+      )}
     </>
   );
 };
