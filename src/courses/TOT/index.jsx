@@ -288,66 +288,6 @@ const calculateAssessmentScore = (weekNumber, answers) => {
   return { raw, min, max, scaled };
 };
 
-const RespectStatusPanel = ({ status }) => {
-  const [isMinimized, setIsMinimized] = useState(false);
-
-  if (isMinimized) {
-    return (
-      <button
-        type="button"
-        onClick={() => setIsMinimized(false)}
-        style={{
-          position: "fixed",
-          right: "12px",
-          bottom: "12px",
-          zIndex: 9999,
-          padding: "8px 12px",
-          border: "none",
-          borderRadius: "8px",
-          background: "#102a43",
-          color: "white",
-        }}
-      >
-        Show RESPECT status
-      </button>
-    );
-  }
-
-  return (
-    <aside
-      style={{
-        position: "fixed",
-        right: "12px",
-        bottom: "12px",
-        zIndex: 9999,
-        maxWidth: "340px",
-        maxHeight: "60vh",
-        overflowY: "auto",
-        padding: "12px",
-        borderRadius: "8px",
-        background: "#102a43",
-        color: "white",
-        fontSize: "13px",
-        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.3)",
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "12px" }}>
-        <strong>Temporary RESPECT check</strong>
-        <button type="button" onClick={() => setIsMinimized(true)}>
-          Minimize
-        </button>
-      </div>
-      <div>Launch: detected</div>
-      <div>Progress: {status.progress}</div>
-      <div>Answers: {status.answers}</div>
-      <div>Last save: {status.save}</div>
-      <div>Completed: {status.completed}</div>
-      <div>Passed: {status.passed}</div>
-      <div>Progressed: {status.progressed}</div>
-      <div>Assessment score: {status.score}</div>
-    </aside>
-  );
-};
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -620,14 +560,9 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
-  const showRespectStatus = isRespectSession && currentWeek <= TOTAL_WEEKS;
-
   if (showHurray) {
     return (
-      <>
-        <Hurray currentWeek={currentWeek} isRespectSession={isRespectSession} />
-        {showRespectStatus && <RespectStatusPanel status={respectStatus} />}
-      </>
+<Hurray currentWeek={currentWeek} isRespectSession={isRespectSession} />
     );
   }
 
@@ -877,7 +812,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     <>
       {getComponent()}
       {showReview && !isRespectSession && <PopUp />}
-      {showRespectStatus && <RespectStatusPanel status={respectStatus} />}
     </>
   );
 };

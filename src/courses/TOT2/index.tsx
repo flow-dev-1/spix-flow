@@ -293,14 +293,6 @@ const calculateAssessmentScore = (weekNumber: number, answers: any[]) => {
   return { raw, min: 0, max: questions.length, scaled: percentage / 100 };
 };
 
-const RespectStatusPanel = ({ status }: { status: any }) => {
-  const [isMinimized, setIsMinimized] = useState(false);
-  if (isMinimized) return <button type="button" onClick={() => setIsMinimized(false)} style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, padding: "8px 12px", border: 0, borderRadius: 8, background: "#102a43", color: "white" }}>Show RESPECT status</button>;
-  return <div style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, width: "min(340px, calc(100vw - 24px))", maxHeight: "60vh", overflowY: "auto", padding: 12, boxSizing: "border-box", borderRadius: 8, background: "#102a43", color: "white", fontSize: 13, boxShadow: "0 4px 16px rgba(0,0,0,.3)" }}>
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}><strong>Temporary RESPECT check</strong><button type="button" onClick={() => setIsMinimized(true)}>Minimize</button></div>
-    <div>Launch: detected</div><div>Progress: {status.progress}</div><div>Answers: {status.answers}</div><div>Last save: {status.save}</div><div>Completed: {status.completed}</div><div>Passed: {status.passed}</div><div>Progressed: {status.progressed}</div><div>Assessment score: {status.score}</div>
-  </div>;
-};
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -664,7 +656,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
 
   // If showing hurray, render that instead
   if (showHurray) {
-    return <><Hurray currentWeek={currentWeek} />{isRespectSession && currentWeek <= 5 && <RespectStatusPanel status={respectStatus} />}</>;
+    return <Hurray currentWeek={currentWeek} />;
   }
 
   // Determine which component to render based on week and page
@@ -847,7 +839,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   return (
     <>
       {getComponent()}
-      {isRespectSession && currentWeek <= 5 && <RespectStatusPanel status={respectStatus} />}
     </>
   );
 };
