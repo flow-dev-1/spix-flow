@@ -59,6 +59,7 @@ function TOT2PreAssesment() {
         });
       }
 
+      dispatch(saveActivity({ page: pageData.id, answer: updatedAnswers }));
       return updatedAnswers;
     });
   };
@@ -98,7 +99,7 @@ function TOT2PreAssesment() {
           options: formattedOptions,
         }}
         currentStep={currentStep}
-        selectedOption={answers[currentStep - 1]?.value || ""}
+        selectedOption={answers.find((answer) => answer.id === currentStep)?.value || ""}
         onOptionSelect={handleOptionSelect}
         isPreAssessment={true}
       />

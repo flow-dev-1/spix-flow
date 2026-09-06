@@ -115,6 +115,9 @@ import { setCourse } from "@/store/navigationSlice";
 import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
+import { getRespectLaunchTarget } from "@/services/xapi";
+import { calculateResult } from "./utility";
+import { getWeekAssessment } from "./data";
 import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 
 const weeksTopic = [
@@ -154,6 +157,9 @@ const getLaunchWeekFromUrl = () => {
   if (pathMatch) return Number(pathMatch[1]);
 
   const params = new URLSearchParams(window.location.search);
+  const activityWeek = getRespectLaunchTarget(params.get("activity_id") ?? "")?.week;
+  if (activityWeek) return activityWeek;
+
   const startWeekParam = params.get("startWeek");
   return startWeekParam ? Number(startWeekParam) : null;
 };
@@ -280,6 +286,21 @@ const hasSavedResponses = (responses?: { activities?: unknown[]; assessments?: u
   return Boolean(responses?.activities?.length || responses?.assessments?.length);
 };
 
+const calculateAssessmentScore = (weekNumber: number, answers: any[]) => {
+  const questions = getWeekAssessment(weekNumber)?.questions?.filter((q: any) => q.type !== "reflection") ?? [];
+  const percentage = calculateResult(questions, answers, questions.length);
+  const raw = questions.reduce((score: number, question: any) => score + (answers?.find((answer: any) => answer.id === question.id)?.value === question.correctOption ? 1 : 0), 0);
+  return { raw, min: 0, max: questions.length, scaled: percentage / 100 };
+};
+
+const RespectStatusPanel = ({ status }: { status: any }) => {
+  const [isMinimized, setIsMinimized] = useState(false);
+  if (isMinimized) return <button type="button" onClick={() => setIsMinimized(false)} style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, padding: "8px 12px", border: 0, borderRadius: 8, background: "#102a43", color: "white" }}>Show RESPECT status</button>;
+  return <aside style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, maxWidth: 340, maxHeight: "60vh", overflowY: "auto", padding: 12, borderRadius: 8, background: "#102a43", color: "white", fontSize: 13, boxShadow: "0 4px 16px rgba(0,0,0,.3)" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}><strong>Temporary RESPECT check</strong><button type="button" onClick={() => setIsMinimized(true)}>Minimize</button></div>
+    <div>Launch: detected</div><div>Progress: {status.progress}</div><div>Answers: {status.answers}</div><div>Last save: {status.save}</div><div>Completed: {status.completed}</div><div>Passed: {status.passed}</div><div>Progressed: {status.progressed}</div><div>Assessment score: {status.score}</div>
+  </aside>;
+};
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -303,6 +324,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // not React Router state, so location.state?.enrollmentData is undefined.
   // Without an enrollmentId the useQuery below stays disabled and week data is never fetched.
   useEffect(() => {
+    if (sessionStorage.getItem("respect-launch-params")) return;
     if (!enrolmentData?._id) {
       userService.getSingleEnrollment("").then((res: any) => {
         if (res?.enrollment?._id) {
@@ -314,15 +336,13 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   }, []);
 
   useEffect(() => {
-    const currentWeek = sessionStorage.getItem("flow-currentWeek")
-      ? Number(sessionStorage.getItem("flow-currentWeek"))
-      : 1;
-    const currentPage = sessionStorage.getItem("flow-currentPage")
-      ? Number(sessionStorage.getItem("flow-currentPage"))
-      : 1;
-    const currentStep = sessionStorage.getItem("flow-currentStep")
-      ? Number(sessionStorage.getItem("flow-currentStep"))
-      : 1;
+    const launchedWeek = getLaunchWeekFromUrl();
+    const currentWeek = launchedWeek ?? (sessionStorage.getItem("flow-currentWeek")
+      ? Number(sessionStorage.getItem("flow-currentWeek")) : 1);
+    const currentPage = launchedWeek ? 1 : (sessionStorage.getItem("flow-currentPage")
+      ? Number(sessionStorage.getItem("flow-currentPage")) : 1);
+    const currentStep = launchedWeek ? 1 : (sessionStorage.getItem("flow-currentStep")
+      ? Number(sessionStorage.getItem("flow-currentStep")) : 1);
 
     // Dispatch the current week, page, and step
     dispatch(setCurrentWeek(currentWeek));
@@ -352,8 +372,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef<Set<string>>(new Set());
+  const trackedStatementsInFlightRef = useRef<Set<string>>(new Set());
   const respectProgressReadyRef = useRef(!isRespectSession);
+  const [respectProgressReady, setRespectProgressReady] = useState(!isRespectSession);
   const respectResponsesReadyWeekRef = useRef<number | null>(null);
+  const [respectStatus, setRespectStatus] = useState({ progress: "loading", answers: "waiting", save: "waiting", completed: "waiting", passed: "waiting", progressed: "waiting", score: "waiting" });
 
   // On mount: try to restore position from the LRS State API (RESPECT sessions) or local fallback.
   useEffect(() => {
@@ -407,6 +430,8 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
         return next;
       });
       respectProgressReadyRef.current = true;
+      setRespectProgressReady(true);
+      setRespectStatus((status) => ({ ...status, progress: saved ? "restored" : "started fresh" }));
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -415,6 +440,42 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   useEffect(() => {
     if (!showHurray) return;
     if (isRespectSession && launchTarget?.week !== currentWeek) return;
+
+    if (isRespectSession && currentWeek === 1) {
+      const score = calculateAssessmentScore(currentWeek, userAnswers.assessments);
+      setRespectStatus((status) => ({ ...status, score: `${score.raw}/${score.max} (${Math.round(score.scaled * 100)}%)` }));
+
+      const getStatementId = (verb: string) => {
+        const key = `tot2-xapi-${launchParams?.registration || launchParams?.actor || "local"}-week-${currentWeek}-${verb}-statement-id`;
+        let id = sessionStorage.getItem(key);
+        if (!id) {
+          id = crypto.randomUUID();
+          sessionStorage.setItem(key, id);
+        }
+        return id;
+      };
+      const statements: Array<[string, () => Promise<boolean>]> = [
+        ["completed", () => sendCompleted(score.scaled, getStatementId("completed"))],
+        ["passed", () => sendPassed({ score }, getStatementId("passed"))],
+        ["progressed", () => sendProgressed(currentWeek / TOTAL_WEEKS, getStatementId("progressed"))],
+      ];
+
+      void Promise.all(statements.map(async ([verb, send]) => {
+        const deliveryKey = `tot2-xapi-${launchParams?.registration || launchParams?.actor || "local"}-week-${currentWeek}-${verb}-delivered`;
+        if (sessionStorage.getItem(deliveryKey)) {
+          setRespectStatus((status) => ({ ...status, [verb]: "already sent ✓" }));
+          return;
+        }
+        if (trackedStatementsInFlightRef.current.has(deliveryKey)) return;
+        trackedStatementsInFlightRef.current.add(deliveryKey);
+        const delivered = await send();
+        trackedStatementsInFlightRef.current.delete(deliveryKey);
+        if (delivered) sessionStorage.setItem(deliveryKey, "1");
+        setRespectStatus((status) => ({ ...status, [verb]: delivered ? "sent ✓" : "failed — retry by reopening" }));
+      }));
+      return;
+    }
+    if (isRespectSession) return;
     
     setMaxAccessibleWeek((prev: number) => {
       const next = Math.min(Math.max(prev, currentWeek + 1), TOTAL_WEEKS);
@@ -496,7 +557,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       currentWeek,
     ],
     queryFn: () => userService.getUserCourseData(enrollmentId, currentWeek),
-    enabled: !!enrollmentId && !!currentWeek,
+    enabled: !isRespectSession && !!enrollmentId && !!currentWeek,
     refetchOnMount: "always",
     refetchOnWindowFocus: true,
   });
@@ -543,14 +604,18 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   // Restore responses from LRS (or localStorage fallback) when the week changes
   useEffect(() => {
     if (!currentWeek) return;
-    if (isRespectSession && !respectProgressReadyRef.current) return;
+    if (isRespectSession && !respectProgressReady) return;
     const weekToRestore = currentWeek;
     if (isRespectSession) respectResponsesReadyWeekRef.current = null;
     loadResponses(weekToRestore).then((saved) => {
       if (!saved && !isRespectSession) saved = getSavedWeekResponsesLocally(weekToRestore);
       if (!saved && !isRespectSession) return;
       const restored = saved ?? { activities: [], assessments: [] };
-      if (isRespectSession) respectResponsesReadyWeekRef.current = weekToRestore;
+      if (isRespectSession) {
+        respectResponsesReadyWeekRef.current = weekToRestore;
+        const answerCount = restored.activities.length + restored.assessments.length;
+        setRespectStatus((status) => ({ ...status, answers: answerCount ? `restored ${answerCount} saved item(s)` : "none found" }));
+      }
       
       dispatch(
         updateData({
@@ -563,7 +628,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       );
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWeek]);
+  }, [currentWeek, respectProgressReady]);
 
   // Auto-save responses to LRS AND localStorage whenever the user answers a question
   useEffect(() => {
@@ -582,7 +647,10 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     };
     
     // Save to LRS
-    saveResponses(currentWeek, responses);
+    setRespectStatus((status) => ({ ...status, save: "saving" }));
+    void saveResponses(currentWeek, responses).then((saved) => {
+      setRespectStatus((status) => ({ ...status, save: saved ? "saved ✓" : "failed" }));
+    });
     
     // Also save to localStorage as a reliable fallback
     const courseSlug = "tot2";
@@ -596,7 +664,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
 
   // If showing hurray, render that instead
   if (showHurray) {
-    return <Hurray currentWeek={currentWeek} />;
+    return <><Hurray currentWeek={currentWeek} />{isRespectSession && currentWeek === 1 && <RespectStatusPanel status={respectStatus} />}</>;
   }
 
   // Determine which component to render based on week and page
@@ -779,6 +847,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   return (
     <>
       {getComponent()}
+      {isRespectSession && currentWeek === 1 && <RespectStatusPanel status={respectStatus} />}
     </>
   );
 };
@@ -799,6 +868,7 @@ const CourseContent = () => {
     () => Number(sessionStorage.getItem("flow-highestWeek") ?? 1)
   );
   const [enrollmentId, setEnrollmentId] = useState(null);
+  const { launchTarget: respectLaunchTarget } = useRespectLaunch();
   useSpixWeekCache(currentWeek);
 
   // Get enrollment data from location state
@@ -868,7 +938,7 @@ const CourseContent = () => {
   };
 
   const isWeekAccessible = (weekNumber) => {
-    return weekNumber >= 1 && weekNumber <= weeksTopic.length;
+    return respectLaunchTarget ? weekNumber === respectLaunchTarget.week : weekNumber >= 1 && weekNumber <= weeksTopic.length;
   };
 
   const isWeekCompleted = (weekNumber) => {
@@ -1017,7 +1087,7 @@ const CourseContent = () => {
                   className={`${isActive ? "active-week" : ""} ${
                     isAccessible ? "accessible-week" : "locked-week"
                   }`}
-                  onClick={() => handleWeekClick(weekNumber)}
+                  onClick={isAccessible ? () => handleWeekClick(weekNumber) : undefined}
                   style={{
                     cursor: isAccessible ? "pointer" : "not-allowed",
                     opacity: isAccessible ? 1 : 0.5,
