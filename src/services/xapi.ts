@@ -131,7 +131,7 @@ export async function sendXAPIStatement(
     actorObj = { objectType: "Agent", name: params.givenName ?? "Learner" };
   }
 
-  const statement = {
+  const newStatement = {
     ...(options?.statementId ? { id: options.statementId } : {}),
     actor: actorObj,
     verb,
@@ -144,16 +144,28 @@ export async function sendXAPIStatement(
     ...(params.registration ? { context: { registration: params.registration } } : {}),
   };
 
-  const statementsUrl = params.endpoint.endsWith("/")
+  let statement = newStatement;
+  if (options?.statementId) {
+    const statementCacheKey = `respect-xapi-statement:${options.statementId}`;
+    try {
+      const cachedStatement = sessionStorage.getItem(statementCacheKey);
+      if (cachedStatement) {
+        statement = JSON.parse(cachedStatement);
+      } else {
+        sessionStorage.setItem(statementCacheKey, JSON.stringify(newStatement));
+      }
+    } catch {
+      // Continue with the in-memory statement when storage is unavailable.
+    }
+  }
+
+  const url = params.endpoint.endsWith("/")
     ? `${params.endpoint}statements`
     : `${params.endpoint}/statements`;
-  const url = options?.statementId
-    ? `${statementsUrl}?${new URLSearchParams({ statementId: options.statementId })}`
-    : statementsUrl;
 
   try {
     const response = await fetch(url, {
-      method: options?.statementId ? "PUT" : "POST",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: authHeader(params.auth),
@@ -198,6 +210,10 @@ export const XAPI_VERBS = {
   terminated: {
     id: "http://adlnet.gov/expapi/verbs/terminated",
     display: { "en-US": "terminated" },
+  },
+  responded: {
+    id: "http://adlnet.gov/expapi/verbs/responded",
+    display: { "en-US": "responded" },
   },
 };
 
@@ -284,17 +300,17 @@ export interface WeekResponses {
   assessments: unknown[];
 }
 
-function weekResponsesUrl(params: RespectLaunchParams, week: number): string {
-  const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
-  const { activityId, courseSlug } = getCourseStateIdentity(params.activityId);
-    
-  const q = new URLSearchParams({
-    activityId,
-    agent: params.actor,
-    stateId: `${courseSlug}-flowResponses-week${week}`,
-    ...(params.registration ? { registration: params.registration } : {}),
-  });
-  return `${base}activities/state?${q.toString()}`;
+const WEEK_RESPONSES_EXTENSION = "https://spix.flowonline.app/xapi/extensions/week-responses";
+const lastWeekResponseDelivery = new Map<string, {
+  payload: string;
+  statementId: string;
+  delivered: boolean;
+}>();
+
+function statementsUrl(params: RespectLaunchParams): string {
+  return params.endpoint.endsWith("/")
+    ? `${params.endpoint}statements`
+    : `${params.endpoint}/statements`;
 }
 
 const lastStatePayload = new Map<string, string>();
@@ -321,36 +337,70 @@ async function putJsonState(url: string, auth: string, value: unknown): Promise<
   }
 }
 
-/** Save user responses (activities & assessments) for a given week to the LRS State API. */
+/** Save the latest week responses as an xAPI statement supported by RESPECT. */
 export async function saveWeekResponses(
   params: RespectLaunchParams,
   week: number,
   responses: WeekResponses,
 ): Promise<boolean> {
   if (!params.endpoint || !params.auth) return false;
-  try {
-    return await putJsonState(weekResponsesUrl(params, week), params.auth, responses);
-  } catch {
-    return false;
-  }
+
+  const payload = JSON.stringify(responses);
+  const deliveryKey = `${params.registration}::${params.activityId}::${week}`;
+  const previous = lastWeekResponseDelivery.get(deliveryKey);
+  if (previous?.payload === payload && previous.delivered) return true;
+
+  const statementId = previous?.payload === payload
+    ? previous.statementId
+    : crypto.randomUUID();
+  lastWeekResponseDelivery.set(deliveryKey, { payload, statementId, delivered: false });
+
+  const delivered = await sendXAPIStatement(
+    params,
+    XAPI_VERBS.responded,
+    {
+      extensions: {
+        [WEEK_RESPONSES_EXTENSION]: { week, responses },
+      },
+    },
+    { statementId },
+  );
+  lastWeekResponseDelivery.set(deliveryKey, { payload, statementId, delivered });
+  return delivered;
 }
 
-/** Retrieve saved user responses for a given week from the LRS State API. Returns null if none found. */
+/** Retrieve the latest saved week responses from RESPECT's Statements API. */
 export async function getWeekResponses(
   params: RespectLaunchParams,
   week: number,
 ): Promise<WeekResponses | null> {
   if (!params.endpoint || !params.auth) return null;
+
+  const query = new URLSearchParams({
+    agent: params.actor,
+    activity: params.activityId,
+    verb: XAPI_VERBS.responded.id,
+    ascending: "false",
+    limit: "25",
+    ...(params.registration ? { registration: params.registration } : {}),
+  });
+
   try {
-    const res = await fetch(weekResponsesUrl(params, week), {
+    const response = await fetch(`${statementsUrl(params)}?${query}`, {
       method: "GET",
       headers: STATE_HEADERS(params.auth),
     });
-    if (res.status === 404) return null;
-    if (!res.ok) return null;
-    const responses = (await res.json()) as WeekResponses;
-    lastStatePayload.set(weekResponsesUrl(params, week), JSON.stringify(responses));
-    return responses;
+    if (!response.ok) return null;
+
+    const body = await response.json();
+    const statements = Array.isArray(body) ? body : (body?.statements ?? []);
+    for (const statement of statements) {
+      const saved = statement?.result?.extensions?.[WEEK_RESPONSES_EXTENSION];
+      if (saved?.week === week && saved.responses) {
+        return saved.responses as WeekResponses;
+      }
+    }
+    return null;
   } catch {
     return null;
   }

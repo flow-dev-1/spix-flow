@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getProgress,
+  getWeekResponses,
   getRespectLaunchRoute,
   parseRespectLaunchParams,
   saveWeekResponses,
@@ -63,38 +64,68 @@ describe("RESPECT learning-unit routing", () => {
   });
 });
 
-describe("RESPECT State API", () => {
-  it("uses the course root and course slug for week response state", async () => {
+describe("RESPECT response persistence", () => {
+  it("saves responses as a responded statement", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(null, { status: 204 }),
     );
+    const params = { ...launchParams, registration: "response-save-registration" };
 
-    await saveWeekResponses(launchParams, 1, {
+    await expect(saveWeekResponses(params, 1, {
       activities: [{ page: 2, answer: "test" }],
       assessments: [],
-    });
+    })).resolves.toBe(true);
 
-    const requestUrl = new URL(String(fetchMock.mock.calls[0][0]));
-    expect(requestUrl.searchParams.get("activityId")).toBe(
-      "https://spix.flowonline.app/tot",
-    );
-    expect(requestUrl.searchParams.get("stateId")).toBe("tot-flowResponses-week1");
+    const [requestUrl, request] = fetchMock.mock.calls[0];
+    const statement = JSON.parse(String(request?.body));
+    expect(request?.method).toBe("POST");
+    expect(String(requestUrl)).toBe("https://respect.example/xapi/statements");
+    expect(statement.verb).toEqual(XAPI_VERBS.responded);
+    expect(statement.result.extensions).toMatchObject({
+      "https://spix.flowonline.app/xapi/extensions/week-responses": {
+        week: 1,
+        responses: {
+          activities: [{ page: 2, answer: "test" }],
+          assessments: [],
+        },
+      },
+    });
   });
 
-  it("does not PUT an identical response payload twice", async () => {
+  it("does not POST an identical delivered response payload twice", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(null, { status: 204 }),
     );
-    const params = { ...launchParams, registration: "dedupe-registration" };
+    const params = { ...launchParams, registration: "response-dedupe-registration" };
     const responses = { activities: [{ page: 4, answer: "same" }], assessments: [] };
 
-    await Promise.all([
-      saveWeekResponses(params, 2, responses),
-      saveWeekResponses(params, 2, responses),
-      saveWeekResponses(params, 2, responses),
-    ]);
+    await saveWeekResponses(params, 2, responses);
+    await saveWeekResponses(params, 2, responses);
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("loads the latest responses from responded statements", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({
+      statements: [{
+        result: {
+          extensions: {
+            "https://spix.flowonline.app/xapi/extensions/week-responses": {
+              week: 1,
+              responses: { activities: [{ page: 2 }], assessments: [{ id: 1 }] },
+            },
+          },
+        },
+      }],
+    }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }));
+
+    await expect(getWeekResponses(launchParams, 1)).resolves.toEqual({
+      activities: [{ page: 2 }],
+      assessments: [{ id: 1 }],
+    });
   });
 
   it("treats an LRS 404 as empty state instead of importing browser progress", async () => {
@@ -108,7 +139,7 @@ describe("RESPECT State API", () => {
   });
 });
 describe("xAPI statement delivery", () => {
-  it("uses an idempotent PUT when a statement ID is supplied", async () => {
+  it("uses an idempotent POST body when a statement ID is supplied", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(null, { status: 204 }),
     );
@@ -121,16 +152,32 @@ describe("xAPI statement delivery", () => {
     )).resolves.toBe(true);
 
     const [requestUrl, request] = fetchMock.mock.calls[0];
-    expect(request?.method).toBe("PUT");
-    expect(new URL(String(requestUrl)).searchParams.get("statementId")).toBe(
-      "ca4597a4-4517-4c91-b65d-0a20f93b11ef",
-    );
+    expect(request?.method).toBe("POST");
+    expect(String(requestUrl)).toBe("https://respect.example/xapi/statements");
     expect(JSON.parse(String(request?.body))).toMatchObject({
       id: "ca4597a4-4517-4c91-b65d-0a20f93b11ef",
       verb: XAPI_VERBS.completed,
     });
   });
 
+  it("reuses the exact statement body on retry", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 503 }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const statementId = "573ab492-b5cd-4846-9917-bd283e532819";
+
+    await sendXAPIStatement(launchParams, XAPI_VERBS.completed, {
+      completion: true,
+      duration: "PT1M",
+    }, { statementId });
+    await sendXAPIStatement(launchParams, XAPI_VERBS.completed, {
+      completion: true,
+      duration: "PT2M",
+    }, { statementId });
+
+    expect(fetchMock.mock.calls[0][1]?.body).toBe(fetchMock.mock.calls[1][1]?.body);
+  });
   it("reports a non-2xx response as undelivered so it can be retried", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(null, { status: 503 }),
