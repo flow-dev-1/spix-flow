@@ -389,14 +389,16 @@ export async function getWeekResponses(
 ): Promise<WeekResponses | null> {
   if (!params.endpoint || !params.auth) return null;
 
+  // RESPECT can issue a different activity/registration context when a lesson is
+  // reopened. Query by learner + verb, then identify the saved course/week from
+  // the statement payload so valid responses do not become invisible.
   const query = new URLSearchParams({
     agent: params.actor,
-    activity: params.activityId,
     verb: XAPI_VERBS.responded.id,
     ascending: "false",
-    limit: "25",
-    ...(params.registration ? { registration: params.registration } : {}),
+    limit: "100",
   });
+  const requestedCourse = getRespectLaunchTarget(params.activityId)?.course;
 
   try {
     const response = await fetch(`${statementsUrl(params)}?${query}`, {
@@ -409,7 +411,9 @@ export async function getWeekResponses(
     const statements = Array.isArray(body) ? body : (body?.statements ?? []);
     for (const statement of statements) {
       const saved = statement?.result?.extensions?.[WEEK_RESPONSES_EXTENSION];
-      if (saved?.week === week && saved.responses) {
+      const statementCourse = getRespectLaunchTarget(statement?.object?.id ?? "")?.course;
+      const isSameCourse = !requestedCourse || !statementCourse || statementCourse === requestedCourse;
+      if (isSameCourse && saved?.week === week && saved.responses) {
         return saved.responses as WeekResponses;
       }
     }

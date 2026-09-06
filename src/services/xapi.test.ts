@@ -129,6 +129,39 @@ describe("RESPECT response persistence", () => {
     });
   });
 
+  it("restores responses after RESPECT changes launch identifiers", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({
+      statements: [{
+        object: { id: "https://spix.flowonline.app/tot/week2/index.html" },
+        result: {
+          extensions: {
+            "https://spix.flowonline.app/xapi/extensions/week-responses": {
+              week: 2,
+              responses: { activities: [{ page: 4 }], assessments: [{ id: 2 }] },
+            },
+          },
+        },
+      }],
+    }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }));
+
+    const relaunched = {
+      ...launchParams,
+      activityId: "https://spix.flowonline.app/tot/week2/index.html",
+      registration: "new-registration",
+    };
+    await expect(getWeekResponses(relaunched, 2)).resolves.toEqual({
+      activities: [{ page: 4 }],
+      assessments: [{ id: 2 }],
+    });
+
+    const requestUrl = new URL(String(fetchMock.mock.calls[0][0]));
+    expect(requestUrl.searchParams.get("activity")).toBeNull();
+    expect(requestUrl.searchParams.get("registration")).toBeNull();
+    expect(requestUrl.searchParams.get("limit")).toBe("100");
+  });
   it("treats an LRS 404 as empty state instead of importing browser progress", async () => {
     localStorage.setItem(
       "tot-flowProgress",
