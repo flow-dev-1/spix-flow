@@ -474,7 +474,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     const registrationKey = launchParams?.registration || "local";
     const completionKey = `tot-xapi-completed-${registrationKey}-week-${currentWeek}`;
 
-    if (isRespectSession && currentWeek <= 2) {
+    if (isRespectSession && currentWeek <= 3) {
       const assessmentScore = calculateAssessmentScore(currentWeek, userAnswers.assessments);
       setRespectStatus((status) => ({
         ...status,
@@ -483,7 +483,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       const statements = [
         ["completed", sendCompleted, [assessmentScore.scaled]],
         ["passed", sendPassed, [{ score: assessmentScore }]],
-        ["progressed", sendProgressed, [1 / TOTAL_WEEKS]],
+        ["progressed", sendProgressed, [currentWeek / TOTAL_WEEKS]],
       ];
 
       void Promise.all(statements.map(async ([verb, send, args]) => {
@@ -616,7 +616,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
-  const showRespectStatus = isRespectSession && currentWeek <= 2;
+  const showRespectStatus = isRespectSession && currentWeek <= 3;
 
   if (showHurray) {
     return (
