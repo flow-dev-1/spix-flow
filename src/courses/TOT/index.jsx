@@ -153,6 +153,7 @@ import {
   XAPI_VERBS,
 } from "@/services/xapi";
 import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
+import { getWeekAssessment } from "./data";
 
 const TOTAL_WEEKS = 6;
 const courseProgressKey = "tot-flowProgress";
@@ -277,6 +278,17 @@ const saveWeekResponsesLocally = (weekNumber, responses) => {
   }
 };
 
+const calculateAssessmentScore = (weekNumber, answers) => {
+  const questions = getWeekAssessment(weekNumber)?.questions ?? [];
+  const answersById = new Map((answers ?? []).map((answer) => [answer.id, answer.value]));
+  const raw = questions.filter(
+    (question) => answersById.get(question.id) === question.correctOption,
+  ).length;
+  const max = questions.length;
+
+  return { raw, min: 0, max, scaled: max ? raw / max : 0 };
+};
+
 const RespectStatusPanel = ({ status }) => (
   <aside
     style={{
@@ -301,6 +313,7 @@ const RespectStatusPanel = ({ status }) => (
     <div>Completed: {status.completed}</div>
     <div>Passed: {status.passed}</div>
     <div>Progressed: {status.progressed}</div>
+    <div>Assessment score: {status.score}</div>
   </aside>
 );
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
@@ -358,6 +371,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     completed: "waiting",
     passed: "waiting",
     progressed: "waiting",
+    score: "waiting",
   });
 
   useEffect(() => {
@@ -432,14 +446,19 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     const completionKey = `tot-xapi-completed-${registrationKey}-week-${currentWeek}`;
 
     if (isRespectSession && currentWeek <= 2) {
+      const assessmentScore = calculateAssessmentScore(currentWeek, userAnswers.assessments);
+      setRespectStatus((status) => ({
+        ...status,
+        score: `${assessmentScore.raw}/${assessmentScore.max} (${Math.round(assessmentScore.scaled * 100)}%)`,
+      }));
       const statements = [
-        ["completed", sendCompleted, [undefined]],
-        ["passed", sendPassed, [{ score: { scaled: 1 } }]],
+        ["completed", sendCompleted, [assessmentScore.scaled]],
+        ["passed", sendPassed, [{ score: assessmentScore }]],
         ["progressed", sendProgressed, [1 / TOTAL_WEEKS]],
       ];
 
       void Promise.all(statements.map(async ([verb, send, args]) => {
-        const deliveryKey = `${completionKey}-${verb}`;
+        const deliveryKey = `${completionKey}-${verb}${verb === "progressed" ? "" : "-actual-score-v1"}`;
         if (sessionStorage.getItem(deliveryKey)) {
           setRespectStatus((status) => ({ ...status, [verb]: "already sent ✓" }));
           return;
