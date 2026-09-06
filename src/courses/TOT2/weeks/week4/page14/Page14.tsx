@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import userService from "@/services/api/user";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
+import { useRespectLaunch } from "@/hooks/useRespectLaunch";
 
 function WeekFourAssessment() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function WeekFourAssessment() {
   const userAnswers = useSelector(userAnswer);
   const isLastQuestion = currentStep === assessmentData.totalQuestions;
   const adminDatas = useSelector(adminData);
+  const { isRespectSession } = useRespectLaunch();
 
   useEffect(() => {
     if (!userAnswers) return;
@@ -90,6 +92,7 @@ function WeekFourAssessment() {
         });
       }
 
+      dispatch(saveAssessment(updatedAnswers));
       return updatedAnswers;
     });
   };
@@ -122,12 +125,16 @@ function WeekFourAssessment() {
         totalSteps
       );
 
-      mutation.mutate({
-        ...userAnswers,
-        activities: userAnswers.activities,
-        assessments: answers,
-        rating: userScore.toString(),
-      });
+      if (isRespectSession) {
+        dispatch(navigateNext());
+      } else {
+        mutation.mutate({
+          ...userAnswers,
+          activities: userAnswers.activities,
+          assessments: answers,
+          rating: userScore.toString(),
+        });
+      }
 
       // For nested questions check that all answeres were provided
 

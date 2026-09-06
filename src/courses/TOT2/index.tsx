@@ -441,7 +441,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     if (!showHurray) return;
     if (isRespectSession && launchTarget?.week !== currentWeek) return;
 
-    if (isRespectSession && currentWeek <= 3) {
+    if (isRespectSession && currentWeek <= 4) {
       const score = calculateAssessmentScore(currentWeek, userAnswers.assessments);
       setRespectStatus((status) => ({ ...status, score: `${score.raw}/${score.max} (${Math.round(score.scaled * 100)}%)` }));
 
@@ -664,7 +664,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
 
   // If showing hurray, render that instead
   if (showHurray) {
-    return <><Hurray currentWeek={currentWeek} />{isRespectSession && currentWeek <= 3 && <RespectStatusPanel status={respectStatus} />}</>;
+    return <><Hurray currentWeek={currentWeek} />{isRespectSession && currentWeek <= 4 && <RespectStatusPanel status={respectStatus} />}</>;
   }
 
   // Determine which component to render based on week and page
@@ -847,7 +847,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   return (
     <>
       {getComponent()}
-      {isRespectSession && currentWeek <= 3 && <RespectStatusPanel status={respectStatus} />}
+      {isRespectSession && currentWeek <= 4 && <RespectStatusPanel status={respectStatus} />}
     </>
   );
 };
