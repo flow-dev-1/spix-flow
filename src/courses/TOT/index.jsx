@@ -433,7 +433,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 
     if (isRespectSession && currentWeek <= 2) {
       const statements = [
-        ["completed", sendCompleted, []],
+        ["completed", sendCompleted, [undefined]],
         ["passed", sendPassed, [{ score: { scaled: 1 } }]],
         ["progressed", sendProgressed, [1 / TOTAL_WEEKS]],
       ];
@@ -446,10 +446,11 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
         }
         if (trackedStatementsInFlightRef.current.has(deliveryKey)) return;
 
-        let statementId = sessionStorage.getItem(`${deliveryKey}-statement-id`);
+        const statementIdKey = `${deliveryKey}-statement-id${verb === "completed" ? "-v2" : ""}`;
+        let statementId = sessionStorage.getItem(statementIdKey);
         if (!statementId) {
           statementId = crypto.randomUUID();
-          sessionStorage.setItem(`${deliveryKey}-statement-id`, statementId);
+          sessionStorage.setItem(statementIdKey, statementId);
         }
 
         trackedStatementsInFlightRef.current.add(deliveryKey);
