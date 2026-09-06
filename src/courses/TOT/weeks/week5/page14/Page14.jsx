@@ -13,13 +13,8 @@ import { getWeekAssessment } from "../../../data";
 import StepIndicator from "../../../components/StepIndicator";
 import {
   userAnswer,
-  updateData,
   saveAssessment,
 } from "@/store/userAnswersReducer";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import userService from "@/services/api/user";
-import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
 
 function WeekFiveAssessment() {
@@ -40,61 +35,15 @@ function WeekFiveAssessment() {
     return () => {};
   }, [userAnswers]);
 
-  // Mutation for saving user data
-  const mutation = useMutation({
-    mutationFn: (data) => userService.submitCourseData(data), // Dispatch saveAssessment action
-    onSuccess: (data) => {
-      toast.dismiss();
-      toast.success(
-        `You scored ${calculateResult(
-          assessmentData.questions,
-          answers,
-          totalSteps,
-        )}% in the quiz`,
-      );
-      toast.success(data.message || "Answers saved successfully!"); // Show success toast
-      dispatch(
-        updateData({
-          course: null,
-          courseEnrollmentId: null,
-          week: 1,
-          activities: [],
-          assessments: [],
-        }),
-      );
-      dispatch(navigateNext());
-    },
-    onError: (error) => {
-      console.log(error, "errorrrr");
-      toast.dismiss();
-      toast.error(error?.message || error?.error || "Error saving answers"); // Show error toast
-    },
-  });
-
   const handleOptionSelect = (optionKey) => {
     setErrorMessage("");
-    setAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      const stepIndex = updatedAnswers.findIndex(
-        (answer) => answer.id === currentStep,
-      );
-
-      if (stepIndex !== -1) {
-        updatedAnswers[stepIndex] = {
-          ...updatedAnswers[stepIndex],
-          value: optionKey,
-        };
-      } else {
-        updatedAnswers.push({
-          id: currentStep,
-          value: optionKey,
-        });
-      }
-
-      return updatedAnswers;
-    });
+    const updatedAnswers = [
+      ...answers.filter((answer) => answer.id !== currentStep),
+      { id: currentStep, value: optionKey },
+    ];
+    setAnswers(updatedAnswers);
+    dispatch(saveAssessment(updatedAnswers));
   };
-
   const saveUserData = () => {
     if (adminDatas.isAdmin) return true;
     const stepData = answers.find((item) => item.id === currentStep);
@@ -108,84 +57,7 @@ function WeekFiveAssessment() {
     // If its the last question submit else update answer
     dispatch(saveAssessment(answers));
 
-    if (isLastQuestion) {
-
-      const hasUnansweredQuestions =
-        answers.length !== totalSteps || userAnswers.activities.length !== 6;
-
-      // if (hasUnansweredQuestions) {
-      //   setErrorMessage(
-      //     "Oops! Some unanswered questions have been detected. Kindly go back and review!"
-      //   );
-      //   return false;
-      // }
-
-      const userScore = calculateResult(
-        assessmentData.questions,
-        answers,
-        totalSteps,
-      );
-
-      mutation.mutate({
-        ...userAnswers,
-        assessments: answers,
-        rating: userScore.toString(),
-      });
-
-      // For nested questions check that all answeres were provided
-
-      // Page 2 has nested questions
-      // const selectedActivity = userAnswers.activities.find(
-      //   (activity) => activity.page === 2
-      // );
-      // const isValidActivity =
-      //   selectedActivity &&
-      //   Array.isArray(selectedActivity.answer) &&
-      //   selectedActivity.answer.length === 3;
-
-      // if (isValidActivity) {
-      //   const userScore = calculateResult(
-      //     assessmentData.questions,
-      //     answers,
-      //     totalSteps
-      //   );
-
-      //   console.log(userScore, "userScore");
-
-      //   mutation.mutate({
-      //     ...userAnswers,
-      //     assessments: answers,
-      //     rating: userScore.toString(),
-      //   });
-
-      //   //*****************This will come in later wen the code begins to break or escape questions ******/
-
-      //   // const isValid = selectedActivity.answer.every(item =>
-      //   //   item.stepId !== undefined &&
-      //   //   item.value &&
-      //   //   Object.keys(item.value).length === 3
-      //   // );
-
-      //   // if (isValid) {
-      //   //   const userScore = calculateResult(assessmentData.questions, answers, totalSteps)
-
-      //   //   console.log(userScore, "userScore")
-
-      //   //   // mutation.mutate({ ...userAnswers, assessments: answers, rating: userScore.toString() });
-      //   // } else {
-
-      //   //   setErrorMessage("Oops! Some unanswered questions have been detected. Kindly go back and review!");
-      //   //   return false;
-      //   // }
-      // } else {
-      //   setErrorMessage(
-      //     "Oops! Some unanswered questions have been detected. Kindly go back and review!"
-      //   );
-      //   return false;
-      // }
-    } else {
-      return true;
-    }
+    return true;
   };
 
   const renderStep = () => {
@@ -205,7 +77,7 @@ function WeekFiveAssessment() {
           options: formattedOptions,
         }}
         currentStep={currentStep}
-        selectedOption={answers[currentStep - 1]?.value || ""}
+        selectedOption={answers.find((answer) => answer.id === currentStep)?.value || ""}
         onOptionSelect={handleOptionSelect}
         isPreAssessment={true}
       />
@@ -217,7 +89,7 @@ function WeekFiveAssessment() {
   // If we're on the last question and user has made a selection,
   // show the review popup instead of the next button
 
-  const hasCurrentSelection = !!answers[currentStep];
+  const hasCurrentSelection = answers.some((answer) => answer.id === currentStep);
   const shouldShowReviewButton = isLastQuestion && hasCurrentSelection;
 
   return (
@@ -236,7 +108,7 @@ function WeekFiveAssessment() {
       {/* Display error message */}
       <StepIndicator totalSteps={totalSteps} />
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
-        <Button text="Prev" loading={mutation.isPending} />
+        <Button text="Prev" />
         {shouldShowReviewButton ? (
           <Button
             text="Review"
@@ -246,7 +118,7 @@ function WeekFiveAssessment() {
           <Button
             text="Next"
             customOnClick={saveUserData}
-            loading={mutation.isPending}
+
           />
         )}
       </div>
