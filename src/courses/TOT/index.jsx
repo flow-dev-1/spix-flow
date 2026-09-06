@@ -474,7 +474,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     const registrationKey = launchParams?.registration || "local";
     const completionKey = `tot-xapi-completed-${registrationKey}-week-${currentWeek}`;
 
-    if (isRespectSession && currentWeek <= 5) {
+    if (isRespectSession && currentWeek <= TOTAL_WEEKS) {
       const assessmentScore = calculateAssessmentScore(currentWeek, userAnswers.assessments);
       setRespectStatus((status) => ({
         ...status,
@@ -616,7 +616,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
-  const showRespectStatus = isRespectSession && currentWeek <= 5;
+  const showRespectStatus = isRespectSession && currentWeek <= TOTAL_WEEKS;
 
   if (showHurray) {
     return (
