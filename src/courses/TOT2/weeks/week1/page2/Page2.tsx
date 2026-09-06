@@ -9,6 +9,7 @@ import {
   navigateNext,
 } from "@/store/navigationSlice";
 import { adminData } from "@/store/adminReducer";
+import { useRespectLaunch } from "@/hooks/useRespectLaunch";
 import {
   userAnswer,
   saveActivity,
@@ -18,6 +19,7 @@ function Page2() {
   const dispatch = useDispatch();
   const pageData = useSelector(selectPageData);
   const adminDatas = useSelector(adminData);
+  const { isRespectSession } = useRespectLaunch();
   const userAnswers = useSelector(userAnswer);
   const [myAnswer, setMyAnswer] = useState(userAnswers);
   const [errorMessage, setErrorMessage] = useState("");
@@ -53,9 +55,11 @@ function Page2() {
       );
     }
 
-    // Show feedback modal instead of navigating immediately
+    // RESPECT navigation must not depend on dismissing an in-page modal.
+    if (isRespectSession) return true;
+
     setShowFeedback(true);
-    // return true;
+    return false;
   };
 
   const handleInputChange = (e) => {
