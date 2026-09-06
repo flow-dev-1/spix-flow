@@ -20,7 +20,7 @@ const isRespectWebViewSession = () => {
   );
 };
 
-const Hurray = ({ currentWeek = 3 }) => {
+const Hurray = ({ currentWeek = 3, isRespectSession = false }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,9 +69,11 @@ const Hurray = ({ currentWeek = 3 }) => {
         )}
       </div>
 
-      <div className="d-flex justify-content-center w-1029px mt-4">
-        <Button text={getButtonText()} customOnClick={handleNext} />
-      </div>
+      {!isRespectSession && (
+        <div className="d-flex justify-content-center w-1029px mt-4">
+          <Button text={getButtonText()} customOnClick={handleNext} />
+        </div>
+      )}
     </>
   );
 };

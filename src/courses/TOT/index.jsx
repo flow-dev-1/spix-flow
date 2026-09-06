@@ -145,7 +145,13 @@ import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
 import { setCourse } from "@/store/navigationSlice";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
-import { getXAPIStatementDeliveryError, XAPI_VERBS } from "@/services/xapi";
+import {
+  getRespectLaunchTarget,
+  getStoredRespectLaunchParams,
+  getXAPIStatementDeliveryError,
+  parseRespectLaunchParams,
+  XAPI_VERBS,
+} from "@/services/xapi";
 import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 
 const TOTAL_WEEKS = 6;
@@ -160,6 +166,12 @@ const getLaunchWeekFromUrl = () => {
   const params = new URLSearchParams(window.location.search);
   const startWeekParam = params.get("startWeek");
   return startWeekParam ? Number(startWeekParam) : null;
+};
+
+const getRespectSessionTarget = () => {
+  const launchParams =
+    parseRespectLaunchParams(window.location.search) || getStoredRespectLaunchParams();
+  return launchParams ? getRespectLaunchTarget(launchParams.activityId) : null;
 };
 
 const getSavedWeekProgress = (weekNumber) => {
@@ -560,7 +572,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   if (showHurray) {
     return (
       <>
-        <Hurray currentWeek={currentWeek} />
+        <Hurray currentWeek={currentWeek} isRespectSession={isRespectSession} />
         {showRespectStatus && <RespectStatusPanel status={respectStatus} />}
       </>
     );
@@ -833,6 +845,7 @@ const CourseContent = () => {
   const [maxAccessibleWeek, setMaxAccessibleWeek] = useState(
     () => Number(sessionStorage.getItem("flow-highestWeek") ?? 1),
   );
+  const respectLaunchTarget = getRespectSessionTarget();
 
   const weeksTopic = [
     "Understanding SEL & Positive Psychology",
@@ -876,6 +889,8 @@ const CourseContent = () => {
   }
 
   const handleWeekClick = (weekNumber) => {
+    if (!isWeekAccessible(weekNumber)) return;
+
     saveWeekProgress(currentWeek, currentPage, currentStep);
     if (currentUserAnswers?.week === currentWeek) {
       saveWeekResponsesLocally(currentWeek, currentUserAnswers);
@@ -900,7 +915,7 @@ const CourseContent = () => {
   };
 
   const isWeekAccessible = (weekNumber) => {
-    return true;
+    return respectLaunchTarget ? weekNumber === respectLaunchTarget.week : true;
   };
 
   const isWeekCompleted = (weekNumber) => {
@@ -1040,7 +1055,7 @@ const CourseContent = () => {
                   key={index}
                   className={`${isActive ? "active-week" : ""} ${isAccessible ? "accessible-week" : "locked-week"
                     }`}
-                  onClick={() => handleWeekClick(weekNumber)}
+                  onClick={isAccessible ? () => handleWeekClick(weekNumber) : undefined}
                   style={{
                     cursor: isAccessible ? "pointer" : "not-allowed",
                     opacity: isAccessible ? 1 : 0.5,
