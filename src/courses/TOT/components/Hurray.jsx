@@ -28,7 +28,9 @@ const Hurray = ({ currentWeek = 3, isRespectSession = false }) => {
 
   const handleNext = () => {
     if (isRespectSession) {
-      if (window.history.length > 1) {
+      if (window.RespectLauncher?.close) {
+        window.RespectLauncher.close();
+      } else if (window.history.length > 1) {
         window.history.back();
       } else {
         window.close();
