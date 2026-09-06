@@ -296,10 +296,10 @@ const calculateAssessmentScore = (weekNumber: number, answers: any[]) => {
 const RespectStatusPanel = ({ status }: { status: any }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   if (isMinimized) return <button type="button" onClick={() => setIsMinimized(false)} style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, padding: "8px 12px", border: 0, borderRadius: 8, background: "#102a43", color: "white" }}>Show RESPECT status</button>;
-  return <aside style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, maxWidth: 340, maxHeight: "60vh", overflowY: "auto", padding: 12, borderRadius: 8, background: "#102a43", color: "white", fontSize: 13, boxShadow: "0 4px 16px rgba(0,0,0,.3)" }}>
+  return <div style={{ position: "fixed", right: 12, bottom: 12, zIndex: 9999, width: "min(340px, calc(100vw - 24px))", maxHeight: "60vh", overflowY: "auto", padding: 12, boxSizing: "border-box", borderRadius: 8, background: "#102a43", color: "white", fontSize: 13, boxShadow: "0 4px 16px rgba(0,0,0,.3)" }}>
     <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}><strong>Temporary RESPECT check</strong><button type="button" onClick={() => setIsMinimized(true)}>Minimize</button></div>
     <div>Launch: detected</div><div>Progress: {status.progress}</div><div>Answers: {status.answers}</div><div>Last save: {status.save}</div><div>Completed: {status.completed}</div><div>Passed: {status.passed}</div><div>Progressed: {status.progressed}</div><div>Assessment score: {status.score}</div>
-  </aside>;
+  </div>;
 };
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
   const dispatch = useDispatch();
