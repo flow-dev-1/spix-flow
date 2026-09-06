@@ -401,7 +401,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     if (!showHurray) return;
     if (isRespectSession && launchTarget?.week !== currentWeek) return;
 
-    if (isRespectSession && currentWeek === 1) {
+    if (isRespectSession && currentWeek <= 2) {
       const score = calculateAssessmentScore(currentWeek, userAnswers.assessments);
       const identity = launchParams?.registration || launchParams?.actor || "local";
       const getStatementId = (verb) => {
