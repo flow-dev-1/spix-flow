@@ -17,9 +17,7 @@ import {
   updateData,
   saveAssessment,
 } from "@/store/userAnswersReducer";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import userService from "@/services/api/user";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
@@ -44,37 +42,6 @@ function WeekFiveAssessment() {
     setAnswers(userAnswers?.assessments || []);
     return () => {};
   }, [userAnswers]);
-
-  // Mutation for saving user data
-  const mutation = useMutation({
-    mutationFn: (data) => userService.submitCourseData(data), // Dispatch saveAssessment action
-    onSuccess: (data) => {
-      toast.dismiss();
-      toast.success(
-        `You scored ${calculateResult(
-          assessmentData.questions,
-          answers,
-          totalSteps
-        )}% in the quiz`
-      );
-      toast.success(data.message || "Answers saved successfully!"); // Show success toast
-      dispatch(
-        updateData({
-          course: null,
-          courseEnrollmentId: null,
-          week: 1,
-          activities: [],
-          assessments: [],
-        })
-      );
-      dispatch(navigateNext());
-    },
-    onError: (error) => {
-      console.log(error, "errorrrr");
-      toast.dismiss();
-      toast.error(error?.message || error?.error || "Error saving answers"); // Show error toast
-    },
-  });
 
   const handleOptionSelect = (optionKey) => {
     setErrorMessage("");
@@ -134,12 +101,10 @@ function WeekFiveAssessment() {
         answers,
         totalSteps
       );
-
-      mutation.mutate({
-        ...userAnswers,
-        assessments: answers,
-        rating: userScore.toString(),
-      });
+      toast.dismiss();
+      toast.success(`You scored ${userScore}% in the quiz`);
+      dispatch(navigateNext());
+      return true;
 
       //   const selectedActivity = userAnswers.activities.find(activity => activity.page === 6);
       //   const isValidActivity = selectedActivity && Array.isArray(selectedActivity.answer) && selectedActivity.answer.length === 5;

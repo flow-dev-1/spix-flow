@@ -123,8 +123,6 @@ import WeekTenPage3 from "./weeks/week10/page3/Page3.jsx";
 import WeekTenPage4 from "./weeks/week10/page4/Page4.jsx";
 
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import userService from "@/services/api/user";
 import {
   updateData,
   userAnswer,
@@ -275,11 +273,9 @@ const calculateAssessmentScore = (weekNumber, answers) => {
 };
 const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const userAnswers = useSelector(userAnswer);
-  const location = useLocation(); // Get location object
-  const [enrollmentId, setEnrollmentId] = useState(null);
-  const [course, setCourse] = useState(null);
+  const enrollmentId = null;
+  const course = "transition";
   const { isAdmin } = useSelector(adminData);
   const {
     isRespectSession,
@@ -299,29 +295,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const respectResponsesReadyWeekRef = useRef(null);
   const [isRespectProgressReady, setIsRespectProgressReady] = useState(!isRespectSession);
 
-  // Access data from location.state
-  const enrolmentData = location.state?.enrollmentData; // Assuming enrollData is passed in state
-
-  useEffect(() => {
-    if (isRespectSession) {
-      setEnrollmentId(null);
-      setCourse("transition");
-      return;
-    }
-
-    if (enrolmentData?._id) {
-      setEnrollmentId(enrolmentData._id);
-      setCourse(enrolmentData?.course?._id ?? null);
-      return;
-    }
-
-    userService.getSingleEnrollment("").then((res) => {
-      if (res?.enrollment?._id) {
-        setEnrollmentId(res.enrollment._id);
-        setCourse("transition");
-      }
-    });
-  }, [enrolmentData, isRespectSession]);
 
   useEffect(() => {
     const launchedWeek = getLaunchWeekFromUrl();
@@ -466,60 +439,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       highestWeek,
     });
   }, [currentWeek, currentPage, currentStep, maxAccessibleWeek]);
-
-  // toDo: Fetch User assessment and Activity Data
-  const { data, isLoading, status, isError } = useQuery({
-    queryKey: [
-      `dashboard-transition-course-${currentWeek}`,
-      enrollmentId,
-      currentWeek,
-    ],
-    queryFn: () => userService.getUserCourseData(enrollmentId, currentWeek),
-    enabled: !isRespectSession && !!enrollmentId && !!currentWeek,
-    refetchOnMount: "always",
-    refetchOnWindowFocus: true,
-    keepPreviousData: false,
-  });
-
-  // console.log(data,"Course data here")
-
-  useEffect(() => {
-    if (!data) return;
-    const localSaved = getSavedWeekResponsesLocally(currentWeek);
-    const serverResponses = {
-      activities: data.activity?.activities ?? [],
-      assessments: data.assessment?.assessments ?? [],
-    };
-    const responses = hasSavedResponses(serverResponses)
-      ? serverResponses
-      : localSaved || serverResponses;
-
-    if (data.assessment && data.activity) {
-      dispatch(
-        updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId,
-          week: currentWeek,
-          activities: responses.activities,
-          assessments: responses.assessments,
-        }),
-      );
-    } else {
-      dispatch(
-        updateData({
-          course: course,
-          courseEnrollmentId: enrollmentId
-            ? enrollmentId
-            : userAnswers.courseEnrollmentId,
-          week: currentWeek,
-          activities: responses.activities,
-          assessments: responses.assessments,
-        }),
-      );
-    }
-
-    return () => { };
-  }, [data]);
 
   useEffect(() => {
     if (!currentWeek) return;
