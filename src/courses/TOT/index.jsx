@@ -166,6 +166,9 @@ const getLaunchWeekFromUrl = () => {
   if (pathMatch) return Number(pathMatch[1]);
 
   const params = new URLSearchParams(window.location.search);
+  const activityWeek = getRespectLaunchTarget(params.get("activity_id") ?? "")?.week;
+  if (activityWeek) return activityWeek;
+
   const startWeekParam = params.get("startWeek");
   return startWeekParam ? Number(startWeekParam) : null;
 };
@@ -353,15 +356,16 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const { isAdmin } = useSelector(adminData);
 
   useEffect(() => {
-    const currentWeek = sessionStorage.getItem("flow-currentWeek")
+    const launchedWeek = getLaunchWeekFromUrl();
+    const currentWeek = launchedWeek ?? (sessionStorage.getItem("flow-currentWeek")
       ? Number(sessionStorage.getItem("flow-currentWeek"))
-      : 1;
-    const currentPage = sessionStorage.getItem("flow-currentPage")
+      : 1);
+    const currentPage = launchedWeek ? 1 : (sessionStorage.getItem("flow-currentPage")
       ? Number(sessionStorage.getItem("flow-currentPage"))
-      : 1;
-    const currentStep = sessionStorage.getItem("flow-currentStep")
+      : 1);
+    const currentStep = launchedWeek ? 1 : (sessionStorage.getItem("flow-currentStep")
       ? Number(sessionStorage.getItem("flow-currentStep"))
-      : 1;
+      : 1);
 
     // Dispatch the current week, page, and step
     dispatch(setCurrentWeek(currentWeek));
