@@ -42,28 +42,16 @@ function WeekTwoPage4() {
 
   const handleOptionSelect = (optionKey) => {
     setErrorMessage("");
-    setAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      const stepIndex = updatedAnswers.findIndex(
-        (answer) => answer.id === currentStep
-      );
-
-      if (stepIndex !== -1) {
-        updatedAnswers[stepIndex] = {
-          ...updatedAnswers[stepIndex],
-          value: optionKey,
-        };
-      } else {
-        updatedAnswers.push({
-          id: currentStep,
-          value: optionKey,
-        });
-      }
-
-      return updatedAnswers;
-    });
+    const updatedAnswers = [
+      ...answers.filter((answer) => answer.id !== currentStep),
+      { id: currentStep, value: optionKey },
+    ];
+    setAnswers(updatedAnswers);
+    dispatch(saveActivity({
+      page: pageData.id,
+      answer: updatedAnswers,
+    }));
   };
-
   const saveUserInput = () => {
     if (adminDatas.isAdmin) return true;
 
@@ -100,7 +88,7 @@ function WeekTwoPage4() {
           options: formattedOptions,
         }}
         currentStep={currentStep}
-        selectedOption={answers[currentStep - 1]?.value || ""}
+        selectedOption={answers.find((answer) => answer.id === currentStep)?.value || ""}
         onOptionSelect={handleOptionSelect}
         isPreAssessment={true}
       />
@@ -111,8 +99,6 @@ function WeekTwoPage4() {
 
   // If we're on the last question and user has made a selection,
   // show the review popup instead of the next button
-
-  const hasCurrentSelection = !!answers[currentStep];
 
  return (
     <>

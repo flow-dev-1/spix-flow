@@ -334,7 +334,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef(new Set());
-  const weekOneStatementsInFlightRef = useRef(new Set());
+  const trackedStatementsInFlightRef = useRef(new Set());
   const respectProgressReadyRef = useRef(!isRespectSession);
   const [respectProgressReady, setRespectProgressReady] = useState(!isRespectSession);
   const respectResponsesReadyWeekRef = useRef(null);
@@ -418,7 +418,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     const registrationKey = launchParams?.registration || "local";
     const completionKey = `tot-xapi-completed-${registrationKey}-week-${currentWeek}`;
 
-    if (isRespectSession && currentWeek === 1) {
+    if (isRespectSession && currentWeek <= 2) {
       const statements = [
         ["completed", sendCompleted, []],
         ["passed", sendPassed, [{ score: { scaled: 1 } }]],
@@ -431,7 +431,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
           setRespectStatus((status) => ({ ...status, [verb]: "already sent ✓" }));
           return;
         }
-        if (weekOneStatementsInFlightRef.current.has(deliveryKey)) return;
+        if (trackedStatementsInFlightRef.current.has(deliveryKey)) return;
 
         let statementId = sessionStorage.getItem(`${deliveryKey}-statement-id`);
         if (!statementId) {
@@ -439,7 +439,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
           sessionStorage.setItem(`${deliveryKey}-statement-id`, statementId);
         }
 
-        weekOneStatementsInFlightRef.current.add(deliveryKey);
+        trackedStatementsInFlightRef.current.add(deliveryKey);
         setRespectStatus((status) => ({ ...status, [verb]: "sending" }));
         try {
           for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -457,7 +457,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
             }
           }
         } finally {
-          weekOneStatementsInFlightRef.current.delete(deliveryKey);
+          trackedStatementsInFlightRef.current.delete(deliveryKey);
         }
       }));
       return;
@@ -550,7 +550,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   }, [userAnswers.activities, userAnswers.assessments]);
 
   // If showing hurray, render that instead
-  const showRespectStatus = isRespectSession && currentWeek === 1;
+  const showRespectStatus = isRespectSession && currentWeek <= 2;
 
   if (showHurray) {
     return (
