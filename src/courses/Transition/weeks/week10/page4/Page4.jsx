@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import userService from "@/services/api/user";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
+import { useRespectLaunch } from "@/hooks/useRespectLaunch";
 
 function WeekTenAssessment() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function WeekTenAssessment() {
   const userAnswers = useSelector(userAnswer);
   const isLastQuestion = currentStep === assessmentData.totalQuestions;
   const adminDatas = useSelector(adminData);
+  const { isRespectSession } = useRespectLaunch();
 
   useEffect(() => {
     if (!userAnswers) return;
@@ -89,6 +91,7 @@ function WeekTenAssessment() {
         });
       }
 
+      dispatch(saveAssessment(updatedAnswers));
       return updatedAnswers;
     });
   };
@@ -107,6 +110,11 @@ function WeekTenAssessment() {
     dispatch(saveAssessment(answers));
 
     if (isLastQuestion) {
+      if (isRespectSession) {
+        dispatch(navigateNext());
+        return true;
+      }
+
       const hasUnansweredQuestions =
         answers.length !== totalSteps || userAnswers.activities.length !== 1;
       if (hasUnansweredQuestions) {
