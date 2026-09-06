@@ -166,10 +166,40 @@ aside .back,
     font-size: 0.8rem !important;
   }
 
+  .navbar {
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+
   .main-content {
-    overflow: visible !important;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: clip !important;
+    overflow-y: visible !important;
     min-height: 100vh;
     margin-top: 50px !important;
+  }
+
+  .main-content > *,
+  .week-content,
+  .resilience-week-content,
+  .compassion-list,
+  .compassion-list li {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .compassion-list li span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .accessible-week:hover {
+    transform: none;
   }
 }
 
