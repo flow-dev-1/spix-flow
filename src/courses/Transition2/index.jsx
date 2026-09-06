@@ -110,6 +110,9 @@ import { setCourse as setCurrentCourse } from "@/store/navigationSlice";
 import { logoutSuccess } from "@/store/userReducer";
 import { clearToken } from "@/store/jwtReducer";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
+import { getRespectLaunchTarget } from "@/services/xapi";
+import { getWeekAssessment } from "./data";
+import { calculateResult } from "./utility";
 import { useSpixWeekCache } from "@/hooks/useRespectOfflineWarmup";
 
 const TOTAL_WEEKS = 5;
@@ -124,6 +127,9 @@ const getLaunchWeekFromUrl = () => {
   if (pathMatch) return Number(pathMatch[1]);
 
   const params = new URLSearchParams(window.location.search);
+  const activityWeek = getRespectLaunchTarget(params.get("activity_id") ?? "")?.week;
+  if (activityWeek) return activityWeek;
+
   const startWeekParam = params.get("startWeek");
   return startWeekParam ? Number(startWeekParam) : null;
 };
@@ -188,7 +194,7 @@ const saveCourseProgressLocally = (weekNumber, page, step, highestWeek) => {
     currentWeek: weekNumber,
     currentPage: page,
     currentStep: step,
-    highestWeek: Math.max(highestWeek || weekNumber, weekNumber),
+    highestWeek: Math.min(Math.max(highestWeek || weekNumber, weekNumber), TOTAL_WEEKS),
   });
 
   try {
@@ -231,7 +237,16 @@ const saveWeekResponsesLocally = (weekNumber, responses) => {
   }
 };
 
-const WeekContent = () => {
+const calculateAssessmentScore = (weekNumber, answers) => {
+  const questions = getWeekAssessment(weekNumber)?.questions ?? [];
+  const percentage = questions.length ? calculateResult(questions, answers, questions.length) : 0;
+  const raw = questions.reduce(
+    (score, question) => score + (answers?.find((answer) => answer.id === question.id)?.value === question.correctOption ? 1 : 0),
+    0,
+  );
+  return { raw, min: 0, max: questions.length, scaled: percentage / 100 };
+};
+const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
   const dispatch = useDispatch();
   const userAnswers = useSelector(userAnswer);
 
@@ -283,8 +298,10 @@ const WeekContent = () => {
     loadResponses,
   } = useRespectLaunch();
   const completedWeeksRef = useRef(new Set());
+  const trackedStatementsInFlightRef = useRef(new Set());
   const respectProgressReadyRef = useRef(!isRespectSession);
   const respectResponsesReadyWeekRef = useRef(null);
+  const [isRespectProgressReady, setIsRespectProgressReady] = useState(!isRespectSession);
 
   useEffect(() => {
     if (isRespectSession && showReview) {
@@ -326,8 +343,15 @@ const WeekContent = () => {
       sessionStorage.setItem("flow-currentStep", String(targetStep));
       saveWeekProgress(targetWeek, targetPage, targetStep);
       saveCourseProgressLocally(targetWeek, targetPage, targetStep, highestAuthorizedWeek);
-      sessionStorage.setItem("flow-highestWeek", String(Math.max(highestAuthorizedWeek, targetWeek)));
+      setMaxAccessibleWeek((prev) => {
+        const next = isRespectSession
+          ? Math.min(Math.max(highestAuthorizedWeek, targetWeek), TOTAL_WEEKS)
+          : Math.min(Math.max(prev, highestAuthorizedWeek, targetWeek), TOTAL_WEEKS);
+        sessionStorage.setItem("flow-highestWeek", String(next));
+        return next;
+      });
       respectProgressReadyRef.current = true;
+      setIsRespectProgressReady(true);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -336,27 +360,57 @@ const WeekContent = () => {
     if (!showHurray) return;
     if (isRespectSession && launchTarget?.week !== currentWeek) return;
 
+    if (isRespectSession) {
+      const score = calculateAssessmentScore(currentWeek, userAnswers.assessments);
+      const identity = launchParams?.registration || launchParams?.actor || "local";
+      const getStatementId = (verb) => {
+        const key = `transition2-xapi-${identity}-week-${currentWeek}-${verb}-statement-id`;
+        let id = sessionStorage.getItem(key);
+        if (!id) {
+          id = crypto.randomUUID();
+          sessionStorage.setItem(key, id);
+        }
+        return id;
+      };
+      const statements = [
+        ["completed", () => sendCompleted(score.scaled, getStatementId("completed"))],
+        ["passed", () => sendPassed({ score }, getStatementId("passed"))],
+        ["progressed", () => sendProgressed(currentWeek / TOTAL_WEEKS, getStatementId("progressed"))],
+      ];
+      void Promise.all(statements.map(async ([verb, send]) => {
+        const deliveryKey = `transition2-xapi-${identity}-week-${currentWeek}-${verb}-delivered`;
+        if (sessionStorage.getItem(deliveryKey) || trackedStatementsInFlightRef.current.has(deliveryKey)) return;
+        trackedStatementsInFlightRef.current.add(deliveryKey);
+        const delivered = await send();
+        trackedStatementsInFlightRef.current.delete(deliveryKey);
+        if (delivered) sessionStorage.setItem(deliveryKey, "1");
+      }));
+      return;
+    }
+
+    setMaxAccessibleWeek((prev) => {
+      const next = Math.min(Math.max(prev, currentWeek + 1), TOTAL_WEEKS);
+      sessionStorage.setItem("flow-highestWeek", String(next));
+      return next;
+    });
+
     const registrationKey = launchParams?.registration || "local";
     const completionKey = `transition2-xapi-completed-${registrationKey}-week-${currentWeek}`;
     if (completedWeeksRef.current.has(completionKey) || sessionStorage.getItem(completionKey)) return;
-
     completedWeeksRef.current.add(completionKey);
     sessionStorage.setItem(completionKey, "1");
     void (async () => {
       await sendCompleted();
       await sendPassed({ score: { scaled: 1 } });
     })();
-
-    if (currentWeek < TOTAL_WEEKS) {
-      void sendProgressed(currentWeek / TOTAL_WEEKS);
-    }
+    if (currentWeek < TOTAL_WEEKS) void sendProgressed(currentWeek / TOTAL_WEEKS);
   }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed, sendProgressed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
     if (isRespectSession && !respectProgressReadyRef.current) return;
     const step = currentStep || Number(sessionStorage.getItem("flow-currentStep") ?? 1);
-    const highestWeek = Math.max(currentWeek, Number(sessionStorage.getItem("flow-highestWeek") ?? 1));
+    const highestWeek = Math.min(Math.max(currentWeek, maxAccessibleWeek), TOTAL_WEEKS);
 
     saveWeekProgress(currentWeek, currentPage, step);
     saveCourseProgressLocally(currentWeek, currentPage, step, highestWeek);
@@ -366,11 +420,11 @@ const WeekContent = () => {
       currentStep: step,
       highestWeek,
     });
-  }, [currentWeek, currentPage, currentStep]);
+  }, [currentWeek, currentPage, currentStep, maxAccessibleWeek]);
 
   useEffect(() => {
     if (!currentWeek) return;
-    if (isRespectSession && !respectProgressReadyRef.current) return;
+    if (isRespectSession && !isRespectProgressReady) return;
     const weekToRestore = currentWeek;
     if (isRespectSession) respectResponsesReadyWeekRef.current = null;
     loadResponses(weekToRestore).then((saved) => {
@@ -390,7 +444,7 @@ const WeekContent = () => {
       );
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentWeek]);
+  }, [currentWeek, isRespectProgressReady]);
 
   useEffect(() => {
     if (!currentWeek) return;
@@ -407,6 +461,14 @@ const WeekContent = () => {
     saveWeekResponsesLocally(currentWeek, responses);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAnswers.activities, userAnswers.assessments]);
+
+  if (isRespectSession && !isRespectProgressReady) {
+    return (
+      <div className="d-flex min-vh-50 align-items-center justify-content-center py-5">
+        <div className="spinner-border text-info" role="status" aria-label="Loading course" />
+      </div>
+    );
+  }
 
   // If showing hurray, render that instead
   if (showHurray) {
@@ -617,6 +679,7 @@ const CourseContent = () => {
   const currentStep = useSelector(selectCurrentStep);
   const showHurray = useSelector(selectShowHurray);
   const currentUserAnswers = useSelector(userAnswer);
+  const { launchTarget: respectLaunchTarget } = useRespectLaunch();
   useSpixWeekCache(currentWeek, "transition2", TOTAL_WEEKS);
   const navigate = useNavigate();
   const location = useLocation();
@@ -674,6 +737,8 @@ const CourseContent = () => {
   }, [location.pathname, dispatch]);
 
   const handleWeekClick = (weekNumber) => {
+    if (!isWeekAccessible(weekNumber)) return;
+
     saveWeekProgress(currentWeek, currentPage, currentStep);
     if (currentUserAnswers?.week === currentWeek) {
       saveWeekResponsesLocally(currentWeek, currentUserAnswers);
@@ -696,7 +761,9 @@ const CourseContent = () => {
   };
 
   const isWeekAccessible = (weekNumber) => {
-    return true;
+    return respectLaunchTarget
+      ? weekNumber === respectLaunchTarget.week
+      : weekNumber >= 1 && weekNumber <= weeksTopic.length;
   };
 
   const isWeekCompleted = (weekNumber) => {
@@ -779,7 +846,7 @@ const CourseContent = () => {
                   key={index}
                   className={`${isActive ? "active-week" : ""} ${isAccessible ? "accessible-week" : "locked-week"
                     }`}
-                  onClick={() => handleWeekClick(weekNumber)}
+                  onClick={isAccessible ? () => handleWeekClick(weekNumber) : undefined}
                   style={{
                     cursor: isAccessible ? "pointer" : "not-allowed",
                     opacity: isAccessible ? 1 : 0.5,
@@ -852,7 +919,7 @@ const CourseContent = () => {
         </aside>
 
         <section className="week-content resilience-week-content position-relative">
-          <WeekContent />
+          <WeekContent maxAccessibleWeek={maxAccessibleWeek} setMaxAccessibleWeek={setMaxAccessibleWeek} />
         </section>
       </div>
     </>
