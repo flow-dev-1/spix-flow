@@ -963,7 +963,7 @@ const CourseContent = () => {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar tot2-navbar">
         <div className="container">
           <button
             disabled={isAdmin}
@@ -1038,8 +1038,8 @@ const CourseContent = () => {
         </div>
       </nav>
 
-      <div className="main-content flex-column-reverse flex-md-row">
-        <aside className="d-md-none d-lg-block aside-class">
+      <div className="main-content tot2-main-content flex-column-reverse flex-md-row">
+        <aside className="d-md-none d-lg-block aside-class tot2-course-nav">
           <button
             disabled={isAdmin}
             onClick={() => navigate("/dashboard/my-courses")}
@@ -1205,7 +1205,7 @@ const CourseContent = () => {
           </button>
         </aside>
 
-        <section className="week-content resilience-week-content position-relative">
+        <section className="week-content resilience-week-content position-relative tot2-week-content">
           <WeekContent maxAccessibleWeek={maxAccessibleWeek} setMaxAccessibleWeek={setMaxAccessibleWeek} />
         </section>
       </div>
