@@ -27,6 +27,15 @@ const Hurray = ({ currentWeek = 3, isRespectSession = false }) => {
   const { isLastWeek } = useSelector(selectNavigationState);
 
   const handleNext = () => {
+    if (isRespectSession) {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.close();
+      }
+      return;
+    }
+
     sessionStorage.setItem("flow-currentPage", 1);
     sessionStorage.setItem("flow-currentStep", 1);
     if (isLastWeek) {
@@ -37,6 +46,9 @@ const Hurray = ({ currentWeek = 3, isRespectSession = false }) => {
   };
 
   const getButtonText = () => {
+    if (isRespectSession) {
+      return "Back to Lessons";
+    }
     if (isLastWeek) {
       return "Back to Course";
     }
@@ -69,11 +81,9 @@ const Hurray = ({ currentWeek = 3, isRespectSession = false }) => {
         )}
       </div>
 
-      {!isRespectSession && (
-        <div className="d-flex justify-content-center w-1029px mt-4">
-          <Button text={getButtonText()} customOnClick={handleNext} />
-        </div>
-      )}
+      <div className="d-flex justify-content-center w-1029px mt-4">
+        <Button text={getButtonText()} customOnClick={handleNext} />
+      </div>
     </>
   );
 };
