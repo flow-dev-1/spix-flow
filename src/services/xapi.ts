@@ -350,7 +350,29 @@ async function putJsonState(url: string, auth: string, value: unknown): Promise<
   }
 }
 
-/** Save the latest week responses as an xAPI statement supported by RESPECT. */
+/** Build a course/week State API URL for durable resumable answers. */
+function weekResponsesStateUrl(params: RespectLaunchParams, week: number): string {
+  const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
+  const { activityId } = getCourseStateIdentity(params.activityId);
+  const query = new URLSearchParams({
+    activityId,
+    agent: params.actor,
+    stateId: `flowResponses-week-${week}`,
+  });
+  return `${base}activities/state?${query.toString()}`;
+}
+
+async function getJsonState<T>(url: string, auth: string): Promise<T | null> {
+  try {
+    const response = await fetch(url, { method: "GET", headers: STATE_HEADERS(auth) });
+    if (response.status === 404 || !response.ok) return null;
+    return await response.json() as T;
+  } catch {
+    return null;
+  }
+}
+
+/** Save the latest week responses to xAPI State and statement history. */
 export async function saveWeekResponses(
   params: RespectLaunchParams,
   week: number,
@@ -368,7 +390,15 @@ export async function saveWeekResponses(
     : crypto.randomUUID();
   lastWeekResponseDelivery.set(deliveryKey, { payload, statementId, delivered: false });
 
-  const delivered = await sendXAPIStatement(
+  // State is keyed by learner + course + week without registration so answers
+  // remain available when RESPECT creates a new launch registration.
+  const stateDelivered = await putJsonState(
+    weekResponsesStateUrl(params, week),
+    params.auth,
+    responses,
+  ).catch(() => false);
+
+  const statementDelivered = await sendXAPIStatement(
     params,
     XAPI_VERBS.responded,
     {
@@ -378,20 +408,24 @@ export async function saveWeekResponses(
     },
     { statementId },
   );
+  const delivered = stateDelivered || statementDelivered;
   lastWeekResponseDelivery.set(deliveryKey, { payload, statementId, delivered });
   return delivered;
 }
 
-/** Retrieve the latest saved week responses from RESPECT's Statements API. */
+/** Retrieve the latest saved week responses from xAPI State or statement history. */
 export async function getWeekResponses(
   params: RespectLaunchParams,
   week: number,
 ): Promise<WeekResponses | null> {
   if (!params.endpoint || !params.auth) return null;
 
-  // RESPECT can issue a different activity/registration context when a lesson is
-  // reopened. Query by learner + verb, then identify the saved course/week from
-  // the statement payload so valid responses do not become invisible.
+  const responseStateUrl = weekResponsesStateUrl(params, week);
+  const stateResponses = await getJsonState<WeekResponses>(responseStateUrl, params.auth);
+  if (stateResponses) return stateResponses;
+
+  // Backward compatibility for answers saved before State storage was added.
+  // Follow the LRS `more` links so older records are not lost beyond page one.
   const query = new URLSearchParams({
     agent: params.actor,
     verb: XAPI_VERBS.responded.id,
@@ -399,23 +433,33 @@ export async function getWeekResponses(
     limit: "100",
   });
   const requestedCourse = getRespectLaunchTarget(params.activityId)?.course;
+  let nextUrl: string | null = `${statementsUrl(params)}?${query}`;
+  const visited = new Set<string>();
 
   try {
-    const response = await fetch(`${statementsUrl(params)}?${query}`, {
-      method: "GET",
-      headers: STATE_HEADERS(params.auth),
-    });
-    if (!response.ok) return null;
+    while (nextUrl && !visited.has(nextUrl)) {
+      visited.add(nextUrl);
+      const response = await fetch(nextUrl, {
+        method: "GET",
+        headers: STATE_HEADERS(params.auth),
+      });
+      if (!response.ok) return null;
 
-    const body = await response.json();
-    const statements = Array.isArray(body) ? body : (body?.statements ?? []);
-    for (const statement of statements) {
-      const saved = statement?.result?.extensions?.[WEEK_RESPONSES_EXTENSION];
-      const statementCourse = getRespectLaunchTarget(statement?.object?.id ?? "")?.course;
-      const isSameCourse = !requestedCourse || !statementCourse || statementCourse === requestedCourse;
-      if (isSameCourse && saved?.week === week && saved.responses) {
-        return saved.responses as WeekResponses;
+      const body = await response.json();
+      const statements = Array.isArray(body) ? body : (body?.statements ?? []);
+      for (const statement of statements) {
+        const saved = statement?.result?.extensions?.[WEEK_RESPONSES_EXTENSION];
+        const statementCourse = getRespectLaunchTarget(statement?.object?.id ?? "")?.course;
+        const isSameCourse = !requestedCourse || !statementCourse || statementCourse === requestedCourse;
+        if (isSameCourse && saved?.week === week && saved.responses) {
+          const recovered = saved.responses as WeekResponses;
+          void putJsonState(responseStateUrl, params.auth, recovered).catch(() => false);
+          return recovered;
+        }
       }
+
+      const more = typeof body?.more === "string" ? body.more.trim() : "";
+      nextUrl = more ? new URL(more, statementsUrl(params)).toString() : null;
     }
     return null;
   } catch {
