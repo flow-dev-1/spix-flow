@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import QuestionBox from "../../../components/QuestionBox";
 import BigTextBox from "../../../components/BigTextBox";
 import Button from "../../../components/Button";
-import { selectPageData } from "@/store/navigationSlice";
+import { navigateNext, selectPageData } from "@/store/navigationSlice";
 import { adminData } from "@/store/adminReducer";
 import {
   userAnswer,
@@ -43,7 +43,8 @@ function Page2() {
         answer: myAnswer,
       })
     );
-    return true;
+    dispatch(navigateNext());
+    return false;
   };
 
   const handleInputChange = (e) => {
