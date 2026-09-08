@@ -81,6 +81,30 @@ export function getRespectLaunchTarget(activityId: string): RespectLaunchTarget 
   }
 }
 
+const TOT2_MODULE_NAMES: Record<number, string> = {
+  1: "Week 1: Understanding Inclusion and Special Needs in the Classroom",
+  2: "Week 2: The Inclusive Mindset: Empathy and Compassion",
+  3: "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
+  4: "Week 4: Practical Strategies for Supporting Students with Common Special Needs",
+  5: "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
+};
+
+function getRespectModuleName(activityId: string): string | null {
+  const target = getRespectLaunchTarget(activityId);
+  if (!target) return null;
+
+  if (target.course === "tot2") {
+    return TOT2_MODULE_NAMES[target.week] ?? `TOT Course 2 - Week ${target.week}`;
+  }
+
+  const courseNames: Record<string, string> = {
+    tot: "TOT Course 1",
+    transition: "Transition 1",
+    transition2: "Transition 2",
+  };
+  const courseName = courseNames[target.course];
+  return courseName ? `${courseName} - Week ${target.week}` : null;
+}
 export function getRespectLaunchRoute(activityId: string): string | null {
   return getRespectLaunchTarget(activityId)?.route ?? null;
 }
@@ -137,6 +161,8 @@ export async function sendXAPIStatement(
     actorObj = { objectType: "Agent", name: params.givenName ?? "Learner" };
   }
 
+  const moduleName = getRespectModuleName(params.activityId);
+
   const newStatement = {
     ...(options?.statementId ? { id: options.statementId } : {}),
     actor: actorObj,
@@ -144,6 +170,14 @@ export async function sendXAPIStatement(
     object: {
       objectType: "Activity",
       id: params.activityId || "https://spix.flowonline.app/tot2",
+      ...(moduleName
+        ? {
+            definition: {
+              name: { "en-US": moduleName },
+              type: "http://adlnet.gov/expapi/activities/module",
+            },
+          }
+        : {}),
     },
     timestamp: new Date().toISOString(),
     ...(result ? { result } : {}),
