@@ -384,7 +384,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       // OPDS launches can request any listed week directly. Progress is still
       // restored and saved, but access is not hard-gated by previous weeks.
       const launchWeek = getLaunchWeekFromUrl();
-      if (launchWeek) {
+      if (!restored && launchWeek) {
         const reqWeek = launchWeek;
         if (reqWeek >= 1 && reqWeek <= weeksTopic.length) {
           const isCompletedLaunchWeek = highestAuthorizedWeek > reqWeek;

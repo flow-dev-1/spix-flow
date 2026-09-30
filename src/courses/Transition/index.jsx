@@ -332,7 +332,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       const highestAuthorizedWeek = Math.max(restored?.highestWeek || 1, targetWeek);
 
       const launchWeek = getLaunchWeekFromUrl();
-      if (launchWeek && launchWeek >= 1 && launchWeek <= TOTAL_WEEKS) {
+      if (!restored && launchWeek && launchWeek >= 1 && launchWeek <= TOTAL_WEEKS) {
         const isCompletedLaunchWeek = highestAuthorizedWeek > launchWeek;
         const savedLaunchProgress =
           restored?.currentWeek === launchWeek && !isCompletedLaunchWeek
