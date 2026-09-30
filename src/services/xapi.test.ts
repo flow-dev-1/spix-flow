@@ -171,6 +171,35 @@ describe("RESPECT response persistence", () => {
 
     await expect(getProgress(launchParams)).resolves.toBeNull();
   });
+
+  it("migrates registration-scoped progress to the cross-launch state key", async () => {
+    const savedProgress = {
+      currentWeek: 2,
+      currentPage: 8,
+      currentStep: 2,
+      highestWeek: 2,
+    };
+    const fetchMock = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(savedProgress), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
+
+    await expect(getProgress({
+      ...launchParams,
+      actor: JSON.stringify({ objectType: "Agent", mbox: "mailto:migrate@example.com" }),
+    })).resolves.toEqual(savedProgress);
+
+    const firstUrl = new URL(String(fetchMock.mock.calls[0][0]));
+    const legacyUrl = new URL(String(fetchMock.mock.calls[1][0]));
+    const migratedUrl = new URL(String(fetchMock.mock.calls[2][0]));
+    expect(firstUrl.searchParams.has("registration")).toBe(false);
+    expect(legacyUrl.searchParams.get("registration")).toBe(launchParams.registration);
+    expect(migratedUrl.searchParams.has("registration")).toBe(false);
+    expect(fetchMock.mock.calls[2][1]?.method).toBe("PUT");
+  });
 });
 describe("xAPI statement delivery", () => {
   it("uses an idempotent POST body when a statement ID is supplied", async () => {

@@ -271,7 +271,7 @@ export interface LearnerProgress {
   highestWeek?: number;
 }
 
-function stateUrl(params: RespectLaunchParams): string {
+function stateUrl(params: RespectLaunchParams, includeRegistration = false): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
   const { activityId } = getCourseStateIdentity(params.activityId);
     
@@ -279,6 +279,9 @@ function stateUrl(params: RespectLaunchParams): string {
     activityId,
     agent: params.actor,
     stateId: "flowProgress",
+    ...(includeRegistration && params.registration
+      ? { registration: params.registration }
+      : {}),
   });
   return `${base}activities/state?${q.toString()}`;
 }
@@ -311,6 +314,18 @@ export async function getProgress(
       method: "GET",
       headers: STATE_HEADERS(params.auth),
     });
+    if (res.status === 404 && params.registration) {
+      const legacyUrl = stateUrl(params, true);
+      const legacyResponse = await fetch(legacyUrl, {
+        method: "GET",
+        headers: STATE_HEADERS(params.auth),
+      });
+      if (!legacyResponse.ok) return null;
+
+      const legacyProgress = (await legacyResponse.json()) as LearnerProgress;
+      await putJsonState(stateUrl(params), params.auth, legacyProgress).catch(() => false);
+      return legacyProgress;
+    }
     if (res.status === 404) return null;
     if (!res.ok) return null;
     const progress = (await res.json()) as LearnerProgress;
