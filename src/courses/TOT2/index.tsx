@@ -17,6 +17,7 @@ import "./index.css";
 // Import components
 import Hurray from "./components/Hurray";
 import { scrollToCourseTopOnMobile } from "../utils/scrollToCourseTop";
+import CourseOverviewModal from "../components/CourseOverviewModal";
 
 // Week 1
 import TOT2PreAssesment from "./weeks/week1/preAssesement/PreAssesment.jsx";
@@ -963,6 +964,7 @@ const CourseContent = () => {
 
   return (
     <>
+      <CourseOverviewModal courseKey="tot2" currentWeek={currentWeek} currentPage={currentPage} />
       <nav className="navbar tot2-navbar">
         <div className="container">
           <button

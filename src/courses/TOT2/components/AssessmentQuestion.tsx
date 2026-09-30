@@ -20,9 +20,9 @@ function AssessmentQuestion({
   return (
     <div className={`ms-3 ms-md-5 ${isPreAssessment && "text-white bg-blue"} tot-assessment-question-container py-2 px-1 px-md-3`}>
       <form>
-        <div className="d-flex gap-2">
-          <h3 className="fs-1">{currentStep}.</h3>
-          <h3 className="fs-1">{question}</h3>
+        <div className="tot-assessment-question-heading">
+          <h3 className="fs-1 tot-assessment-question-number">{currentStep}.</h3>
+          <h3 className="fs-1 tot-assessment-question-text">{question}</h3>
         </div>
         {options.map((option, index) => {
           const optionKey = Object.keys(option)[0]; // Get key (A, B, C, D)

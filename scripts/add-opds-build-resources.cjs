@@ -29,10 +29,6 @@ function resource(hrefPath, type) {
   };
 }
 
-function relativeResource(href, type) {
-  return { href, type };
-}
-
 const courses = [
   { slug: "tot", weeks: 6 },
   { slug: "tot2", weeks: 5 },
@@ -123,48 +119,6 @@ const builtFileResources = [
 
 const sharedResources = weekHtmlResources.concat(builtFileResources);
 
-function relativeResourceForBuiltFile(filePath) {
-  const relativePath = path.relative(DIST_DIR, filePath).split(path.sep).join("/");
-  const ext = path.extname(filePath).toLowerCase();
-  const type = mimeTypes.get(ext);
-
-  if (!type) return null;
-  return relativeResource("../" + relativePath, type);
-}
-
-const relativeWeekResources = [];
-for (const course of courses) {
-  for (let week = 1; week <= course.weeks; week += 1) {
-    relativeWeekResources.push(relativeResource("../" + course.slug + "/week" + week, "text/html"));
-    relativeWeekResources.push(relativeResource("../" + course.slug + "/week" + week + "/", "text/html"));
-    relativeWeekResources.push(relativeResource("../" + course.slug + "/week" + week + "/index.html", "text/html"));
-    relativeWeekResources.push(relativeResource("../" + course.slug + "?startWeek=" + week, "text/html"));
-  }
-}
-
-const relativeBuiltFileResources = [
-  relativeResource("../index.html", "text/html"),
-  relativeResource("../tot", "text/html"),
-  relativeResource("../tot/", "text/html"),
-  relativeResource("../tot2", "text/html"),
-  relativeResource("../tot2/", "text/html"),
-  relativeResource("../transition", "text/html"),
-  relativeResource("../transition/", "text/html"),
-  relativeResource("../transition2", "text/html"),
-  relativeResource("../transition2/", "text/html"),
-].concat(
-  listFiles(DIST_DIR)
-    .filter((filePath) => !path.relative(DIST_DIR, filePath).split(path.sep).includes("opds"))
-    .map(relativeResourceForBuiltFile)
-    .filter(Boolean),
-);
-
-const relativeSharedResources = relativeWeekResources.concat(relativeBuiltFileResources);
-
-function addRelativeResourcesToWebpub(manifestPath) {
-  addResources(manifestPath, relativeSharedResources);
-}
-
 function copyAppShellToWeekLaunchers() {
   const appShellPath = path.join(DIST_DIR, "index.html");
   if (!fs.existsSync(appShellPath)) return;
@@ -208,6 +162,22 @@ function normalizeWeekManifestLaunch(manifestPath, slug, week) {
   manifest.links = (manifest.links || [])
     .filter((link) => link.rel !== OPEN_ACCESS_REL)
     .concat(weekLaunchLinks(slug, week));
+
+  const videoWeekPattern = new RegExp("/Week(?:\\+|%20| )" + week + "/", "i");
+  manifest.resources = (manifest.resources || []).filter((item) => {
+    if (item.href.startsWith("../")) return false;
+    return item.type !== "video/mp4" || videoWeekPattern.test(item.href);
+  });
+
+  const invalidVideos = manifest.resources.filter(
+    (item) => item.type === "video/mp4" && !videoWeekPattern.test(item.href),
+  );
+  if (invalidVideos.length) {
+    throw new Error(
+      "Invalid cross-week video resources in " + path.basename(manifestPath),
+    );
+  }
+
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
 }
 
@@ -264,7 +234,6 @@ function normalizeCatalogLaunches(catalogPath, slug) {
 ].forEach((fileName) => {
   addResources(path.join(OPDS_DIR, fileName), [serviceWorkerResource].concat(sharedResources));
   addServiceWorkerLink(path.join(OPDS_DIR, fileName));
-  addRelativeResourcesToWebpub(path.join(OPDS_DIR, fileName));
 
   const weekMatch = fileName.match(/week(\d+)/);
   if (weekMatch) {

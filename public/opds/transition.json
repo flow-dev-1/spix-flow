@@ -12,20 +12,22 @@
   "publications": [
     {
       "metadata": {
-        "title": "Transition 1 - Week 1",
+        "title": "Transition 1 - Week 1 (For Students)",
         "subtitle": "Introduction To Transition. Also Talk About Your Why",
         "identifier": "https://spix.flowonline.app/transition/week1/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 1 (For Students)."
       },
       "links": [
         {
@@ -58,20 +60,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 2",
+        "title": "Transition 1 - Week 2 (For Students)",
         "subtitle": "Growth And Fixed Mindset",
         "identifier": "https://spix.flowonline.app/transition/week2/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 2 (For Students)."
       },
       "links": [
         {
@@ -104,20 +108,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 3",
+        "title": "Transition 1 - Week 3 (For Students)",
         "subtitle": "Understanding What Is In Your Control",
         "identifier": "https://spix.flowonline.app/transition/week3/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 3 (For Students)."
       },
       "links": [
         {
@@ -150,20 +156,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 4",
+        "title": "Transition 1 - Week 4 (For Students)",
         "subtitle": "Understanding Values",
         "identifier": "https://spix.flowonline.app/transition/week4/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 4 (For Students)."
       },
       "links": [
         {
@@ -196,20 +204,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 5",
+        "title": "Transition 1 - Week 5 (For Students)",
         "subtitle": "Emotional Intelligence",
         "identifier": "https://spix.flowonline.app/transition/week5/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 5 (For Students)."
       },
       "links": [
         {
@@ -242,20 +252,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 6",
+        "title": "Transition 1 - Week 6 (For Students)",
         "subtitle": "Social Skills (Navigating Relationships)",
         "identifier": "https://spix.flowonline.app/transition/week6/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 6 (For Students)."
       },
       "links": [
         {
@@ -288,20 +300,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 7",
+        "title": "Transition 1 - Week 7 (For Students)",
         "subtitle": "Time Management",
         "identifier": "https://spix.flowonline.app/transition/week7/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 7 (For Students)."
       },
       "links": [
         {
@@ -334,20 +348,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 8",
+        "title": "Transition 1 - Week 8 (For Students)",
         "subtitle": "Goal Setting",
         "identifier": "https://spix.flowonline.app/transition/week8/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 8 (For Students)."
       },
       "links": [
         {
@@ -380,20 +396,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 9",
+        "title": "Transition 1 - Week 9 (For Students)",
         "subtitle": "Resilience And Introduction To Coping Skills",
         "identifier": "https://spix.flowonline.app/transition/week9/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 9 (For Students)."
       },
       "links": [
         {
@@ -426,20 +444,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 10",
+        "title": "Transition 1 - Week 10 (For Students)",
         "subtitle": "Looking Ahead",
         "identifier": "https://spix.flowonline.app/transition/week10/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 10 (For Students)."
       },
       "links": [
         {

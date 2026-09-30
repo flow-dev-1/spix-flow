@@ -31,6 +31,23 @@
   font-size: 1.5rem !important;
   padding-bottom: 1rem;
 }
+.tot-assessment-question-heading {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.5rem;
+}
+.tot-assessment-question-heading h3 {
+  margin: 0;
+}
+.tot-assessment-question-number {
+  min-width: 2ch;
+  white-space: nowrap;
+}
+.tot-assessment-question-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .tot-assessment-question-container label {
   font-family: "Poppins", system-ui, -apple-system, sans-serif !important;
 }

@@ -2,8 +2,8 @@
 <tincan xmlns="http://projecttincan.com/tincan.xsd">
   <activities>
     <activity id="https://spix.flowonline.app/tot/week2/index.html" type="http://adlnet.gov/expapi/activities/lesson">
-      <name>TOT Course 1 - Week 2</name>
-      <description lang="en-US">TOT Course 1 - Week 2</description>
+      <name>TOT Course 1 - Week 2 (For Educators)</name>
+      <description lang="en-US">A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 2 (For Educators).</description>
       <launch lang="en-US">../tot/week2/index.html</launch>
     </activity>
   </activities>

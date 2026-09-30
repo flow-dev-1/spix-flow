@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const APP_ORIGIN = "https://spix.flowonline.app";
+const BRAND_NAME = "FLOW ONLINE Learning";
 const OPDS_DIR = path.resolve("public", "opds");
 const APP_MANIFEST_PATH = path.resolve("public", "launchable-app.json");
 const LEGACY_APP_MANIFEST_PATH = path.resolve("public", "respect-manifest.json");
@@ -11,10 +12,42 @@ const TINCAN_REL = "https://id.openeel.org/rel/tincanxml";
 const APP_REL = "https://id.openeel.org/rel/launchable-app";
 
 const courses = [
-  { slug: "tot", catalog: "tot.json", weeks: 6, subject: "Education" },
-  { slug: "tot2", catalog: "tot2.json", weeks: 5, subject: "Education" },
-  { slug: "transition", catalog: "transition.json", weeks: 10, subject: "Life Skills" },
-  { slug: "transition2", catalog: "transition2.json", weeks: 5, subject: "Life Skills" },
+  {
+    slug: "tot",
+    catalog: "tot.json",
+    weeks: 6,
+    subject: "Education",
+    audience: "Educators",
+    overview:
+      "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing.",
+  },
+  {
+    slug: "tot2",
+    catalog: "tot2.json",
+    weeks: 5,
+    subject: "Education",
+    audience: "Educators",
+    overview:
+      "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing.",
+  },
+  {
+    slug: "transition",
+    catalog: "transition.json",
+    weeks: 10,
+    subject: "Life Skills",
+    audience: "Students",
+    overview:
+      "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies.",
+  },
+  {
+    slug: "transition2",
+    catalog: "transition2.json",
+    weeks: 5,
+    subject: "Life Skills",
+    audience: "Students",
+    overview:
+      "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills.",
+  },
 ];
 
 function readJson(filePath) {
@@ -41,9 +74,9 @@ function escapeXml(value) {
 const appManifest = {
   metadata: {
     "@type": "https://id.openeel.org/schema/launchable-app",
-    title: "SPIX - Flow Online Learning",
+    title: BRAND_NAME,
     author: {
-      name: "Flow Online Learning",
+      name: BRAND_NAME,
     },
     identifier: `${APP_ORIGIN}/app`,
     language: "en",
@@ -102,9 +135,10 @@ for (const course of courses) {
     if (!publication.metadata["@type"]) {
       publication.metadata["@type"] = "http://schema.org/Course";
     }
-    if (!publication.metadata.author) {
-      publication.metadata.author = "Flow Online Learning";
-    }
+    publication.metadata.author = BRAND_NAME;
+    publication.metadata.audience = course.audience;
+    publication.metadata.title = `${publication.metadata.title.replace(/\s+\(For (?:Educators|Students)\)$/i, "")} (For ${course.audience})`;
+    publication.metadata.description = `${course.overview} This learning unit is ${publication.metadata.title}.`;
     if (!publication.metadata.subject) {
       publication.metadata.subject = [
         { name: course.subject, scheme: "https://www.bisg.org/#bisac", code: "EDU000000" },
@@ -148,6 +182,10 @@ for (const course of courses) {
     const manifest = readJson(manifestPath);
     manifest.metadata = manifest.metadata || {};
     manifest.metadata.identifier = activityId;
+    manifest.metadata.author = BRAND_NAME;
+    manifest.metadata.audience = course.audience;
+    manifest.metadata.title = publication.metadata.title;
+    manifest.metadata.description = publication.metadata.description;
     manifest.links = replaceLink(manifest.links, "self", {
       rel: "self",
       href: manifestUrl,
@@ -187,7 +225,7 @@ for (const course of courses) {
 }
 
 writeJson(path.join(OPDS_DIR, "index.json"), {
-  metadata: { title: "SPIX - Flow Online Learning Courses" },
+  metadata: { title: `${BRAND_NAME} Courses` },
   links: [
     { rel: "self", href: DEFAULT_COLLECTION_URL, type: "application/opds+json" },
   ],

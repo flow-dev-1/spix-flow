@@ -19,6 +19,7 @@ import "./index.css";
 import PopUp from "./components/ReviewPopUp";
 import Hurray from "./components/Hurray";
 import { scrollToCourseTopOnMobile } from "../utils/scrollToCourseTop";
+import CourseOverviewModal from "../components/CourseOverviewModal";
 
 // Week 1
 import Page1 from "./weeks/week1/page1/Page1.jsx";
@@ -326,7 +327,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     launchTarget,
     sendCompleted,
     sendPassed,
-    sendProgressed,
     restoreProgress,
     persistProgress,
     saveResponses,
@@ -482,10 +482,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       await sendPassed({ score: { scaled: 1 } });
     })();
 
-    if (currentWeek < TOTAL_WEEKS) {
-      void sendProgressed(currentWeek / TOTAL_WEEKS);
-    }
-  }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed, sendProgressed]);
+  }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;
@@ -934,6 +931,7 @@ const CourseContent = () => {
 
   return (
     <>
+      <CourseOverviewModal courseKey="tot" currentWeek={currentWeek} currentPage={currentPage} />
       <nav className="navbar tot-course-navbar">
         <div className="container">
           <button

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "SPIX - Flow Online Learning Courses"
+    "title": "FLOW ONLINE Learning Courses"
   },
   "links": [
     {
@@ -12,19 +12,21 @@
   "publications": [
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 1",
+        "title": "TOT Course 1 - Week 1 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week1/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 1 (For Educators)."
       },
       "links": [
         {
@@ -57,19 +59,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 2",
+        "title": "TOT Course 1 - Week 2 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week2/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 2 (For Educators)."
       },
       "links": [
         {
@@ -102,19 +106,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 3",
+        "title": "TOT Course 1 - Week 3 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week3/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 3 (For Educators)."
       },
       "links": [
         {
@@ -147,19 +153,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 4",
+        "title": "TOT Course 1 - Week 4 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week4/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 4 (For Educators)."
       },
       "links": [
         {
@@ -192,19 +200,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 5",
+        "title": "TOT Course 1 - Week 5 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week5/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 5 (For Educators)."
       },
       "links": [
         {
@@ -237,19 +247,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 6",
+        "title": "TOT Course 1 - Week 6 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week6/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 6 (For Educators)."
       },
       "links": [
         {
@@ -283,8 +295,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom",
-        "author": "Flow Online Learning",
+        "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week1/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -294,7 +306,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 1: Understanding Inclusion and Special Needs in the Classroom (For Educators)."
       },
       "links": [
         {
@@ -328,8 +342,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 2: The Inclusive Mindset: Empathy and Compassion",
-        "author": "Flow Online Learning",
+        "title": "Week 2: The Inclusive Mindset: Empathy and Compassion (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week2/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -339,7 +353,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 2: The Inclusive Mindset: Empathy and Compassion (For Educators)."
       },
       "links": [
         {
@@ -373,8 +389,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
-        "author": "Flow Online Learning",
+        "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week3/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -384,7 +400,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction (For Educators)."
       },
       "links": [
         {
@@ -418,8 +436,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs",
-        "author": "Flow Online Learning",
+        "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week4/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -429,7 +447,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 4: Practical Strategies for Supporting Students with Common Special Needs (For Educators)."
       },
       "links": [
         {
@@ -463,8 +483,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
-        "author": "Flow Online Learning",
+        "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week5/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -474,7 +494,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 5: Collaboration, Support Systems, and Inclusive Implementation (For Educators)."
       },
       "links": [
         {
@@ -507,20 +529,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 1",
+        "title": "Transition 1 - Week 1 (For Students)",
         "subtitle": "Introduction To Transition. Also Talk About Your Why",
         "identifier": "https://spix.flowonline.app/transition/week1/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 1 (For Students)."
       },
       "links": [
         {
@@ -553,20 +577,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 2",
+        "title": "Transition 1 - Week 2 (For Students)",
         "subtitle": "Growth And Fixed Mindset",
         "identifier": "https://spix.flowonline.app/transition/week2/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 2 (For Students)."
       },
       "links": [
         {
@@ -599,20 +625,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 3",
+        "title": "Transition 1 - Week 3 (For Students)",
         "subtitle": "Understanding What Is In Your Control",
         "identifier": "https://spix.flowonline.app/transition/week3/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 3 (For Students)."
       },
       "links": [
         {
@@ -645,20 +673,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 4",
+        "title": "Transition 1 - Week 4 (For Students)",
         "subtitle": "Understanding Values",
         "identifier": "https://spix.flowonline.app/transition/week4/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 4 (For Students)."
       },
       "links": [
         {
@@ -691,20 +721,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 5",
+        "title": "Transition 1 - Week 5 (For Students)",
         "subtitle": "Emotional Intelligence",
         "identifier": "https://spix.flowonline.app/transition/week5/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 5 (For Students)."
       },
       "links": [
         {
@@ -737,20 +769,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 6",
+        "title": "Transition 1 - Week 6 (For Students)",
         "subtitle": "Social Skills (Navigating Relationships)",
         "identifier": "https://spix.flowonline.app/transition/week6/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 6 (For Students)."
       },
       "links": [
         {
@@ -783,20 +817,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 7",
+        "title": "Transition 1 - Week 7 (For Students)",
         "subtitle": "Time Management",
         "identifier": "https://spix.flowonline.app/transition/week7/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 7 (For Students)."
       },
       "links": [
         {
@@ -829,20 +865,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 8",
+        "title": "Transition 1 - Week 8 (For Students)",
         "subtitle": "Goal Setting",
         "identifier": "https://spix.flowonline.app/transition/week8/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 8 (For Students)."
       },
       "links": [
         {
@@ -875,20 +913,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 9",
+        "title": "Transition 1 - Week 9 (For Students)",
         "subtitle": "Resilience And Introduction To Coping Skills",
         "identifier": "https://spix.flowonline.app/transition/week9/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 9 (For Students)."
       },
       "links": [
         {
@@ -921,20 +961,22 @@
     },
     {
       "metadata": {
-        "title": "Transition 1 - Week 10",
+        "title": "Transition 1 - Week 10 (For Students)",
         "subtitle": "Looking Ahead",
         "identifier": "https://spix.flowonline.app/transition/week10/index.html",
         "language": "en",
         "modified": "2026-05-27T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Life Skills",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 10 (For Students)."
       },
       "links": [
         {
@@ -968,9 +1010,9 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Transition 2 - Week 1",
+        "title": "Transition 2 - Week 1 (For Students)",
         "subtitle": "Introduction to Resilience and Grit",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week1/index.html",
         "language": "en",
         "modified": "2026-07-01T00:00:00.000Z",
@@ -980,7 +1022,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 1 (For Students)."
       },
       "links": [
         {
@@ -1014,9 +1058,9 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Transition 2 - Week 2",
+        "title": "Transition 2 - Week 2 (For Students)",
         "subtitle": "Developing Resilience",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week2/index.html",
         "language": "en",
         "modified": "2026-07-01T00:00:00.000Z",
@@ -1026,7 +1070,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 2 (For Students)."
       },
       "links": [
         {
@@ -1060,9 +1106,9 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Transition 2 - Week 3",
+        "title": "Transition 2 - Week 3 (For Students)",
         "subtitle": "Understanding the Concept of Adaptability and Its Application",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week3/index.html",
         "language": "en",
         "modified": "2026-07-01T00:00:00.000Z",
@@ -1072,7 +1118,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 3 (For Students)."
       },
       "links": [
         {
@@ -1106,9 +1154,9 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Transition 2 - Week 4",
+        "title": "Transition 2 - Week 4 (For Students)",
         "subtitle": "The Role of Support Systems",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week4/index.html",
         "language": "en",
         "modified": "2026-07-01T00:00:00.000Z",
@@ -1118,7 +1166,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 4 (For Students)."
       },
       "links": [
         {
@@ -1152,9 +1202,9 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Transition 2 - Week 5",
+        "title": "Transition 2 - Week 5 (For Students)",
         "subtitle": "Coping Skills",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week5/index.html",
         "language": "en",
         "modified": "2026-07-01T00:00:00.000Z",
@@ -1164,7 +1214,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Students",
+        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 5 (For Students)."
       },
       "links": [
         {

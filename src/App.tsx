@@ -16,9 +16,7 @@ import TOTFeedback from "./courses/TOT/feedback/index";
 import TOT2Course from "./courses/TOT2/index";
 import TOT2Feedback from "./courses/TOT2/feedback/index";
 import TransitionCourse from "./courses/Transition/index";
-import TransitionFeedback from "./courses/Transition/feedback/index";
 import Transition2Course from "./courses/Transition2/index";
-import Transition2Feedback from "./courses/Transition2/feedback/index";
 
 const queryClient = new QueryClient();
 
@@ -46,11 +44,9 @@ const App = () => {
                 <Route path="/transition" element={<TransitionCourse />} />
                 <Route path="/transition/" element={<TransitionCourse />} />
                 <Route path="/transition/*" element={<TransitionCourse />} />
-                <Route path="/transition/feedback" element={<TransitionFeedback />} />
                 <Route path="/transition2" element={<Transition2Course />} />
                 <Route path="/transition2/" element={<Transition2Course />} />
                 <Route path="/transition2/*" element={<Transition2Course />} />
-                <Route path="/transition2/feedback" element={<Transition2Feedback />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

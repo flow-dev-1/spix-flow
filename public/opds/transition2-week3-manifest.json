@@ -1,13 +1,14 @@
 {
   "metadata": {
     "@type": "http://schema.org/Course",
-    "title": "Transition 2 - Week 3",
+    "title": "Transition 2 - Week 3 (For Students)",
     "subtitle": "Understanding the Concept of Adaptability and Its Application",
-    "author": "Flow Online Learning",
+    "author": "FLOW ONLINE Learning",
     "identifier": "https://spix.flowonline.app/transition2/week3/index.html",
     "language": "en",
     "modified": "2026-07-01T00:00:00.000Z",
-    "description": "Week 3 of Transition 2."
+    "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 3 (For Students).",
+    "audience": "Students"
   },
   "links": [
     {
@@ -86,10 +87,6 @@
     },
     {
       "href": "https://d3sc34m1n26ele.cloudfront.net/Transition_2/Week+3/Week+3_2.mp4",
-      "type": "video/mp4"
-    },
-    {
-      "href": "https://d3sc34m1n26ele.cloudfront.net/Transition_2/Week+4/Week+4_3.mp4",
       "type": "video/mp4"
     },
     {

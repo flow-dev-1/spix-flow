@@ -15,6 +15,8 @@ const Button = ({ loading, text, customOnClick }) => {
   const handleClick = (e) => {
     e.preventDefault();
 
+    if (loading) return;
+
     if (customOnClick) {
       const inputOkay = customOnClick();
 
@@ -49,16 +51,21 @@ const Button = ({ loading, text, customOnClick }) => {
       }`}
       onClick={handleClick}
       type="button"
-      // disabled={loading}
+      disabled={loading}
+      aria-busy={loading || undefined}
+      style={{ opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}
     >
       {loading && isNextButton ? (
-        <RotatingLines
-          className="me-2 text-white"
-          type="Oval"
-          strokeColor="white"
-          height={20}
-          width={20}
-        />
+        <>
+          <RotatingLines
+            className="me-2 text-white"
+            type="Oval"
+            strokeColor="white"
+            height={20}
+            width={20}
+          />
+          <span className="ms-2">{text}</span>
+        </>
       ) : (
         <>
           {isPrevButton && <span className="me-2">{"<<<"}</span>}

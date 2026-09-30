@@ -13,8 +13,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom",
-        "author": "Flow Online Learning",
+        "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week1/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -24,7 +24,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 1: Understanding Inclusion and Special Needs in the Classroom (For Educators)."
       },
       "links": [
         {
@@ -58,8 +60,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 2: The Inclusive Mindset: Empathy and Compassion",
-        "author": "Flow Online Learning",
+        "title": "Week 2: The Inclusive Mindset: Empathy and Compassion (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week2/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -69,7 +71,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 2: The Inclusive Mindset: Empathy and Compassion (For Educators)."
       },
       "links": [
         {
@@ -103,8 +107,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
-        "author": "Flow Online Learning",
+        "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week3/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -114,7 +118,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction (For Educators)."
       },
       "links": [
         {
@@ -148,8 +154,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs",
-        "author": "Flow Online Learning",
+        "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week4/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -159,7 +165,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 4: Practical Strategies for Supporting Students with Common Special Needs (For Educators)."
       },
       "links": [
         {
@@ -193,8 +201,8 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation",
-        "author": "Flow Online Learning",
+        "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation (For Educators)",
+        "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week5/index.html",
         "language": "en",
         "modified": "2025-01-01T00:00:00Z",
@@ -204,7 +212,9 @@
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 5: Collaboration, Support Systems, and Inclusive Implementation (For Educators)."
       },
       "links": [
         {

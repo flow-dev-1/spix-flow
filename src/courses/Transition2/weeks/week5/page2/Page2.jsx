@@ -10,12 +10,14 @@ import {
 import { adminData } from "@/store/adminReducer";
 import "./page2.css";
 
+const TIMER_DURATION_SECONDS = 60;
+
 function Page2() {
   const pageData = useSelector(selectPageData);
   const dispatch = useDispatch();
   const [answers, setAnswers] = useState([]); // State to hold answers
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
-  const [timeLeft, setTimeLeft] = useState(30); // 30 seconds timer
+  const [timeLeft, setTimeLeft] = useState(TIMER_DURATION_SECONDS);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [savedOnTimeout, setSavedOnTimeout] = useState(false);
@@ -50,7 +52,7 @@ function Page2() {
       setIsTimerActive(false);
     }
     // Only start timer if no previous answers and timer hasn't been started
-    else if (!isTimerActive && timeLeft === 30) {
+    else if (!isTimerActive && timeLeft === TIMER_DURATION_SECONDS) {
       setIsTimerActive(true);
     }
   }, [userAnswers, pageData.id]);

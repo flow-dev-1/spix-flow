@@ -12,19 +12,21 @@
   "publications": [
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 1",
+        "title": "TOT Course 1 - Week 1 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week1/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 1 (For Educators)."
       },
       "links": [
         {
@@ -57,19 +59,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 2",
+        "title": "TOT Course 1 - Week 2 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week2/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 2 (For Educators)."
       },
       "links": [
         {
@@ -102,19 +106,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 3",
+        "title": "TOT Course 1 - Week 3 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week3/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 3 (For Educators)."
       },
       "links": [
         {
@@ -147,19 +153,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 4",
+        "title": "TOT Course 1 - Week 4 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week4/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 4 (For Educators)."
       },
       "links": [
         {
@@ -192,19 +200,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 5",
+        "title": "TOT Course 1 - Week 5 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week5/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 5 (For Educators)."
       },
       "links": [
         {
@@ -237,19 +247,21 @@
     },
     {
       "metadata": {
-        "title": "TOT Course 1 - Week 6",
+        "title": "TOT Course 1 - Week 6 (For Educators)",
         "identifier": "https://spix.flowonline.app/tot/week6/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
         "@type": "http://schema.org/Course",
-        "author": "Flow Online Learning",
+        "author": "FLOW ONLINE Learning",
         "subject": [
           {
             "name": "Education",
             "scheme": "https://www.bisg.org/#bisac",
             "code": "EDU000000"
           }
-        ]
+        ],
+        "audience": "Educators",
+        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is TOT Course 1 - Week 6 (For Educators)."
       },
       "links": [
         {

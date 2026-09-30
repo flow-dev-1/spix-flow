@@ -2,8 +2,8 @@
 <tincan xmlns="http://projecttincan.com/tincan.xsd">
   <activities>
     <activity id="https://spix.flowonline.app/transition2/week2/index.html" type="http://adlnet.gov/expapi/activities/lesson">
-      <name>Transition 2 - Week 2</name>
-      <description lang="en-US">Transition 2 - Week 2</description>
+      <name>Transition 2 - Week 2 (For Students)</name>
+      <description lang="en-US">A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Transition 2 - Week 2 (For Students).</description>
       <launch lang="en-US">../transition2/week2/index.html</launch>
     </activity>
   </activities>

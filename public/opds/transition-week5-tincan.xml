@@ -2,8 +2,8 @@
 <tincan xmlns="http://projecttincan.com/tincan.xsd">
   <activities>
     <activity id="https://spix.flowonline.app/transition/week5/index.html" type="http://adlnet.gov/expapi/activities/lesson">
-      <name>Transition 1 - Week 5</name>
-      <description lang="en-US">Transition 1 - Week 5</description>
+      <name>Transition 1 - Week 5 (For Students)</name>
+      <description lang="en-US">A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Transition 1 - Week 5 (For Students).</description>
       <launch lang="en-US">../transition/week5/index.html</launch>
     </activity>
   </activities>
