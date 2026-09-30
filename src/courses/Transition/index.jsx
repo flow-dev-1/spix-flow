@@ -983,26 +983,6 @@ const CourseContent = () => {
             })}
           </ul>
 
-          {/* Progress indicator */}
-          <div className="mt-4 px-3">
-            <div className="d-flex justify-content-between align-items-center mb-2">
-              <small className="text-muted">Course Progress</small>
-              <small className="fw-bold">{enrollmentProgress}%</small>
-            </div>
-            <div className="progress" style={{ height: "8px" }}>
-              <div
-                className="progress-bar"
-                role="progressbar"
-                style={{
-                  width: `${enrollmentProgress}%`,
-                  backgroundColor: "#00BCC3",
-                }}
-                aria-valuenow={enrollmentProgress}
-                aria-valuemin="0"
-                aria-valuemax="100"
-              ></div>
-            </div>
-          </div>
         </aside>
         <aside
           className="d-none d-md-block d-lg-none"
