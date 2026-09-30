@@ -356,7 +356,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     launchParams,
     launchTarget,
     sendCompleted,
-    sendProgressed,
     sendPassed,
     sendFailed,
     restoreProgress,
@@ -450,7 +449,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       const statements: Array<[string, () => Promise<boolean>]> = [
         ["completed", () => sendCompleted(score.scaled, getStatementId("completed"))],
         ["passed", () => sendPassed({ score }, getStatementId("passed"))],
-        ["progressed", () => sendProgressed(currentWeek / TOTAL_WEEKS, getStatementId("progressed"))],
       ];
 
       void Promise.all(statements.map(async ([verb, send]) => {
@@ -511,7 +509,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
       void (async () => {
         await sendCompleted();
         await sendPassed({ score: { scaled: 1 } });
-        await sendProgressed(currentWeek / 5);
       })();
     }
   }, [
@@ -524,7 +521,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }: any) => {
     sendCompleted,
     sendFailed,
     sendPassed,
-    sendProgressed,
   ]);
 
   // Persist position to the LRS State API whenever the user advances

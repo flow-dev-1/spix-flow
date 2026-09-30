@@ -292,7 +292,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
     launchTarget,
     sendCompleted,
     sendPassed,
-    sendProgressed,
     restoreProgress,
     persistProgress,
     saveResponses,
@@ -376,7 +375,6 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       const statements = [
         ["completed", () => sendCompleted(score.scaled, getStatementId("completed"))],
         ["passed", () => sendPassed({ score }, getStatementId("passed"))],
-        ["progressed", () => sendProgressed(currentWeek / TOTAL_WEEKS, getStatementId("progressed"))],
       ];
       void Promise.all(statements.map(async ([verb, send]) => {
         const deliveryKey = `transition2-xapi-${identity}-week-${currentWeek}-${verb}-delivered`;
@@ -404,8 +402,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       await sendCompleted();
       await sendPassed({ score: { scaled: 1 } });
     })();
-    if (currentWeek < TOTAL_WEEKS) void sendProgressed(currentWeek / TOTAL_WEEKS);
-  }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed, sendProgressed]);
+  }, [showHurray, currentWeek, isRespectSession, launchParams?.registration, launchTarget?.week, sendCompleted, sendPassed]);
 
   useEffect(() => {
     if (!currentWeek || !currentPage) return;

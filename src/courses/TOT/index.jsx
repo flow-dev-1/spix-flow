@@ -427,11 +427,10 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
       const statements = [
         ["completed", sendCompleted, [assessmentScore.scaled]],
         ["passed", sendPassed, [{ score: assessmentScore }]],
-        ["progressed", sendProgressed, [currentWeek / TOTAL_WEEKS]],
       ];
 
       void Promise.all(statements.map(async ([verb, send, args]) => {
-        const deliveryKey = `${completionKey}-${verb}${verb === "progressed" ? "" : "-actual-score-v1"}`;
+        const deliveryKey = `${completionKey}-${verb}-actual-score-v1`;
         if (sessionStorage.getItem(deliveryKey)) {
           setRespectStatus((status) => ({ ...status, [verb]: "already sent ✓" }));
           return;

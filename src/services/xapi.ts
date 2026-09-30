@@ -279,7 +279,6 @@ function stateUrl(params: RespectLaunchParams): string {
     activityId,
     agent: params.actor,
     stateId: "flowProgress",
-    ...(params.registration ? { registration: params.registration } : {}),
   });
   return `${base}activities/state?${q.toString()}`;
 }
@@ -361,26 +360,31 @@ function statementsUrl(params: RespectLaunchParams): string {
 }
 
 const lastStatePayload = new Map<string, string>();
+const stateWriteQueues = new Map<string, Promise<boolean>>();
 
 async function putJsonState(url: string, auth: string, value: unknown): Promise<boolean> {
   const payload = JSON.stringify(value);
-  if (lastStatePayload.get(url) === payload) return true;
-  lastStatePayload.set(url, payload);
+  const previousWrite = stateWriteQueues.get(url) ?? Promise.resolve(true);
+  const currentWrite = previousWrite.catch(() => false).then(async () => {
+    if (lastStatePayload.get(url) === payload) return true;
 
-  try {
     const response = await fetch(url, {
       method: "PUT",
       headers: STATE_HEADERS(auth),
       body: payload,
     });
 
-    if (!response.ok && lastStatePayload.get(url) === payload) {
-      lastStatePayload.delete(url);
-    }
+    if (response.ok) lastStatePayload.set(url, payload);
     return response.ok;
-  } catch (error) {
-    if (lastStatePayload.get(url) === payload) lastStatePayload.delete(url);
-    throw error;
+  });
+
+  stateWriteQueues.set(url, currentWrite);
+  try {
+    return await currentWrite;
+  } finally {
+    if (stateWriteQueues.get(url) === currentWrite) {
+      stateWriteQueues.delete(url);
+    }
   }
 }
 
