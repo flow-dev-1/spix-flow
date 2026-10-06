@@ -262,6 +262,10 @@ export const XAPI_VERBS = {
     id: "http://adlnet.gov/expapi/verbs/responded",
     display: { "en-US": "responded" },
   },
+  suspended: {
+    id: "http://adlnet.gov/expapi/verbs/suspended",
+    display: { "en-US": "suspended" },
+  },
 };
 
 export interface LearnerProgress {
@@ -270,6 +274,9 @@ export interface LearnerProgress {
   currentStep: number;
   highestWeek?: number;
 }
+
+const BOOKMARK_EXTENSION = "https://spix.flowonline.app/xapi/extensions/bookmark";
+const lastBookmarkPayload = new Map<string, string>();
 
 function stateUrl(params: RespectLaunchParams, includeRegistration = false): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
@@ -320,20 +327,61 @@ export async function getProgress(
         method: "GET",
         headers: STATE_HEADERS(params.auth),
       });
-      if (!legacyResponse.ok) return null;
-
-      const legacyProgress = (await legacyResponse.json()) as LearnerProgress;
-      await putJsonState(stateUrl(params), params.auth, legacyProgress).catch(() => false);
-      return legacyProgress;
+      if (legacyResponse.ok) {
+        const legacyProgress = (await legacyResponse.json()) as LearnerProgress;
+        await putJsonState(stateUrl(params), params.auth, legacyProgress).catch(() => false);
+        return legacyProgress;
+      }
     }
-    if (res.status === 404) return null;
-    if (!res.ok) return null;
-    const progress = (await res.json()) as LearnerProgress;
-    lastStatePayload.set(stateUrl(params), JSON.stringify(progress));
-    return progress;
+    if (res.ok) {
+      const progress = (await res.json()) as LearnerProgress;
+      lastStatePayload.set(stateUrl(params), JSON.stringify(progress));
+      return progress;
+    }
+  } catch {
+    // Fall through to statement history when State is unavailable.
+  }
+
+  const query = new URLSearchParams({
+    agent: params.actor,
+    verb: XAPI_VERBS.suspended.id,
+    ascending: "false",
+    limit: "100",
+  });
+  const requestedCourse = getRespectLaunchTarget(params.activityId)?.course;
+  let nextUrl: string | null = `${statementsUrl(params)}?${query}`;
+  const visited = new Set<string>();
+
+  try {
+    while (nextUrl && !visited.has(nextUrl)) {
+      visited.add(nextUrl);
+      const response = await fetch(nextUrl, {
+        method: "GET",
+        headers: STATE_HEADERS(params.auth),
+      });
+      if (!response.ok) return null;
+
+      const body = await response.json();
+      const statements = Array.isArray(body) ? body : (body?.statements ?? []);
+      for (const statement of statements) {
+        const bookmark = statement?.result?.extensions?.[BOOKMARK_EXTENSION];
+        const statementCourse = getRespectLaunchTarget(statement?.object?.id ?? "")?.course;
+        const isSameCourse = !requestedCourse || !statementCourse || statementCourse === requestedCourse;
+        if (isSameCourse && bookmark?.currentWeek && bookmark?.currentPage) {
+          const recovered = bookmark as LearnerProgress;
+          void putJsonState(stateUrl(params), params.auth, recovered).catch(() => false);
+          return recovered;
+        }
+      }
+
+      const more = typeof body?.more === "string" ? body.more.trim() : "";
+      nextUrl = more ? new URL(more, statementsUrl(params)).toString() : null;
+    }
   } catch {
     return null;
   }
+
+  return null;
 }
 
 /** Save learner progress to the LRS State API. */
@@ -349,11 +397,17 @@ export async function saveProgress(
   }
 
   if (!params.endpoint || !params.auth) return;
-  try {
-    await putJsonState(stateUrl(params), params.auth, progress);
-  } catch {
-    // non-fatal
-  }
+  await putJsonState(stateUrl(params), params.auth, progress).catch(() => false);
+
+  const payload = JSON.stringify(progress);
+  const bookmarkKey = `${params.registration || "no-registration"}::${getCourseStateIdentity(params.activityId).courseSlug}`;
+  if (lastBookmarkPayload.get(bookmarkKey) === payload) return;
+
+  const delivered = await sendXAPIStatement(params, XAPI_VERBS.suspended, {
+    completion: false,
+    extensions: { [BOOKMARK_EXTENSION]: progress },
+  }).catch(() => false);
+  if (delivered) lastBookmarkPayload.set(bookmarkKey, payload);
 }
 
 export interface WeekResponses {

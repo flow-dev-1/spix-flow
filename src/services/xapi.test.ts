@@ -4,6 +4,7 @@ import {
   getWeekResponses,
   getRespectLaunchRoute,
   parseRespectLaunchParams,
+  saveProgress,
   saveWeekResponses,
   sendXAPIStatement,
   getXAPIStatementDeliveryError,
@@ -77,7 +78,7 @@ describe("RESPECT response persistence", () => {
       assessments: [],
     })).resolves.toBe(true);
 
-    const [requestUrl, request] = fetchMock.mock.calls[0];
+    const [requestUrl, request] = fetchMock.mock.calls[1];
     const statement = JSON.parse(String(request?.body));
     expect(request?.method).toBe("POST");
     expect(String(requestUrl)).toBe("https://respect.example/xapi/statements");
@@ -103,25 +104,28 @@ describe("RESPECT response persistence", () => {
     await saveWeekResponses(params, 2, responses);
     await saveWeekResponses(params, 2, responses);
 
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
   it("loads the latest responses from responded statements", async () => {
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({
-      statements: [{
-        result: {
-          extensions: {
-            "https://spix.flowonline.app/xapi/extensions/week-responses": {
-              week: 1,
-              responses: { activities: [{ page: 2 }], assessments: [{ id: 1 }] },
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        statements: [{
+          result: {
+            extensions: {
+              "https://spix.flowonline.app/xapi/extensions/week-responses": {
+                week: 1,
+                responses: { activities: [{ page: 2 }], assessments: [{ id: 1 }] },
+              },
             },
           },
-        },
-      }],
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    }));
+        }],
+      }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
 
     await expect(getWeekResponses(launchParams, 1)).resolves.toEqual({
       activities: [{ page: 2 }],
@@ -130,22 +134,25 @@ describe("RESPECT response persistence", () => {
   });
 
   it("restores responses after RESPECT changes launch identifiers", async () => {
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({
-      statements: [{
-        object: { id: "https://spix.flowonline.app/tot/week2/index.html" },
-        result: {
-          extensions: {
-            "https://spix.flowonline.app/xapi/extensions/week-responses": {
-              week: 2,
-              responses: { activities: [{ page: 4 }], assessments: [{ id: 2 }] },
+    const fetchMock = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        statements: [{
+          object: { id: "https://spix.flowonline.app/tot/week2/index.html" },
+          result: {
+            extensions: {
+              "https://spix.flowonline.app/xapi/extensions/week-responses": {
+                week: 2,
+                responses: { activities: [{ page: 4 }], assessments: [{ id: 2 }] },
+              },
             },
           },
-        },
-      }],
-    }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    }));
+        }],
+      }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
 
     const relaunched = {
       ...launchParams,
@@ -157,7 +164,7 @@ describe("RESPECT response persistence", () => {
       assessments: [{ id: 2 }],
     });
 
-    const requestUrl = new URL(String(fetchMock.mock.calls[0][0]));
+    const requestUrl = new URL(String(fetchMock.mock.calls[1][0]));
     expect(requestUrl.searchParams.get("activity")).toBeNull();
     expect(requestUrl.searchParams.get("registration")).toBeNull();
     expect(requestUrl.searchParams.get("limit")).toBe("100");
@@ -199,6 +206,53 @@ describe("RESPECT response persistence", () => {
     expect(legacyUrl.searchParams.get("registration")).toBe(launchParams.registration);
     expect(migratedUrl.searchParams.has("registration")).toBe(false);
     expect(fetchMock.mock.calls[2][1]?.method).toBe("PUT");
+  });
+
+  it("records progress as a suspended bookmark statement", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 204 }),
+    );
+    const progress = { currentWeek: 3, currentPage: 7, currentStep: 2, highestWeek: 3 };
+
+    await saveProgress({ ...launchParams, registration: "bookmark-save-registration" }, progress);
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const statement = JSON.parse(String(fetchMock.mock.calls[1][1]?.body));
+    expect(statement.verb).toEqual(XAPI_VERBS.suspended);
+    expect(statement.result.extensions).toMatchObject({
+      "https://spix.flowonline.app/xapi/extensions/bookmark": progress,
+    });
+  });
+
+  it("restores progress from bookmark statements when State is missing", async () => {
+    const progress = { currentWeek: 4, currentPage: 9, currentStep: 1, highestWeek: 4 };
+    const fetchMock = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        statements: [{
+          object: { id: "https://spix.flowonline.app/tot/week4/index.html" },
+          result: {
+            extensions: {
+              "https://spix.flowonline.app/xapi/extensions/bookmark": progress,
+            },
+          },
+        }],
+      }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }))
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
+
+    await expect(getProgress({
+      ...launchParams,
+      activityId: "https://spix.flowonline.app/tot/week1/index.html",
+      registration: "new-bookmark-registration",
+    })).resolves.toEqual(progress);
+
+    const statementQuery = new URL(String(fetchMock.mock.calls[2][0]));
+    expect(statementQuery.searchParams.get("verb")).toBe(XAPI_VERBS.suspended.id);
+    expect(statementQuery.searchParams.has("registration")).toBe(false);
   });
 });
 describe("xAPI statement delivery", () => {
