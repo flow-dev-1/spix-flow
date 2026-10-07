@@ -278,6 +278,10 @@ export interface LearnerProgress {
 const BOOKMARK_EXTENSION = "https://spix.flowonline.app/xapi/extensions/bookmark";
 const lastBookmarkPayload = new Map<string, string>();
 
+function logResume(event: string, details: Record<string, unknown> = {}) {
+  console.info(`[respect-resume] ${event}`, details);
+}
+
 function learnerStorageKey(params: RespectLaunchParams, courseSlug: string): string {
   let identity = params.actor;
   try {
@@ -323,12 +327,19 @@ export async function getProgress(
   params: RespectLaunchParams,
 ): Promise<LearnerProgress | null> {
   const { courseSlug } = getCourseStateIdentity(params.activityId);
+  const localKey = learnerStorageKey(params, courseSlug);
 
   const localGet = () => {
     try {
-      const saved = localStorage.getItem(learnerStorageKey(params, courseSlug));
-      return saved ? JSON.parse(saved) : null;
+      const saved = localStorage.getItem(localKey);
+      const progress = saved ? JSON.parse(saved) : null;
+      logResume(progress ? "local-hit" : "local-miss", {
+        course: courseSlug,
+        ...(progress ? { progress } : {}),
+      });
+      return progress;
     } catch {
+      logResume("local-read-failed", { course: courseSlug });
       return null;
     }
   };
@@ -340,24 +351,29 @@ export async function getProgress(
       method: "GET",
       headers: STATE_HEADERS(params.auth),
     });
+    logResume("state-get", { course: courseSlug, status: res.status });
     if (res.status === 404 && params.registration) {
       const legacyUrl = stateUrl(params, true);
       const legacyResponse = await fetch(legacyUrl, {
         method: "GET",
         headers: STATE_HEADERS(params.auth),
       });
+      logResume("legacy-state-get", { course: courseSlug, status: legacyResponse.status });
       if (legacyResponse.ok) {
         const legacyProgress = (await legacyResponse.json()) as LearnerProgress;
+        logResume("restored-from-legacy-state", { course: courseSlug, progress: legacyProgress });
         await putJsonState(stateUrl(params), params.auth, legacyProgress).catch(() => false);
         return legacyProgress;
       }
     }
     if (res.ok) {
       const progress = (await res.json()) as LearnerProgress;
+      logResume("restored-from-state", { course: courseSlug, progress });
       lastStatePayload.set(stateUrl(params), JSON.stringify(progress));
       return progress;
     }
   } catch {
+    logResume("state-get-failed", { course: courseSlug });
     // Fall through to statement history when State is unavailable.
   }
 
@@ -378,6 +394,7 @@ export async function getProgress(
         method: "GET",
         headers: STATE_HEADERS(params.auth),
       });
+      logResume("bookmark-get", { course: courseSlug, status: response.status });
       if (!response.ok) return localGet();
 
       const body = await response.json();
@@ -388,6 +405,7 @@ export async function getProgress(
         const isSameCourse = !requestedCourse || !statementCourse || statementCourse === requestedCourse;
         if (isSameCourse && bookmark?.currentWeek && bookmark?.currentPage) {
           const recovered = bookmark as LearnerProgress;
+          logResume("restored-from-bookmark", { course: courseSlug, progress: recovered });
           void putJsonState(stateUrl(params), params.auth, recovered).catch(() => false);
           return recovered;
         }
@@ -397,6 +415,7 @@ export async function getProgress(
       nextUrl = more ? new URL(more, statementsUrl(params)).toString() : null;
     }
   } catch {
+    logResume("bookmark-get-failed", { course: courseSlug });
     return localGet();
   }
 
@@ -411,12 +430,21 @@ export async function saveProgress(
   try {
     const { courseSlug } = getCourseStateIdentity(params.activityId);
     localStorage.setItem(learnerStorageKey(params, courseSlug), JSON.stringify(progress));
+    logResume("local-saved", { course: courseSlug, progress });
   } catch {
+    logResume("local-save-failed", {
+      course: getCourseStateIdentity(params.activityId).courseSlug,
+    });
     // ignore
   }
 
   if (!params.endpoint || !params.auth) return;
-  await putJsonState(stateUrl(params), params.auth, progress).catch(() => false);
+  const stateDelivered = await putJsonState(stateUrl(params), params.auth, progress).catch(() => false);
+  logResume("state-put", {
+    course: getCourseStateIdentity(params.activityId).courseSlug,
+    delivered: stateDelivered,
+    progress,
+  });
 
   const payload = JSON.stringify(progress);
   const bookmarkKey = `${params.registration || "no-registration"}::${getCourseStateIdentity(params.activityId).courseSlug}`;
@@ -426,6 +454,11 @@ export async function saveProgress(
     completion: false,
     extensions: { [BOOKMARK_EXTENSION]: progress },
   }).catch(() => false);
+  logResume("bookmark-post", {
+    course: getCourseStateIdentity(params.activityId).courseSlug,
+    delivered,
+    progress,
+  });
   if (delivered) lastBookmarkPayload.set(bookmarkKey, payload);
 }
 
