@@ -279,7 +279,17 @@ const BOOKMARK_EXTENSION = "https://spix.flowonline.app/xapi/extensions/bookmark
 const lastBookmarkPayload = new Map<string, string>();
 
 function logResume(event: string, details: Record<string, unknown> = {}) {
+  const entry = {
+    time: new Date().toISOString().slice(11, 19),
+    event,
+    details,
+  };
   console.info(`[respect-resume] ${event}`, details);
+  if (typeof window !== "undefined") {
+    const target = window as typeof window & { __respectResumeLogs?: typeof entry[] };
+    target.__respectResumeLogs = [...(target.__respectResumeLogs ?? []).slice(-29), entry];
+    window.dispatchEvent(new CustomEvent("respect-resume-log", { detail: entry }));
+  }
 }
 
 function learnerStorageKey(params: RespectLaunchParams, courseSlug: string): string {
