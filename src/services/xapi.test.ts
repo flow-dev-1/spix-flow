@@ -254,6 +254,34 @@ describe("RESPECT response persistence", () => {
     expect(statementQuery.searchParams.get("verb")).toBe(XAPI_VERBS.suspended.id);
     expect(statementQuery.searchParams.has("registration")).toBe(false);
   });
+
+  it("restores actor-scoped local progress when RESPECT remote reads miss", async () => {
+    const progress = { currentWeek: 5, currentPage: 11, currentStep: 2, highestWeek: 5 };
+    const firstLaunch = { ...launchParams, registration: "local-fallback-save" };
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(null, { status: 404 }),
+    );
+
+    await saveProgress(firstLaunch, progress);
+    await expect(getProgress({
+      ...firstLaunch,
+      registration: "local-fallback-relaunch",
+    })).resolves.toEqual(progress);
+
+    expect(fetchMock).toHaveBeenCalled();
+  });
+
+  it("does not restore another learner's local progress", async () => {
+    const progress = { currentWeek: 3, currentPage: 6, currentStep: 1, highestWeek: 3 };
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(null, { status: 404 }));
+    await saveProgress({ ...launchParams, registration: "learner-one-save" }, progress);
+
+    await expect(getProgress({
+      ...launchParams,
+      actor: JSON.stringify({ objectType: "Agent", mbox: "mailto:someone-else@example.com" }),
+      registration: "learner-two-launch",
+    })).resolves.toBeNull();
+  });
 });
 describe("xAPI statement delivery", () => {
   it("uses an idempotent POST body when a statement ID is supplied", async () => {

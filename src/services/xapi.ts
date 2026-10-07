@@ -278,6 +278,25 @@ export interface LearnerProgress {
 const BOOKMARK_EXTENSION = "https://spix.flowonline.app/xapi/extensions/bookmark";
 const lastBookmarkPayload = new Map<string, string>();
 
+function learnerStorageKey(params: RespectLaunchParams, courseSlug: string): string {
+  let identity = params.actor;
+  try {
+    const actor = JSON.parse(params.actor);
+    identity = actor?.account
+      ? `${actor.account.homePage ?? ""}:${actor.account.name ?? ""}`
+      : actor?.mbox ?? actor?.openid ?? actor?.name ?? params.actor;
+  } catch {
+    // Use the original actor value when it is not valid JSON.
+  }
+
+  let hash = 2166136261;
+  for (let index = 0; index < identity.length; index += 1) {
+    hash ^= identity.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return `${courseSlug}-flowProgress-${(hash >>> 0).toString(36)}`;
+}
+
 function stateUrl(params: RespectLaunchParams, includeRegistration = false): string {
   const base = params.endpoint.endsWith("/") ? params.endpoint : `${params.endpoint}/`;
   const { activityId } = getCourseStateIdentity(params.activityId);
@@ -307,7 +326,7 @@ export async function getProgress(
 
   const localGet = () => {
     try {
-      const saved = localStorage.getItem(`${courseSlug}-flowProgress`);
+      const saved = localStorage.getItem(learnerStorageKey(params, courseSlug));
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
@@ -359,7 +378,7 @@ export async function getProgress(
         method: "GET",
         headers: STATE_HEADERS(params.auth),
       });
-      if (!response.ok) return null;
+      if (!response.ok) return localGet();
 
       const body = await response.json();
       const statements = Array.isArray(body) ? body : (body?.statements ?? []);
@@ -378,10 +397,10 @@ export async function getProgress(
       nextUrl = more ? new URL(more, statementsUrl(params)).toString() : null;
     }
   } catch {
-    return null;
+    return localGet();
   }
 
-  return null;
+  return localGet();
 }
 
 /** Save learner progress to the LRS State API. */
@@ -391,7 +410,7 @@ export async function saveProgress(
 ): Promise<void> {
   try {
     const { courseSlug } = getCourseStateIdentity(params.activityId);
-    localStorage.setItem(`${courseSlug}-flowProgress`, JSON.stringify(progress));
+    localStorage.setItem(learnerStorageKey(params, courseSlug), JSON.stringify(progress));
   } catch {
     // ignore
   }
