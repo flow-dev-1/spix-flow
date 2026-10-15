@@ -22,3 +22,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 bun.lock
+
+# diagnostic logs
+*.log
+chrome-cdp.*.log
+mock-lrs.*.log
+vite-dev.*.log
+
+# build artifacts
+.respect-source-audit/
