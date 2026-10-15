@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   selectCurrentWeek,
+  selectCurrentCourse,
   selectShowReview,
   selectShowHurray,
   selectCurrentPage,
@@ -673,6 +674,7 @@ const WeekContent = ({ maxAccessibleWeek, setMaxAccessibleWeek }) => {
 };
 const CourseContent = () => {
   const { isAdmin } = useSelector(adminData);
+  const currentCourse = useSelector(selectCurrentCourse);
   const currentWeek = useSelector(selectCurrentWeek);
   const currentPage = useSelector(selectCurrentPage);
   const currentStep = useSelector(selectCurrentStep);
@@ -716,24 +718,16 @@ const CourseContent = () => {
 
   useEffect(() => {
     const segments = location.pathname.split("/").filter(Boolean);
-    const firstSegment = segments[0];
-    const lastSegment = segments[segments.length - 1];
+    const courseSegment = segments[0]?.toLowerCase();
 
-    // This is an important section that affects course rendering!
-    if (
-      [
-        "compassion",
-        "transition",
-        "resilience_grit",
-        "emotional_regulation",
-        "transition2",
-        "transition_2",
-      ].includes(lastSegment?.toLowerCase())
-      || ["transition2", "transition_2"].includes(firstSegment?.toLowerCase())
-    ) {
+    if (courseSegment === "transition2") {
       dispatch(setCurrentCourse("transition2"));
     }
   }, [location.pathname, dispatch]);
+
+  if (currentCourse !== "transition2") {
+    return null;
+  }
 
   const handleWeekClick = (weekNumber) => {
     if (!isWeekAccessible(weekNumber)) return;

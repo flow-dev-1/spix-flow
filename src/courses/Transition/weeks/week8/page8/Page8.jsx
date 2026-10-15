@@ -179,7 +179,7 @@ function WeekEightAssessment() {
       {/* Display error message */}
       <StepIndicator totalSteps={totalSteps} />
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
-        <Button text="Prev" loading={mutation.isPending} />
+        <Button text="Prev" />
         {shouldShowReviewButton ? (
           <Button
             text="Review"
@@ -189,7 +189,6 @@ function WeekEightAssessment() {
           <Button
             text="Next"
             customOnClick={saveUserData}
-            loading={mutation.isPending}
           />
         )}
       </div>

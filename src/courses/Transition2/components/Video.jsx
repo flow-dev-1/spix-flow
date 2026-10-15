@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import "./video.css";
-import { Icon } from "@iconify/react";
 
 function VideoComponent({ videoSrc }) {
   const [percentageWatched, setPercentageWatched] = useState(3);
-  const videoRef = React.createRef();
+  const [isOnline, setIsOnline] = useState(() => navigator.onLine);
+  const [hasOfflinePlaybackError, setHasOfflinePlaybackError] = useState(false);
+  const [hasStartedPlayback, setHasStartedPlayback] = useState(false);
+  const [playbackErrorMessage, setPlaybackErrorMessage] = useState("");
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -21,33 +24,94 @@ function VideoComponent({ videoSrc }) {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    videoRef.current?.load();
+    function handleOnline() {
+      setIsOnline(true);
+      setHasOfflinePlaybackError(false);
+      setPlaybackErrorMessage("");
+    }
+
+    function handleOffline() {
+      setIsOnline(false);
+    }
+
+    setHasOfflinePlaybackError(false);
+    setHasStartedPlayback(false);
+    setPlaybackErrorMessage("");
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [videoSrc]);
+
+  function markPlaybackStarted() {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.currentTime > 0 || video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      setHasStartedPlayback(true);
+      setPlaybackErrorMessage("");
+    }
+  }
+
+  const handleVideoError = useCallback(
+    (e) => {
+      const video = e.currentTarget;
+      const alreadyStarted =
+        hasStartedPlayback ||
+        video.currentTime > 1 ||
+        video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA;
+
+      if (alreadyStarted) return;
+
+      if (!navigator.onLine) {
+        setHasOfflinePlaybackError(true);
+        setPlaybackErrorMessage(
+          "Go back online and open this week again so SPIX can download the course before you continue.",
+        );
+      } else {
+        setPlaybackErrorMessage("We could not play this video. Please check your connection and try again.");
+      }
+    },
+    [hasStartedPlayback],
+  );
+
+  if ((!isOnline && hasOfflinePlaybackError) || playbackErrorMessage) {
+    return (
+      <div className="resilience-video-offline-state">
+        <div className="resilience-video-offline-state__content">
+          <strong>{isOnline ? "Video unavailable" : "Video unavailable offline"}</strong>
+          <span>{playbackErrorMessage}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ position: "relative",}}>
+    <div style={{ position: "relative" }}>
       <video
+        key={videoSrc}
         className="resilience-custom-video"
         ref={videoRef}
         controls
         controlsList="nodownload noremoteplayback"
+        preload="metadata"
         style={{ pointerEvents: "auto" }}
-        onCanPlay={() => null}
-        onError={(e) => console.log(e,"This is error")}
+        onCanPlay={() => {
+          setHasOfflinePlaybackError(false);
+          markPlaybackStarted();
+        }}
+        onPlaying={markPlaybackStarted}
+        onTimeUpdate={markPlaybackStarted}
+        onError={handleVideoError}
       >
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      {/* <Icon
-        // onClick={()=> videoRef.current.play()}
-        icon="mdi:play-circle-outline"
-        color="skyblue"
-        width={40}
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      /> */}
-
       <div
         style={{
           width: `${percentageWatched}%`,

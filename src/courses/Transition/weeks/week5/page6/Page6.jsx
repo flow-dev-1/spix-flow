@@ -21,8 +21,6 @@ import { toast } from "react-toastify";
 import { calculateResult } from "../../../utility";
 import { adminData } from "@/store/adminReducer";
 import { useRespectLaunch } from "@/hooks/useRespectLaunch";
-import { use } from "react";
-import user from "@/services/api/user";
 
 function WeekFiveAssessment() {
   const dispatch = useDispatch();
@@ -182,7 +180,7 @@ function WeekFiveAssessment() {
       {/* Display error message */}
       <StepIndicator totalSteps={totalSteps} />
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
-        <Button text="Prev" loading={mutation.isPending} />
+        <Button text="Prev" />
         {shouldShowReviewButton ? (
           <Button
             text="Review"
@@ -192,7 +190,6 @@ function WeekFiveAssessment() {
           <Button
             text="Next"
             customOnClick={saveUserData}
-            loading={mutation.isPending}
           />
         )}
       </div>
