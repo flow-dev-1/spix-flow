@@ -41,7 +41,7 @@
   margin: 0;
 }
 .tot-assessment-question-number {
-  min-width: 2ch;
+  min-width: 3ch;
   white-space: nowrap;
 }
 .tot-assessment-question-text {

@@ -76,15 +76,15 @@ export default function PopUp() {
           style={{ width: "350px", margin: "1rem auto" }}
           className="d-flex review-buttons"
         >
-          <button className="btn sad" onClick={() => handleEmojiClick("dislike")} disabled={mutation.isPending}>
+          <button className="btn sad" onClick={() => handleEmojiClick("dislike")}>
             <img src={sadEmoji} alt="sadEmoji" />
             <p className="text-center mt-2">Sad</p>
           </button>
-          <button className="btn sad" onClick={() => handleEmojiClick("neutral")} disabled={mutation.isPending}>
+          <button className="btn sad" onClick={() => handleEmojiClick("neutral")}>
             <img src={okayEmoji} alt="okayEmoji" />
             <p className="text-center mt-2">Okay</p>
           </button>
-          <button className="btn sad" onClick={() => handleEmojiClick("like")} disabled={mutation.isPending}>
+          <button className="btn sad" onClick={() => handleEmojiClick("like")}>
             <img src={happyEmoji} alt="happyEmoji" />
             <p className="text-center mt-2">Happy</p>
           </button>

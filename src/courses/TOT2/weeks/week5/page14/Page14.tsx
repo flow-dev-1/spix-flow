@@ -259,11 +259,10 @@ function WeekFiveAssessment() {
       {/* Display error message */}
       <StepIndicator totalSteps={totalSteps} />
       <div className="d-flex justify-content-center gap-96px mt-4 gap-4">
-        <Button text="Prev" loading={mutation.isPending} />
+        <Button text="Prev" />
         <Button
           text={shouldShowReviewButton ? "Submit" : "Next"}
           customOnClick={saveUserData}
-          loading={mutation.isPending}
         />
       </div>
     </>
