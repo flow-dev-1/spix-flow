@@ -20,7 +20,7 @@ import PopUp from "./components/ReviewPopUp";
 import Hurray from "./components/Hurray";
 import { scrollToCourseTopOnMobile } from "../utils/scrollToCourseTop";
 import CourseOverviewModal from "../components/CourseOverviewModal";
-import RespectResumeDebug from "../components/RespectResumeDebug";
+// import RespectResumeDebug from "../components/RespectResumeDebug";
 
 // Week 1
 import Page1 from "./weeks/week1/page1/Page1.jsx";
@@ -932,7 +932,7 @@ const CourseContent = () => {
   return (
     <>
       <CourseOverviewModal courseKey="tot" currentWeek={currentWeek} currentPage={currentPage} />
-      <RespectResumeDebug />
+      {/* <RespectResumeDebug /> */}
       <nav className="navbar tot-course-navbar">
         <div className="container">
           <button

@@ -19,7 +19,7 @@ import "./index.css";
 import PopUp from "./components/ReviewPopUp.jsx";
 import Hurray from "./components/Hurray.jsx";
 import CourseOverviewModal from "../components/CourseOverviewModal";
-import RespectResumeDebug from "../components/RespectResumeDebug";
+// import RespectResumeDebug from "../components/RespectResumeDebug";
 
 // Week 1
 import Page1 from "./weeks/week1/page1/Page1.jsx";
@@ -789,7 +789,7 @@ const CourseContent = () => {
   return (
     <>
       <CourseOverviewModal courseKey="transition2" currentWeek={currentWeek} currentPage={currentPage} />
-      <RespectResumeDebug />
+      {/* <RespectResumeDebug /> */}
       <nav className="navbar">
         <div className="container">
           <button
