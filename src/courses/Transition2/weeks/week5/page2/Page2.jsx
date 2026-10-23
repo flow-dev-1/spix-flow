@@ -10,7 +10,7 @@ import {
 import { adminData } from "@/store/adminReducer";
 import "./page2.css";
 
-const TIMER_DURATION_SECONDS = 60;
+const TIMER_DURATION_SECONDS = 180; // 3 minutes
 
 function Page2() {
   const pageData = useSelector(selectPageData);
@@ -183,10 +183,10 @@ function Page2() {
           </h2>
           <h2
             className={`text-white p-1 px-2 week-2-question-text flex-shrink-0 ${
-              timeLeft <= 5 ? "bg-danger" : "bg-primary"
+              timeLeft <= 30 ? "bg-danger" : "bg-primary"
             }`}
           >
-            {timeLeft} s
+            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
           </h2>
         </div>
 

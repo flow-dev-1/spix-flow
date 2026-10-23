@@ -15,7 +15,7 @@ import {
 } from "@/store/userAnswersReducer";
 import { adminData } from "@/store/adminReducer";
 
-const TIMER_DURATION_SECONDS = 60;
+const TIMER_DURATION_SECONDS = 180; // 3 minutes
 
 function Page16() {
   const pageData = useSelector(selectPageData);
@@ -202,10 +202,10 @@ function Page16() {
           </div>
           <h2
             className={`text-white p-1 px-2 fs-1 mb-0 flex-shrink-0 tot-question-text ${
-              timeLeft <= 5 ? "bg-danger" : "bg-primary"
+              timeLeft <= 30 ? "bg-danger" : "bg-primary"
             }`}
           >
-            {timeLeft} s
+            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
           </h2>
         </div>
 

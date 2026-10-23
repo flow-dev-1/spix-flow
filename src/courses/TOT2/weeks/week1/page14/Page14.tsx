@@ -39,7 +39,7 @@ function Page14() {
 
   // Step 7 logic
   const [isRevealed, setIsRevealed] = useState(false);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(180); // 3 minutes
   const [hasPlayed, setHasPlayed] = useState(false);
 
   const handleCloseFeedback = () => {
@@ -59,7 +59,7 @@ function Page14() {
   useEffect(() => {
     if (currentStep === 7) {
       setIsRevealed(false);
-      setCountdown(5);
+      setCountdown(180); // 3 minutes
       setHasPlayed(false);
     }
   }, [currentStep]);
@@ -70,7 +70,7 @@ function Page14() {
     setIsRevealed(true);
     setHasPlayed(true);
 
-    let timer = 5;
+    let timer = 180; // 3 minutes
     const interval = setInterval(() => {
       timer -= 1;
       setCountdown(timer);
@@ -150,7 +150,7 @@ function Page14() {
             <QuestionBox extraStyle="bg-blue position-relative overflow-hidden shadow-lg border-0">
               <div className="position-absolute top-0 end-0 m3">
                 <div className="bg-danger text-white px-3 py-1 rounded fw-bold shadow-sm">
-                  {countdown}s
+                  {Math.floor(countdown / 60)}:{String(countdown % 60).padStart(2, '0')}
                 </div>
               </div>
 
