@@ -13,7 +13,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 1: Introduction to Resilience and Grit (For Students)",
+        "title": "Introduction to Resilience and Grit",
         "subtitle": "Introduction to Resilience and Grit",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week1/index.html",
@@ -27,7 +27,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Week 1: Introduction to Resilience and Grit (For Students)."
+        "description": "Week 1: Introduction to Resilience and Grit - A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. Learning Area: Life Skills, Audience: Students."
       },
       "links": [
         {
@@ -61,7 +61,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 2: Developing Resilience (For Students)",
+        "title": "Developing Resilience",
         "subtitle": "Developing Resilience",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week2/index.html",
@@ -109,7 +109,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 3: Understanding the Concept of Adaptability and Its Application (For Students)",
+        "title": "Understanding the Concept of Adaptability and Its Application",
         "subtitle": "Understanding the Concept of Adaptability and Its Application",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week3/index.html",
@@ -157,7 +157,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 4: The Role of Support Systems (For Students)",
+        "title": "The Role of Support Systems",
         "subtitle": "The Role of Support Systems",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week4/index.html",
@@ -205,7 +205,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 5: Coping Skills (For Students)",
+        "title": "Coping Skills",
         "subtitle": "Coping Skills",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week5/index.html",

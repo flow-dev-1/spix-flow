@@ -12,7 +12,7 @@
   "publications": [
     {
       "metadata": {
-        "title": "Week 1: Introduction to SEL for Educators (For Educators)",
+        "title": "Introduction to SEL for Educators",
         "identifier": "https://spix.flowonline.app/tot/week1/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
@@ -59,7 +59,7 @@
     },
     {
       "metadata": {
-        "title": "Week 2: Self-Awareness and Emotional Regulation (For Educators)",
+        "title": "Self-Awareness and Emotional Regulation",
         "identifier": "https://spix.flowonline.app/tot/week2/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
@@ -106,7 +106,7 @@
     },
     {
       "metadata": {
-        "title": "Week 3: Building Relationships and Creating a Safe Classroom (For Educators)",
+        "title": "Building Relationships and Creating a Safe Classroom",
         "identifier": "https://spix.flowonline.app/tot/week3/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
@@ -153,7 +153,7 @@
     },
     {
       "metadata": {
-        "title": "Week 4: Growth Mindset and Resilience for Educators (For Educators)",
+        "title": "Growth Mindset and Resilience for Educators",
         "identifier": "https://spix.flowonline.app/tot/week4/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
@@ -200,7 +200,7 @@
     },
     {
       "metadata": {
-        "title": "Week 5: Integrating SEL into Teaching Methods (For Educators)",
+        "title": "Integrating SEL into Teaching Methods",
         "identifier": "https://spix.flowonline.app/tot/week5/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
@@ -247,7 +247,7 @@
     },
     {
       "metadata": {
-        "title": "Week 6: Sustaining SEL Practices (For Educators)",
+        "title": "Sustaining SEL Practices",
         "identifier": "https://spix.flowonline.app/tot/week6/index.html",
         "language": "en",
         "modified": "2026-05-26T00:00:00.000Z",
@@ -295,7 +295,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 1: Understanding Inclusion and Special Needs in the Classroom (For Educators)",
+        "title": "Understanding Inclusion and Special Needs in the Classroom",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week1/index.html",
         "language": "en",
@@ -342,7 +342,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 2: The Inclusive Mindset: Empathy and Compassion (For Educators)",
+        "title": "The Inclusive Mindset: Empathy and Compassion",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week2/index.html",
         "language": "en",
@@ -389,7 +389,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction (For Educators)",
+        "title": "Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week3/index.html",
         "language": "en",
@@ -436,7 +436,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 4: Practical Strategies for Supporting Students with Common Special Needs (For Educators)",
+        "title": "Practical Strategies for Supporting Students with Common Special Needs",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week4/index.html",
         "language": "en",
@@ -483,7 +483,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 5: Collaboration, Support Systems, and Inclusive Implementation (For Educators)",
+        "title": "Collaboration, Support Systems, and Inclusive Implementation",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week5/index.html",
         "language": "en",
@@ -529,7 +529,7 @@
     },
     {
       "metadata": {
-        "title": "Week 1: Introduction To Transition (For Students)",
+        "title": "Introduction To Transition",
         "subtitle": "Introduction To Transition. Also Talk About Your Why",
         "identifier": "https://spix.flowonline.app/transition/week1/index.html",
         "language": "en",
@@ -577,7 +577,7 @@
     },
     {
       "metadata": {
-        "title": "Week 2: Growth And Fixed Mindset (For Students)",
+        "title": "Growth And Fixed Mindset",
         "subtitle": "Growth And Fixed Mindset",
         "identifier": "https://spix.flowonline.app/transition/week2/index.html",
         "language": "en",
@@ -625,7 +625,7 @@
     },
     {
       "metadata": {
-        "title": "Week 3: Understanding What Is In Your Control (For Students)",
+        "title": "Understanding What Is In Your Control",
         "subtitle": "Understanding What Is In Your Control",
         "identifier": "https://spix.flowonline.app/transition/week3/index.html",
         "language": "en",
@@ -673,7 +673,7 @@
     },
     {
       "metadata": {
-        "title": "Week 4: Understanding Values (For Students)",
+        "title": "Understanding Values",
         "subtitle": "Understanding Values",
         "identifier": "https://spix.flowonline.app/transition/week4/index.html",
         "language": "en",
@@ -721,7 +721,7 @@
     },
     {
       "metadata": {
-        "title": "Week 5: Emotional Intelligence (For Students)",
+        "title": "Emotional Intelligence",
         "subtitle": "Emotional Intelligence",
         "identifier": "https://spix.flowonline.app/transition/week5/index.html",
         "language": "en",
@@ -817,7 +817,7 @@
     },
     {
       "metadata": {
-        "title": "Week 7: Time Management (For Students)",
+        "title": "Time Management",
         "subtitle": "Time Management",
         "identifier": "https://spix.flowonline.app/transition/week7/index.html",
         "language": "en",
@@ -865,7 +865,7 @@
     },
     {
       "metadata": {
-        "title": "Week 8: Goal Setting (For Students)",
+        "title": "Goal Setting",
         "subtitle": "Goal Setting",
         "identifier": "https://spix.flowonline.app/transition/week8/index.html",
         "language": "en",
@@ -913,7 +913,7 @@
     },
     {
       "metadata": {
-        "title": "Week 9: Resilience And Introduction To Coping Skills (For Students)",
+        "title": "Resilience And Introduction To Coping Skills",
         "subtitle": "Resilience And Introduction To Coping Skills",
         "identifier": "https://spix.flowonline.app/transition/week9/index.html",
         "language": "en",
@@ -961,7 +961,7 @@
     },
     {
       "metadata": {
-        "title": "Week 10: Looking Ahead (For Students)",
+        "title": "Looking Ahead",
         "subtitle": "Looking Ahead",
         "identifier": "https://spix.flowonline.app/transition/week10/index.html",
         "language": "en",
@@ -1010,7 +1010,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 1: Introduction to Resilience and Grit (For Students)",
+        "title": "Introduction to Resilience and Grit",
         "subtitle": "Introduction to Resilience and Grit",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week1/index.html",
@@ -1058,7 +1058,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 2: Developing Resilience (For Students)",
+        "title": "Developing Resilience",
         "subtitle": "Developing Resilience",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week2/index.html",
@@ -1106,7 +1106,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 3: Understanding the Concept of Adaptability and Its Application (For Students)",
+        "title": "Understanding the Concept of Adaptability and Its Application",
         "subtitle": "Understanding the Concept of Adaptability and Its Application",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week3/index.html",
@@ -1154,7 +1154,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 4: The Role of Support Systems (For Students)",
+        "title": "The Role of Support Systems",
         "subtitle": "The Role of Support Systems",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week4/index.html",
@@ -1202,7 +1202,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Week 5: Coping Skills (For Students)",
+        "title": "Coping Skills",
         "subtitle": "Coping Skills",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/transition2/week5/index.html",
