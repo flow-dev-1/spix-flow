@@ -26,7 +26,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is Week 1: Introduction to SEL for Educators (For Educators)."
+        "description": "Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Introduction to SEL for Educators"
       },
       "links": [
         {
@@ -73,7 +73,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is Week 2: Self-Awareness and Emotional Regulation (For Educators)."
+        "description": "Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Self-Awareness and Emotional Regulation"
       },
       "links": [
         {
@@ -120,7 +120,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is Week 3: Building Relationships and Creating a Safe Classroom (For Educators)."
+        "description": "Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Building Relationships and Creating a Safe Classroom"
       },
       "links": [
         {
@@ -167,7 +167,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is Week 4: Growth Mindset and Resilience for Educators (For Educators)."
+        "description": "Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Growth Mindset and Resilience for Educators"
       },
       "links": [
         {
@@ -214,7 +214,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is Week 5: Integrating SEL into Teaching Methods (For Educators)."
+        "description": "Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Integrating SEL into Teaching Methods"
       },
       "links": [
         {
@@ -261,7 +261,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing. This learning unit is Week 6: Sustaining SEL Practices (For Educators)."
+        "description": "Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Sustaining SEL Practices"
       },
       "links": [
         {
@@ -308,7 +308,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 1: Understanding Inclusion and Special Needs in the Classroom (For Educators)."
+        "description": "Learning Area: Education, Course: Leaving No Learner Behind, Lesson: Understanding Inclusion and Special Needs in the Classroom"
       },
       "links": [
         {
@@ -355,7 +355,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 2: The Inclusive Mindset: Empathy and Compassion (For Educators)."
+        "description": "Learning Area: Education, Course: Leaving No Learner Behind, Lesson: The Inclusive Mindset: Empathy and Compassion"
       },
       "links": [
         {
@@ -389,7 +389,7 @@
     {
       "metadata": {
         "@type": "http://schema.org/Course",
-        "title": "Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction",
+        "title": "Designing Learning for Everyone: UDL and Differentiated Instruction",
         "author": "FLOW ONLINE Learning",
         "identifier": "https://spix.flowonline.app/tot2/week3/index.html",
         "language": "en",
@@ -402,7 +402,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 3: Designing Learning for Everyone, Universal Design for Learning and Differentiated Instruction (For Educators)."
+        "description": "Learning Area: Education, Course: Leaving No Learner Behind, Lesson: Designing Learning for Everyone: UDL and Differentiated Instruction"
       },
       "links": [
         {
@@ -449,7 +449,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 4: Practical Strategies for Supporting Students with Common Special Needs (For Educators)."
+        "description": "Learning Area: Education, Course: Leaving No Learner Behind, Lesson: Practical Strategies for Supporting Students with Common Special Needs"
       },
       "links": [
         {
@@ -496,7 +496,7 @@
           }
         ],
         "audience": "Educators",
-        "description": "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing. This learning unit is Week 5: Collaboration, Support Systems, and Inclusive Implementation (For Educators)."
+        "description": "Learning Area: Education, Course: Leaving No Learner Behind, Lesson: Collaboration, Support Systems, and Inclusive Implementation"
       },
       "links": [
         {
@@ -544,7 +544,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 1: Introduction To Transition (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Introduction To Transition"
       },
       "links": [
         {
@@ -592,7 +592,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 2: Growth And Fixed Mindset (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Growth And Fixed Mindset"
       },
       "links": [
         {
@@ -640,7 +640,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 3: Understanding What Is In Your Control (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Understanding What Is In Your Control"
       },
       "links": [
         {
@@ -688,7 +688,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 4: Understanding Values (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Understanding Values"
       },
       "links": [
         {
@@ -736,7 +736,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 5: Emotional Intelligence (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Emotional Intelligence"
       },
       "links": [
         {
@@ -769,7 +769,7 @@
     },
     {
       "metadata": {
-        "title": "Week 6: Social Skills, Navigating Relationships (For Students)",
+        "title": "Social Skills (Navigating Relationships)",
         "subtitle": "Social Skills (Navigating Relationships)",
         "identifier": "https://spix.flowonline.app/transition/week6/index.html",
         "language": "en",
@@ -784,7 +784,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 6: Social Skills, Navigating Relationships (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Social Skills (Navigating Relationships)"
       },
       "links": [
         {
@@ -832,7 +832,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 7: Time Management (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Time Management"
       },
       "links": [
         {
@@ -880,7 +880,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 8: Goal Setting (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Goal Setting"
       },
       "links": [
         {
@@ -928,7 +928,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 9: Resilience And Introduction To Coping Skills (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Resilience And Introduction To Coping Skills"
       },
       "links": [
         {
@@ -976,7 +976,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies. This learning unit is Week 10: Looking Ahead (For Students)."
+        "description": "Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Looking Ahead"
       },
       "links": [
         {
@@ -1024,7 +1024,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Week 1: Introduction to Resilience and Grit (For Students)."
+        "description": "Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Introduction to Resilience and Grit"
       },
       "links": [
         {
@@ -1072,7 +1072,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Week 2: Developing Resilience (For Students)."
+        "description": "Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Developing Resilience"
       },
       "links": [
         {
@@ -1120,7 +1120,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Week 3: Understanding the Concept of Adaptability and Its Application (For Students)."
+        "description": "Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Understanding the Concept of Adaptability and Its Application"
       },
       "links": [
         {
@@ -1168,7 +1168,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Week 4: The Role of Support Systems (For Students)."
+        "description": "Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: The Role of Support Systems"
       },
       "links": [
         {
@@ -1216,7 +1216,7 @@
           }
         ],
         "audience": "Students",
-        "description": "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills. This learning unit is Week 5: Coping Skills (For Students)."
+        "description": "Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Coping Skills"
       },
       "links": [
         {

@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition/week9/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Resilience And Introduction To Coping Skills</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident, Lesson: Resilience And Introduction To Coping Skills</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Resilience And Introduction To Coping Skills</description>
       <launch lang="en-US">../transition/week9/index.html</launch>
     </activity>
   </activities>

@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition/week8/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Goal Setting</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident, Lesson: Goal Setting</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Goal Setting</description>
       <launch lang="en-US">../transition/week8/index.html</launch>
     </activity>
   </activities>

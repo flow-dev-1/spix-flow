@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/tot/week1/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Introduction to SEL for Educators</name>
-      <description lang="en-US">Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Introduction to SEL for Educators</description>
+      <description lang="en-US">Learning Area: Education, Course: SEL &amp; Positive Psychology for Educators, Lesson: Introduction to SEL for Educators</description>
       <launch lang="en-US">../tot/week1/index.html</launch>
     </activity>
   </activities>

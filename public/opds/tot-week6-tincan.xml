@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/tot/week6/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Sustaining SEL Practices</name>
-      <description lang="en-US">Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Sustaining SEL Practices</description>
+      <description lang="en-US">Learning Area: Education, Course: SEL &amp; Positive Psychology for Educators, Lesson: Sustaining SEL Practices</description>
       <launch lang="en-US">../tot/week6/index.html</launch>
     </activity>
   </activities>

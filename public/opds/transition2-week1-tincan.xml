@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition2/week1/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Introduction to Resilience and Grit</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2, Lesson: Introduction to Resilience and Grit</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Introduction to Resilience and Grit</description>
       <launch lang="en-US">../transition2/week1/index.html</launch>
     </activity>
   </activities>

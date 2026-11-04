@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/tot/week5/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Integrating SEL into Teaching Methods</name>
-      <description lang="en-US">Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Integrating SEL into Teaching Methods</description>
+      <description lang="en-US">Learning Area: Education, Course: SEL &amp; Positive Psychology for Educators, Lesson: Integrating SEL into Teaching Methods</description>
       <launch lang="en-US">../tot/week5/index.html</launch>
     </activity>
   </activities>

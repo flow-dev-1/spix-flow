@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition/week10/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Looking Ahead</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident, Lesson: Looking Ahead</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Looking Ahead</description>
       <launch lang="en-US">../transition/week10/index.html</launch>
     </activity>
   </activities>

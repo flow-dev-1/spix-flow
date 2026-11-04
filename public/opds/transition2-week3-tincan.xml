@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition2/week3/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Understanding the Concept of Adaptability and Its Application</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2, Lesson: Understanding the Concept of Adaptability and Its Application</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Understanding the Concept of Adaptability and Its Application</description>
       <launch lang="en-US">../transition2/week3/index.html</launch>
     </activity>
   </activities>

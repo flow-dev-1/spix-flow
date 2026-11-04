@@ -18,8 +18,7 @@ const courses = [
     weeks: 6,
     subject: "Education",
     audience: "Educators",
-    overview:
-      "A professional learning course for educators on Social and Emotional Learning and Positive Psychology. It develops practical skills in emotional regulation, classroom relationships, resilience, inclusive teaching, and teacher wellbeing.",
+    courseName: "SEL & Positive Psychology for Educators",
   },
   {
     slug: "tot2",
@@ -27,8 +26,7 @@ const courses = [
     weeks: 5,
     subject: "Education",
     audience: "Educators",
-    overview:
-      "A professional learning course for educators on building inclusive classrooms where every learner can participate and thrive. It covers learner differences, accessible teaching strategies, empathy, collaboration, and sustainable teacher wellbeing.",
+    courseName: "Leaving No Learner Behind",
   },
   {
     slug: "transition",
@@ -36,8 +34,7 @@ const courses = [
     weeks: 10,
     subject: "Life Skills",
     audience: "Students",
-    overview:
-      "A student course for preparing to move from primary to secondary school. It builds confidence and practical skills through mindset, values, relationships, time management, goal setting, resilience, and healthy coping strategies.",
+    courseName: "From Curious to Confident: Transition with Ease",
   },
   {
     slug: "transition2",
@@ -45,8 +42,7 @@ const courses = [
     weeks: 5,
     subject: "Life Skills",
     audience: "Students",
-    overview:
-      "A student course for preparing for life after secondary school, including university, employment, skills training, or other pathways. It develops confidence, resilience, purposeful goal setting, healthy relationships, independence, and coping skills.",
+    courseName: "Transition 2: Preparing for the Next Chapter",
   },
 ];
 
@@ -137,8 +133,8 @@ for (const course of courses) {
     }
     publication.metadata.author = BRAND_NAME;
     publication.metadata.audience = course.audience;
-    publication.metadata.title = `${publication.metadata.title.replace(/\s+\(For (?:Educators|Students)\)$/i, "")} (For ${course.audience})`;
-    publication.metadata.description = `${course.overview} This learning unit is ${publication.metadata.title}.`;
+    publication.metadata.title = publication.metadata.title.replace(/\s+\(For (?:Educators|Students)\)$/i, "");
+    publication.metadata.description = `Learning Area: ${course.subject}, Course: ${course.courseName}, Lesson: ${publication.metadata.title}`;
     if (!publication.metadata.subject) {
       publication.metadata.subject = [
         { name: course.subject, scheme: "https://www.bisg.org/#bisac", code: "EDU000000" },

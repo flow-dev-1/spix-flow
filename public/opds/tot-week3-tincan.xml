@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/tot/week3/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Building Relationships and Creating a Safe Classroom</name>
-      <description lang="en-US">Learning Area: Education, Course: SEL & Positive Psychology for Educators, Lesson: Building Relationships and Creating a Safe Classroom</description>
+      <description lang="en-US">Learning Area: Education, Course: SEL &amp; Positive Psychology for Educators, Lesson: Building Relationships and Creating a Safe Classroom</description>
       <launch lang="en-US">../tot/week3/index.html</launch>
     </activity>
   </activities>

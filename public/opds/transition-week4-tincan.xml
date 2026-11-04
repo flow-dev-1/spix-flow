@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition/week4/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Understanding Values</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident, Lesson: Understanding Values</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Understanding Values</description>
       <launch lang="en-US">../transition/week4/index.html</launch>
     </activity>
   </activities>

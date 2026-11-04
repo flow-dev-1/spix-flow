@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition2/week4/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>The Role of Support Systems</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2, Lesson: The Role of Support Systems</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: The Role of Support Systems</description>
       <launch lang="en-US">../transition2/week4/index.html</launch>
     </activity>
   </activities>

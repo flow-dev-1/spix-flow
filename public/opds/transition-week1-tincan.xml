@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition/week1/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Introduction To Transition</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident, Lesson: Introduction To Transition</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: From Curious to Confident: Transition with Ease, Lesson: Introduction To Transition</description>
       <launch lang="en-US">../transition/week1/index.html</launch>
     </activity>
   </activities>

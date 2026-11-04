@@ -3,7 +3,7 @@
   <activities>
     <activity id="https://spix.flowonline.app/transition2/week2/index.html" type="http://adlnet.gov/expapi/activities/lesson">
       <name>Developing Resilience</name>
-      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2, Lesson: Developing Resilience</description>
+      <description lang="en-US">Learning Area: Life Skills, Course: Transition 2: Preparing for the Next Chapter, Lesson: Developing Resilience</description>
       <launch lang="en-US">../transition2/week2/index.html</launch>
     </activity>
   </activities>
